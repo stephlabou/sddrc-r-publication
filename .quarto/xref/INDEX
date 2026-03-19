@@ -4,5 +4,11 @@
   },
   "index.qmd": {
     "index.html": "82a1719c"
+  },
+  "ggplot2.qmd": {
+    "ggplot2.html": "19f3d54f"
+  },
+  "gtsummary.qmd": {
+    "gtsummary.html": "28130d0f"
   }
 }

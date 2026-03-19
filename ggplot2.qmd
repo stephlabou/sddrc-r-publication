@@ -13,6 +13,12 @@ pre[class] {
 }
 ```
 
+```{r eval=T, echo=F, message = F, warning = F}
+library(tidyverse)
+library(gtsummary)
+library(medicaldata)
+```
+
 ## Recap of `ggplot2`
 
 The package `ggplot2` (download as part of the `tidyverse` aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.
