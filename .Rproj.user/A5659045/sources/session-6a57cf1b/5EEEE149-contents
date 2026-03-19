@@ -1,0 +1,52 @@
+---
+title: "Publication Ready Graphs and Tables in R"
+---
+
+Note that this workshops assumes a working knowledge of R; we will dive straight into main table content without a general overview of R.
+
+
+---
+
+### Install and load packages
+
+This workshop will use the packages `tidyverse` (for data manipulation and plotting), `gtsummary` (for table formatting) and `medicaldata` for example datasets.
+
+```{r eval=T, echo=T, message = F, warning = F}
+library(tidyverse)
+library(gtsummary)
+library(medicaldata)
+```
+
+
+### Example data used
+
+This session will use example datasets included in the `gtsummary` and `medicaldata` packages.
+
+Load the [`trial` dataset] (https://www.danieldsjoberg.com/gtsummary/reference/trial.html?q=trial#ref-usage) and [`cytomegalovirus` data](https://cran.r-project.org/web/packages/medicaldata/refman/medicaldata.html#cytomegalovirus)
+
+A data frame with 200 rows–one row per patient
+
+trt - Chemotherapy Treatment
+
+age - Age
+
+marker - Marker Level (ng/mL)
+
+stage - T Stage
+
+grade - Grade
+
+response - Tumor Response
+
+death - Patient Died
+
+ttdeath - Months to Death/Censor
+
+```{r}
+trial
+```
+
+```{r}
+cytomegalovirus
+```
+
