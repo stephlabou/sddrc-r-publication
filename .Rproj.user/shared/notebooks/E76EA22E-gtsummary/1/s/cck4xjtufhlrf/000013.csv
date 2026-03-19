@@ -1,0 +1,8 @@
+"0","trial |>  "
+"0","  tbl_summary("
+"0","    include = c(trt, marker),"
+"0","    statistic = list("
+"0","      #change just way continuous vars are presented"
+"0","      all_continuous() ~ ""{median} ({min}, {max})"""
+"0","    ),"
+"0","  )"

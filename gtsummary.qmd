@@ -1,0 +1,227 @@
+---
+title: "Beautiful Tables for Models"
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 300px;
+}
+```
+
+## Introduction to `gtsummary`
+
+Next, we'll use the `gtsummary` package, an extension of `gt` that can incorporate statistical model outputs into publication-ready tables.
+
+## Descriptive statistics
+
+The base R approach to getting summary statistics for a dataframe results in a thorough, but not well-formatted for publication, table.
+
+```{r label='base_summary'}
+summary(smartpill)
+```
+
+The equivalent summary statistics function from `gtsummary` is `tbl_summary()`.
+
+```{r label='tbl_summary'}
+tbl_summary(smartpill)
+```
+
+
+The default summary statistic presented depends on variable type. Categorical variables get counts and percentages while continuous variables get `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
+
+These defaults are customizable. For instance, if we wanted only a subset of variables:
+
+```{r label='customize_descriptive'}
+smartpill |>  
+  tbl_summary(
+    include = c(Group, Age, SB.Time, SB.Contractions)
+  )
+```
+
+We can incorporate other R functions before using `tbl_summary()` to convert any unintentionally numeric variables to categories so they are displayed in the table as distinct groups.
+
+```{r label='customize_factors'}
+smartpill |>  
+  mutate(Group = as.factor(Group)) |>
+  tbl_summary(
+    include = c(Group, Age, SB.Time, SB.Contractions)
+  )
+```
+
+The default summary statistic presented depends on variable type. Categorical variables get counts and percentages while continuous variables get `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
+
+These defaults are customizable. For instance, if we wanted to display continuous variables as minimum, median, and maximum:
+
+```{r label='customize_continuous'}
+smartpill |>  
+  mutate(Group = as.factor(Group)) |>
+  tbl_summary(
+    include = c(Group, Age, SB.Time, SB.Contractions), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    )
+  )
+```
+
+This table can also be customized with better labels and updated NA indicator:
+
+```{r label='customize_labels'}
+smartpill |>  
+  mutate(Group = as.factor(Group)) |>
+  tbl_summary(
+    include = c(Group, Age, SB.Time, SB.Contractions), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", SB.Contractions = "Small bowel contractions"),
+    missing_text = "Missing"
+  )
+```
+
+Finally, this can be extended to produce crosstab tables, for instance with descriptive statistics for selected variables for each group
+
+```{r label='crosstab'}
+smartpill |>  
+  mutate(Group = as.factor(Group)) |>
+  tbl_summary(
+    by = Group,
+    include = c(Age, SB.Time, SB.Contractions), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", SB.Contractions = "Small bowel contractions"),
+    missing_text = "Missing"
+  )
+```
+
+Note that warnings will be returned if the metrics are not workable, for instance if all instances in a group are not missing.
+
+
+## Statistical tests
+
+If we wanted to run statistical analyses on this data, a usual approach would be to use a separate R package to run the test and then extract values of interest, like coefficients and p-values, to put into a table. `gtsummary` streamlines this process with an all-in-one approach to formatting statistical test outputs into a table.
+
+There are many standard [statistical tests integrated into gtsummary](https://www.danieldsjoberg.com/gtsummary/reference/tests.html) including t-test, ANOVA, chi-square, regression, survey sample methods, and more.
+
+Let's look at a couple examples in practice.
+
+
+
+
+
+### Table with significance
+
+Run a one-way ANOVA to compare whether chlorophyll is significantly different between the three lakes in 2013:
+
+```{r}
+oneway.test(chlorophyll_a_ugL ~ as.factor(lake), data = data)
+```
+
+
+If we wanted to report these results, we'd have some work to do to paste this into a table format. Or, we can do the same analysis using the [`tbl_summary`](https://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html) function from `gtsummary` to do this for us!
+
+> The tbl_summary() function calculates descriptive statistics for continuous, categorical, and dichotomous variables in R, and presents the results in a beautiful, customizable summary table ready for publication (for example, Table 1 or demographic tables).
+
+Let's run the same one-way ANOVA as above:
+
+```{r}
+data |> 
+  #specify what variables we want in our table: here, we want a row for chlorophyll with columns for lakes
+  tbl_summary(by = lake, include = c(chlorophyll_a_ugL)) |>
+  #specify what test to perform on which variables, to get p-values from
+  #here, a one-way ANOVA on chlorphyll
+  add_p(test = chlorophyll_a_ugL ~ "oneway.test")
+```
+
+
+#### Caveats
+
+**1)** Structure `tbl_summary()` in line with which test will be run in `add_p()`.
+
+Note that if we don't include table `by = lake` in `tbl_summary()`, the test won't know which groups to compare for this ANOVA.
+
+```{r}
+#| error: true
+data |> 
+  #no specification that we are grouping our data into lake-specific columns
+  tbl_summary(include = c(chlorophyll_a_ugL)) |>
+  add_p(test = chlorophyll_a_ugL ~ "oneway.test")
+```
+
+**2)** Default tests will vary based on data type.
+
+We don't specify a test, `add_p()` will use the [default tests](https://www.danieldsjoberg.com/gtsummary/reference/add_p.tbl_summary.html), which depend on whether the data is continuous or categorical, how many categories, etc.
+
+If we don't specify anova, the analysis will default to a Kruskal-Wallis rank sum test.
+
+>The default test used in add_p() primarily depends on these factors: 
+>
+>* whether the variable is categorical/dichotomous vs continuous 
+>* number of levels in the tbl_summary(by) variable
+>* whether the add_p(group) argument is specified
+>* whether the add_p(adj.vars) argument is specified
+
+```{r}
+data |> 
+  tbl_summary(by= lake, include = c(chlorophyll_a_ugL)) |>
+  add_p()
+```
+
+
+### Table with regression results
+
+When running a regression, we would want to have all model results - coefficients, confidence interval, and p-value - formatted into a table.
+
+Predict chlorophyll from water temperature, nitrogen, phosphorus, and dissolved organic carbon:
+
+```{r}
+#use lm() function to create model object
+mod1 <- lm(chlorophyll_a_ugL ~ h2o_temp_c + 
+                              total_nitrogen_mgL + 
+                              total_phosphorus._mgL + 
+                              dissolved_organic_carbon_mgL, 
+           data = data)
+```
+
+```{r}
+#use summary() to view result
+summary(mod1)
+```
+
+
+The equivalent function in `gtsummary` is `tbl_regression()`, which produces a formatted table of regression results.
+
+```{r}
+tbl_regression(mod1)
+```
+
+This table is customizable, using a [mix of `gt` and `gtsummary` functions for formatting](https://www.danieldsjoberg.com/gtsummary/articles/tbl_regression.html#customize-output) the output table.
+
+```{r}
+tbl_regression(mod1,
+               #update variable names
+               label = list(h2o_temp_c = "Water Temperature (C)", 
+                            total_nitrogen_mgL = "Total Nitrogen (mgL)", 
+                            total_phosphorus._mgL = "Total Phosphorus (mgL)", 
+                            dissolved_organic_carbon_mgL = "Dissolved Organic Carbon (mgL)")) |>
+  #make gt object, in order to use gt functions below
+   as_gt() |>
+  #add source note
+   gt::tab_source_note(source_note = md("Source: _Adamczyk EM, Shurin JB (2015) Seasonal Changes in Plankton Food Web Structure and Carbon Dioxide Flux from Southern California Reservoirs. PLoS ONE 10(10): e0140464. https://doi.org/10.1371/journal.pone.0140464_")
+  )
+```
+
+
+## Additional resources
+
+* [Primary website for gtsummary](https://www.danieldsjoberg.com/gtsummary/) including how to [cite use of the package](https://www.danieldsjoberg.com/gtsummary/authors.html#citation).
+* gtsummary [reference manual](https://cran.r-project.org/web/packages/gtsummary/refman/gtsummary.html) with complete details on functions and arguments.
+* Examples of [gtsummary in practice from R Graph Gallery](https://r-graph-gallery.com/package/gtsummary.html). 

@@ -1,14 +1,19 @@
 project:
   type: website
-  output-dir: docs
+  
+execute:
+  freeze: auto  # re-render only when source changes
 
 website:
-  title: "r-publication-graphs-tables"
+  title: "Publication Ready Graphs and Tables in R (SDDRC)"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: Introduction
+      - href: ggplot2.qmd
+        text: "Plots and Graphs"
+      - href: gtsummary.qmd
+        text: "Tables for Models"
 
 format:
   html:
