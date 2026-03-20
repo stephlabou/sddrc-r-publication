@@ -1,0 +1,194 @@
+---
+title: "Customize tables with `gt`"
+---
+
+## A few words on the `gt` package
+
+
+With `gt` you can construct a wide variety of useful tables with a cohesive set of table parts. Here is the main workflow to transform a data frame into a beautiful table:
+
+![https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg](https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg)
+
+An `gt` object as various elements. These include the table **header**, the **stub**, the **column labels** and **spanner column labels**, the **table body**, and the **table footer**.
+
+![https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg)
+
+Checkout the `gt` website for more information: <https://gt.rstudio.com/articles/gt.html>
+
+# Our example 
+
+We are going to reproduce some of the tables of this paper [Use of wireless motility capsule to determine gastric emptying and small intestinal transit times in critically ill trauma patients](https://doi.org/10.1016/j.jcrc.2011.12.002) and create new ones using the study data in the `smartpill` dataset.
+
+
+## Load the libraries
+
+```{r label='install_load'}
+#| message: FALSE
+ 
+# install.packages("gt")
+library(gt)
+library(tidyverse)
+library(medicaldata)
+```
+
+## Load the data
+
+```{r label='read_in_data'}
+#included in the medicaldata package
+attach(smartpill)
+data(smartpill)
+```
+
+
+## Have a look at the data
+
+```{r label='summary'}
+smartpill |> glimpse()
+```
+
+
+Let's have a look at the first rows of our dataset, but this time we are going to use the `gt` package
+
+```{r}
+smartpill |> 
+  head() |>
+  gt()
+```
+
+## A simple table
+
+Now let's create a summary table of demographics of study participants.
+
+```{r}
+#| message: FALSE
+
+table1 <- smartpill |>
+  select(Group, Gender, Height, Weight, Age) |>
+  group_by(Group) |>
+    summarise(average_age = mean(Age),
+              average_height = mean(Height),
+              average_weight = mean(Weight))
+
+table1
+```
+
+
+## Now let's make this a nice table
+
+```{r}
+table1_pub <-
+  table1 |>
+  gt() 
+
+# Show the gt Table
+table1_pub
+```
+#### _NOTE TO SELF - transpose example_
+
+
+
+
+## Add a Title
+```{r}
+#| message: FALSE
+
+table1_pub |> 
+  tab_header(
+    title = "Table 1. Demographic and morphometric characteristics",
+    subtitle = "smartpill dataset"
+  ) 
+```
+
+
+
+## Add better column names
+
+```{r}
+gt_measurements <- data_measurements |>
+  gt() |>
+  cols_label(
+    avg_air_temp = "Air Temp (C)",
+    avg_pco2_atmosphere_ppm = "Air pC02 (ppm)",
+    avg_h2o_temp_c = "Water Temp (C)",
+    avg_ph = 'Water pH',
+    avg_pco2_water_ppm = "Water pC02 (ppm)"
+  )
+
+
+# Show the gt Table
+gt_measurements
+```
+
+
+## Adding headers for multiple columns
+
+```{r}
+gt_measurements <- gt_measurements |>
+  tab_spanner(
+    label = md("**Air**"),
+    columns = c(avg_air_temp, avg_pco2_atmosphere_ppm)
+  ) |>
+  tab_spanner(
+    label = md("**Water**"),
+    columns = c(avg_h2o_temp_c, avg_ph, avg_pco2_water_ppm)
+  ) |>
+  cols_label(
+    avg_air_temp = "Temp (C)",
+    avg_pco2_atmosphere_ppm = "pC02 (ppm)",
+    avg_h2o_temp_c = "Temp (C)",
+    avg_ph = 'pH',
+    avg_pco2_water_ppm = "pC02 (ppm)"
+  )
+
+# Show the gt Table
+gt_measurements
+```
+
+
+
+## Limiting values to 2 decimals
+
+```{r}
+gt_measurements <- gt_measurements |>
+    fmt_number(
+    columns = everything(),
+    decimals = 2,
+    use_seps = FALSE
+  )
+
+
+# Show the gt Table
+gt_measurements
+```
+
+## Put it all together
+
+### Add title and Footnote
+
+
+```{r}
+gt_measurements <- gt_measurements |>
+  tab_header(
+    title = "Average measurements per lake and year",
+    subtitle = "major reservoirs in San Diego County"
+  ) |>
+ tab_source_note(
+    source_note = md("Source: _Adamczyk EM, Shurin JB (2015) Seasonal Changes in Plankton Food Web Structure and Carbon Dioxide Flux from Southern California Reservoirs. PLoS ONE 10(10): e0140464. <https://doi.org/10.1371/journal.pone.0140464>_")
+  )
+
+# Show the gt Table
+gt_measurements
+```
+
+
+## Styling
+
+
+```{r}
+gt_measurements |> opt_stylize(style = 6, color = 'gray')
+```
+
+
+There are 36 combinations of style and color to choose from: <https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples>
+
+And of course you can do conditional cell formatting: <https://gt.rstudio.com/reference/tab_style.html>
