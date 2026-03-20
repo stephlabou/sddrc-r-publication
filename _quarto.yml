@@ -12,6 +12,8 @@ website:
         text: Introduction
       - href: ggplot2.qmd
         text: "Plots and Graphs"
+      - href: gt.qmd
+        text: "Tables"
       - href: gtsummary.qmd
         text: "Tables for Models"
 

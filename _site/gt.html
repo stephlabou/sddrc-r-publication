@@ -1,0 +1,2340 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.35">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Customize tables with gt – Publication Ready Graphs and Tables in R (SDDRC)</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Publication Ready Graphs and Tables in R (SDDRC)</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Introduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./ggplot2.html"> 
+<span class="menu-text">Plots and Graphs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./gt.html" aria-current="page"> 
+<span class="menu-text">Tables</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./gtsummary.html"> 
+<span class="menu-text">Tables for Models</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-few-words-on-the-gt-package" id="toc-a-few-words-on-the-gt-package" class="nav-link active" data-scroll-target="#a-few-words-on-the-gt-package">A few words on the <code>gt</code> package</a></li>
+  <li><a href="#our-example" id="toc-our-example" class="nav-link" data-scroll-target="#our-example">Our example</a>
+  <ul class="collapse">
+  <li><a href="#load-the-libraries" id="toc-load-the-libraries" class="nav-link" data-scroll-target="#load-the-libraries">Load the libraries</a></li>
+  <li><a href="#load-the-data" id="toc-load-the-data" class="nav-link" data-scroll-target="#load-the-data">Load the data</a></li>
+  <li><a href="#have-a-look-at-the-data" id="toc-have-a-look-at-the-data" class="nav-link" data-scroll-target="#have-a-look-at-the-data">Have a look at the data</a></li>
+  <li><a href="#a-simple-table" id="toc-a-simple-table" class="nav-link" data-scroll-target="#a-simple-table">A simple table</a></li>
+  <li><a href="#now-lets-make-this-a-nice-table" id="toc-now-lets-make-this-a-nice-table" class="nav-link" data-scroll-target="#now-lets-make-this-a-nice-table">Now let’s make this a nice table</a></li>
+  <li><a href="#add-a-title" id="toc-add-a-title" class="nav-link" data-scroll-target="#add-a-title">Add a Title</a></li>
+  <li><a href="#add-better-column-names" id="toc-add-better-column-names" class="nav-link" data-scroll-target="#add-better-column-names">Add better column names</a>
+  <ul class="collapse">
+  <li><a href="#add-title-and-footnote" id="toc-add-title-and-footnote" class="nav-link" data-scroll-target="#add-title-and-footnote">Add title and Footnote</a></li>
+  </ul></li>
+  <li><a href="#styling" id="toc-styling" class="nav-link" data-scroll-target="#styling">Styling</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Customize tables with <code>gt</code></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="a-few-words-on-the-gt-package" class="level2">
+<h2 class="anchored" data-anchor-id="a-few-words-on-the-gt-package">A few words on the <code>gt</code> package</h2>
+<p>With <code>gt</code> you can construct a wide variety of useful tables with a cohesive set of table parts. Here is the main workflow to transform a data frame into a beautiful table:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg" class="img-fluid figure-img"></p>
+<figcaption>https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg</figcaption>
+</figure>
+</div>
+<p>An <code>gt</code> object as various elements. These include the table <strong>header</strong>, the <strong>stub</strong>, the <strong>column labels</strong> and <strong>spanner column labels</strong>, the <strong>table body</strong>, and the <strong>table footer</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg" class="img-fluid figure-img"></p>
+<figcaption>https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg</figcaption>
+</figure>
+</div>
+<p>Checkout the <code>gt</code> website for more information: <a href="https://gt.rstudio.com/articles/gt.html" class="uri">https://gt.rstudio.com/articles/gt.html</a></p>
+</section>
+<section id="our-example" class="level1">
+<h1>Our example</h1>
+<p>We are going to reproduce some of the tables of this paper <a href="https://doi.org/10.1016/j.jcrc.2011.12.002">Use of wireless motility capsule to determine gastric emptying and small intestinal transit times in critically ill trauma patients</a> and create new ones using the study data in the <code>smartpill</code> dataset.</p>
+<section id="load-the-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-libraries">Load the libraries</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("gt")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gt' was built under R version 4.5.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(medicaldata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'medicaldata' was built under R version 4.5.2</code></pre>
+</div>
+</div>
+</section>
+<section id="load-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#included in the medicaldata package</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(smartpill)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="have-a-look-at-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="have-a-look-at-the-data">Have a look at the data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 95
+Columns: 22
+$ Group                   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1…
+$ Gender                  &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1…
+$ Race                    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 1, 1, 3, 1, 1,…
+$ Height                  &lt;dbl&gt; 182.88, 180.34, 180.34, 175.26, 152.40, 185.42…
+$ Weight                  &lt;dbl&gt; 102.05820, 102.05820, 68.03880, 69.85317, 44.9…
+$ Age                     &lt;dbl&gt; 25, 39, 44, 53, 57, 43, 38, 23, 21, 24, 24, 28…
+$ GE.Time                 &lt;dbl&gt; 74.30, 73.30, 4.30, NA, 13.90, 23.30, 7.50, 5.…
+$ SB.Time                 &lt;dbl&gt; 8.40, 13.80, 6.70, NA, 5.10, 8.70, 3.70, 3.40,…
+$ C.Time                  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 43.28, 14.03, …
+$ WG.Time                 &lt;dbl&gt; 816.00, 168.00, 240.00, 216.00, 120.00, 384.00…
+$ S.Contractions          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 145, 114, 47, …
+$ S.Sum.of.Amplitudes     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2254.16, 3747.…
+$ S.Mean.Peak.Amplitude   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 15.545931, 32.…
+$ S.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2.07, 2.28, 3.…
+$ SB.Contractions         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 298, 782, 514,…
+$ SB.Sum.of.Amplitudes    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 5382.65, 14044…
+$ SB.Mean.Peak.Amplitude  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 18.06258, 17.9…
+$ SB.Mean.pH              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.26, 7.21, 7.…
+$ Colon.Contractions      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 507, 50, 615, …
+$ Colon.Sum.of.Amplitudes &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 19073.39, 1872…
+$ C.Mean.Peak.Amplitude   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 37.62010, 37.4…
+$ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21, 6.…</code></pre>
+</div>
+</div>
+<p>Let’s have a look at the first rows of our dataset, but this time we are going to use the <code>gt</code> package</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="qeltgwornv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qeltgwornv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qeltgwornv thead, #qeltgwornv tbody, #qeltgwornv tfoot, #qeltgwornv tr, #qeltgwornv td, #qeltgwornv th {
+  border-style: none;
+}
+
+#qeltgwornv p {
+  margin: 0;
+  padding: 0;
+}
+
+#qeltgwornv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qeltgwornv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qeltgwornv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qeltgwornv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qeltgwornv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qeltgwornv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qeltgwornv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qeltgwornv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qeltgwornv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qeltgwornv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qeltgwornv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qeltgwornv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qeltgwornv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qeltgwornv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qeltgwornv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qeltgwornv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qeltgwornv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qeltgwornv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qeltgwornv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qeltgwornv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qeltgwornv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qeltgwornv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qeltgwornv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qeltgwornv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qeltgwornv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qeltgwornv .gt_left {
+  text-align: left;
+}
+
+#qeltgwornv .gt_center {
+  text-align: center;
+}
+
+#qeltgwornv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qeltgwornv .gt_font_normal {
+  font-weight: normal;
+}
+
+#qeltgwornv .gt_font_bold {
+  font-weight: bold;
+}
+
+#qeltgwornv .gt_font_italic {
+  font-style: italic;
+}
+
+#qeltgwornv .gt_super {
+  font-size: 65%;
+}
+
+#qeltgwornv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qeltgwornv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qeltgwornv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qeltgwornv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qeltgwornv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qeltgwornv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qeltgwornv .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qeltgwornv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qeltgwornv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
+<th id="Gender" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Gender</th>
+<th id="Race" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Race</th>
+<th id="Height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Height</th>
+<th id="Weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Weight</th>
+<th id="Age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Age</th>
+<th id="GE.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">GE.Time</th>
+<th id="SB.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Time</th>
+<th id="C.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Time</th>
+<th id="WG.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">WG.Time</th>
+<th id="S.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Contractions</th>
+<th id="S.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Sum.of.Amplitudes</th>
+<th id="S.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Mean.Peak.Amplitude</th>
+<th id="S.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Mean.pH</th>
+<th id="SB.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Contractions</th>
+<th id="SB.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Sum.of.Amplitudes</th>
+<th id="SB.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Mean.Peak.Amplitude</th>
+<th id="SB.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Mean.pH</th>
+<th id="Colon.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Colon.Contractions</th>
+<th id="Colon.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Colon.Sum.of.Amplitudes</th>
+<th id="C.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Mean.Peak.Amplitude</th>
+<th id="C.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Mean.pH</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">1</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">182.88</td>
+<td class="gt_row gt_right" headers="Weight">102.05820</td>
+<td class="gt_row gt_right" headers="Age">25</td>
+<td class="gt_row gt_right" headers="GE.Time">74.3</td>
+<td class="gt_row gt_right" headers="SB.Time">8.4</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">816</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">1</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">180.34</td>
+<td class="gt_row gt_right" headers="Weight">102.05820</td>
+<td class="gt_row gt_right" headers="Age">39</td>
+<td class="gt_row gt_right" headers="GE.Time">73.3</td>
+<td class="gt_row gt_right" headers="SB.Time">13.8</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">168</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">1</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">180.34</td>
+<td class="gt_row gt_right" headers="Weight">68.03880</td>
+<td class="gt_row gt_right" headers="Age">44</td>
+<td class="gt_row gt_right" headers="GE.Time">4.3</td>
+<td class="gt_row gt_right" headers="SB.Time">6.7</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">240</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">1</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">175.26</td>
+<td class="gt_row gt_right" headers="Weight">69.85317</td>
+<td class="gt_row gt_right" headers="Age">53</td>
+<td class="gt_row gt_right" headers="GE.Time">NA</td>
+<td class="gt_row gt_right" headers="SB.Time">NA</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">216</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">0</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">152.40</td>
+<td class="gt_row gt_right" headers="Weight">44.90561</td>
+<td class="gt_row gt_right" headers="Age">57</td>
+<td class="gt_row gt_right" headers="GE.Time">13.9</td>
+<td class="gt_row gt_right" headers="SB.Time">5.1</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">120</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="Gender">1</td>
+<td class="gt_row gt_right" headers="Race">NA</td>
+<td class="gt_row gt_right" headers="Height">185.42</td>
+<td class="gt_row gt_right" headers="Weight">94.80073</td>
+<td class="gt_row gt_right" headers="Age">43</td>
+<td class="gt_row gt_right" headers="GE.Time">23.3</td>
+<td class="gt_row gt_right" headers="SB.Time">8.7</td>
+<td class="gt_row gt_right" headers="C.Time">NA</td>
+<td class="gt_row gt_right" headers="WG.Time">384</td>
+<td class="gt_row gt_right" headers="S.Contractions">NA</td>
+<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
+<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
+<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
+<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
+<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="a-simple-table" class="level2">
+<h2 class="anchored" data-anchor-id="a-simple-table">A simple table</h2>
+<p>Now let’s create a summary table of demographics of study participants.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> smartpill <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, Gender, Height, Weight, Age) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">average_age =</span> <span class="fu">mean</span>(Age),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_height =</span> <span class="fu">mean</span>(Height),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_weight =</span> <span class="fu">mean</span>(Weight))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>table1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  Group average_age average_height average_weight
+  &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+1     0        40.2           176.           80.5
+2     1        37.2           172.           77.2</code></pre>
+</div>
+</div>
+</section>
+<section id="now-lets-make-this-a-nice-table" class="level2">
+<h2 class="anchored" data-anchor-id="now-lets-make-this-a-nice-table">Now let’s make this a nice table</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="ot">&lt;-</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  table1 <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the gt Table</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>table1_pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="iaxvxfsdvv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#iaxvxfsdvv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#iaxvxfsdvv thead, #iaxvxfsdvv tbody, #iaxvxfsdvv tfoot, #iaxvxfsdvv tr, #iaxvxfsdvv td, #iaxvxfsdvv th {
+  border-style: none;
+}
+
+#iaxvxfsdvv p {
+  margin: 0;
+  padding: 0;
+}
+
+#iaxvxfsdvv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#iaxvxfsdvv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#iaxvxfsdvv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#iaxvxfsdvv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#iaxvxfsdvv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#iaxvxfsdvv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#iaxvxfsdvv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#iaxvxfsdvv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#iaxvxfsdvv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#iaxvxfsdvv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#iaxvxfsdvv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#iaxvxfsdvv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#iaxvxfsdvv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#iaxvxfsdvv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#iaxvxfsdvv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iaxvxfsdvv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#iaxvxfsdvv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#iaxvxfsdvv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#iaxvxfsdvv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iaxvxfsdvv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#iaxvxfsdvv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iaxvxfsdvv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#iaxvxfsdvv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iaxvxfsdvv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#iaxvxfsdvv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iaxvxfsdvv .gt_left {
+  text-align: left;
+}
+
+#iaxvxfsdvv .gt_center {
+  text-align: center;
+}
+
+#iaxvxfsdvv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#iaxvxfsdvv .gt_font_normal {
+  font-weight: normal;
+}
+
+#iaxvxfsdvv .gt_font_bold {
+  font-weight: bold;
+}
+
+#iaxvxfsdvv .gt_font_italic {
+  font-style: italic;
+}
+
+#iaxvxfsdvv .gt_super {
+  font-size: 65%;
+}
+
+#iaxvxfsdvv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#iaxvxfsdvv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#iaxvxfsdvv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#iaxvxfsdvv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#iaxvxfsdvv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#iaxvxfsdvv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#iaxvxfsdvv .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#iaxvxfsdvv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#iaxvxfsdvv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
+<th id="average_age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_age</th>
+<th id="average_height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_height</th>
+<th id="average_weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_weight</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="average_age">40.25000</td>
+<td class="gt_row gt_right" headers="average_height">176.2125</td>
+<td class="gt_row gt_right" headers="average_weight">80.51258</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Group">1</td>
+<td class="gt_row gt_right" headers="average_age">37.22989</td>
+<td class="gt_row gt_right" headers="average_height">171.6018</td>
+<td class="gt_row gt_right" headers="average_weight">77.18989</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="note-to-self---transpose-example" class="level4">
+<h4 class="anchored" data-anchor-id="note-to-self---transpose-example"><em>NOTE TO SELF - transpose example</em></h4>
+</section>
+</section>
+<section id="add-a-title" class="level2">
+<h2 class="anchored" data-anchor-id="add-a-title">Add a Title</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Table 1. Demographic and morphometric characteristics"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"smartpill dataset"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="cfepascwlw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cfepascwlw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#cfepascwlw thead, #cfepascwlw tbody, #cfepascwlw tfoot, #cfepascwlw tr, #cfepascwlw td, #cfepascwlw th {
+  border-style: none;
+}
+
+#cfepascwlw p {
+  margin: 0;
+  padding: 0;
+}
+
+#cfepascwlw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#cfepascwlw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cfepascwlw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cfepascwlw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cfepascwlw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cfepascwlw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cfepascwlw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cfepascwlw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cfepascwlw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#cfepascwlw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#cfepascwlw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cfepascwlw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#cfepascwlw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#cfepascwlw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cfepascwlw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfepascwlw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#cfepascwlw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#cfepascwlw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#cfepascwlw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfepascwlw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#cfepascwlw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfepascwlw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cfepascwlw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfepascwlw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfepascwlw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfepascwlw .gt_left {
+  text-align: left;
+}
+
+#cfepascwlw .gt_center {
+  text-align: center;
+}
+
+#cfepascwlw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cfepascwlw .gt_font_normal {
+  font-weight: normal;
+}
+
+#cfepascwlw .gt_font_bold {
+  font-weight: bold;
+}
+
+#cfepascwlw .gt_font_italic {
+  font-style: italic;
+}
+
+#cfepascwlw .gt_super {
+  font-size: 65%;
+}
+
+#cfepascwlw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#cfepascwlw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#cfepascwlw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#cfepascwlw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#cfepascwlw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#cfepascwlw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#cfepascwlw .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#cfepascwlw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#cfepascwlw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="4" class="gt_heading gt_title gt_font_normal">Table 1. Demographic and morphometric characteristics</td>
+</tr>
+<tr class="gt_heading even">
+<td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">smartpill dataset</td>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
+<th id="average_age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_age</th>
+<th id="average_height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_height</th>
+<th id="average_weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_weight</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_right" headers="average_age">40.25000</td>
+<td class="gt_row gt_right" headers="average_height">176.2125</td>
+<td class="gt_row gt_right" headers="average_weight">80.51258</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Group">1</td>
+<td class="gt_row gt_right" headers="average_age">37.22989</td>
+<td class="gt_row gt_right" headers="average_height">171.6018</td>
+<td class="gt_row gt_right" headers="average_weight">77.18989</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="add-better-column-names" class="level2">
+<h2 class="anchored" data-anchor-id="add-better-column-names">Add better column names</h2>
+<section id="add-title-and-footnote" class="level3">
+<h3 class="anchored" data-anchor-id="add-title-and-footnote">Add title and Footnote</h3>
+</section>
+</section>
+<section id="styling" class="level2">
+<h2 class="anchored" data-anchor-id="styling">Styling</h2>
+<p>There are 36 combinations of style and color to choose from: <a href="https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples" class="uri">https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples</a></p>
+<p>And of course you can do conditional cell formatting: <a href="https://gt.rstudio.com/reference/tab_style.html" class="uri">https://gt.rstudio.com/reference/tab_style.html</a></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

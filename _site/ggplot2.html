@@ -136,6 +136,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Plots and Graphs</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./gt.html"> 
+<span class="menu-text">Tables</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./gtsummary.html"> 
 <span class="menu-text">Tables for Models</span></a>
   </li>  
@@ -193,17 +197,12 @@ pre[class] {
 }
 </style>
 </div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(medicaldata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <section id="recap-of-ggplot2" class="level2">
 <h2 class="anchored" data-anchor-id="recap-of-ggplot2">Recap of <code>ggplot2</code></h2>
 <p>The package <code>ggplot2</code> (download as part of the <code>tidyverse</code> aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.</p>
 <p>We will start by making some basic summary plots of the <code>smartpill</code> data to briefly recap <code>ggplot2</code> syntax.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Group Gender Race Height    Weight Age GE.Time SB.Time C.Time WG.Time
 1     0      1   NA 182.88 102.05820  25    74.3     8.4     NA     816
@@ -237,8 +236,8 @@ pre[class] {
 </div>
 <p>Begin by using the <code>ggplot()</code> function to specify input data. Within, use <code>aes()</code> to specify variables (columns) to use for x and y and any variable-driven formatting like color. Use the appropriate <code>geom_()</code> option to specify type of plot (e.g., scatter plot, bar plot).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> SB.Time, <span class="at">y =</span> GE.Time, <span class="at">color =</span> Weight)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> SB.Time, <span class="at">y =</span> GE.Time, <span class="at">color =</span> Weight)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>

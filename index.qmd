@@ -17,7 +17,7 @@ library(medicaldata)
 ```
 
 
-### Example data used
+### About the data
 
 This session will use the [smartpill dataset](https://cran.r-project.org/web/packages/medicaldata/refman/medicaldata.html#smartpill) from the `medicaldata` package.
 
@@ -54,4 +54,8 @@ Data description: This study evaluated gastric emptying, small bowel transit tim
 
 The Smart Pill dataset was contributed by Dr. Amy Nowacki, Associate Professor, Cleveland Clinic. Please refer to this resource as: Amy S. Nowacki, 'Smart Pill Dataset', TSHS Resources Portal (2017). Available at https://www.causeweb.org/tshs/smart-pill/.
 
-Citation: Rauch et al. 'Use of Wireless Utility Capsule to Determine Gastric Emptying and Small Intestinal Transit Times in Critically Ill Trauma Patients'. Journal of Critical Care 2012; 27(5): 534.e7-534.e12.
+Citation: [Rauch et al. 'Use of Wireless Utility Capsule to Determine Gastric Emptying and Small Intestinal Transit Times in Critically Ill Trauma Patients'. Journal of Critical Care 2012; 27(5): 534.e7-534.e12.](https://doi.org/10.1016/j.jcrc.2011.12.002)
+
+---
+
+Portions of this content are derived from the UC Love Data Week 2026 workshop [Publication Ready Tables in R](https://ucsb-library-research-data-services.github.io/r-table-publication/) developed by Stephanie Labou and Julien Brun.
