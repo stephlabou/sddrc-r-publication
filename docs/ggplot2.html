@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beautiful Tables for Models – Publication Ready Graphs and Tables in R (SDDRC)</title>
+<title>Plots and Graphs – Publication Ready Graphs and Tables in R (SDDRC)</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -160,6 +160,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#recap-of-ggplot2" id="toc-recap-of-ggplot2" class="nav-link active" data-scroll-target="#recap-of-ggplot2">Recap of <code>ggplot2</code></a></li>
+  <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data structure</a></li>
+  <li><a href="#basic-plot" id="toc-basic-plot" class="nav-link" data-scroll-target="#basic-plot">Basic plot</a></li>
+  <li><a href="#change-axis-labels" id="toc-change-axis-labels" class="nav-link" data-scroll-target="#change-axis-labels">Change axis labels</a></li>
+  <li><a href="#update-legend" id="toc-update-legend" class="nav-link" data-scroll-target="#update-legend">Update legend</a></li>
+  <li><a href="#facet-by-group" id="toc-facet-by-group" class="nav-link" data-scroll-target="#facet-by-group">Facet by group</a></li>
+  <li><a href="#suppress-legend" id="toc-suppress-legend" class="nav-link" data-scroll-target="#suppress-legend">Suppress legend</a></li>
+  <li><a href="#background-colors-other-clean-up" id="toc-background-colors-other-clean-up" class="nav-link" data-scroll-target="#background-colors-other-clean-up">Background colors &amp; other clean up</a></li>
+  <li><a href="#saving-plots" id="toc-saving-plots" class="nav-link" data-scroll-target="#saving-plots">Saving plots</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a></li>
   </ul>
 </nav>
     </div>
@@ -168,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Beautiful Tables for Models</h1>
+<h1 class="title">Plots and Graphs</h1>
 </div>
 
 
@@ -199,45 +208,80 @@ pre[class] {
 </div>
 <section id="recap-of-ggplot2" class="level2">
 <h2 class="anchored" data-anchor-id="recap-of-ggplot2">Recap of <code>ggplot2</code></h2>
-<p>The package <code>ggplot2</code> (download as part of the <code>tidyverse</code> aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.</p>
-<p>We will start by making some basic summary plots of the <code>smartpill</code> data to briefly recap <code>ggplot2</code> syntax.</p>
+<p>The package <code>ggplot2</code> (downloaded as part of the <code>tidyverse</code> aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.</p>
+<p>Recap of order of operations for building a plot: 1. Use the <code>ggplot()</code> function to specify input data. 2. Within, use <code>aes()</code> to specify variables (columns) to use for x and y and any variable-driven formatting like color. 3. Use a <code>+</code> followed by the appropriate <code>geom_()</code> option to specify type of plot (e.g., scatter plot, bar plot). 4. Various customizations like labels, legends, etc.</p>
+</section>
+<section id="data-structure" class="level2">
+<h2 class="anchored" data-anchor-id="data-structure">Data structure</h2>
+<p>Note that all variables are numeric and there are quite a few missing values. In order to make any categorical-type plots (bar graphs, separate plots for individual groups, etc.), variables may need to be converted to avoid plotting errors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Group Gender Race Height    Weight Age GE.Time SB.Time C.Time WG.Time
-1     0      1   NA 182.88 102.05820  25    74.3     8.4     NA     816
-2     0      1   NA 180.34 102.05820  39    73.3    13.8     NA     168
-3     0      1   NA 180.34  68.03880  44     4.3     6.7     NA     240
-4     0      1   NA 175.26  69.85317  53      NA      NA     NA     216
-5     0      0   NA 152.40  44.90561  57    13.9     5.1     NA     120
-6     0      1   NA 185.42  94.80073  43    23.3     8.7     NA     384
-  S.Contractions S.Sum.of.Amplitudes S.Mean.Peak.Amplitude S.Mean.pH
-1             NA                  NA                    NA        NA
-2             NA                  NA                    NA        NA
-3             NA                  NA                    NA        NA
-4             NA                  NA                    NA        NA
-5             NA                  NA                    NA        NA
-6             NA                  NA                    NA        NA
-  SB.Contractions SB.Sum.of.Amplitudes SB.Mean.Peak.Amplitude SB.Mean.pH
-1              NA                   NA                     NA         NA
-2              NA                   NA                     NA         NA
-3              NA                   NA                     NA         NA
-4              NA                   NA                     NA         NA
-5              NA                   NA                     NA         NA
-6              NA                   NA                     NA         NA
-  Colon.Contractions Colon.Sum.of.Amplitudes C.Mean.Peak.Amplitude C.Mean.pH
-1                 NA                      NA                    NA        NA
-2                 NA                      NA                    NA        NA
-3                 NA                      NA                    NA        NA
-4                 NA                      NA                    NA        NA
-5                 NA                      NA                    NA        NA
-6                 NA                      NA                    NA        NA</code></pre>
+<pre><code>'data.frame':   95 obs. of  22 variables:
+ $ Group                  : num  0 0 0 0 0 0 0 0 1 1 ...
+ $ Gender                 : num  1 1 1 1 0 1 1 0 1 0 ...
+ $ Race                   : num  NA NA NA NA NA NA NA NA 1 1 ...
+ $ Height                 : num  183 180 180 175 152 ...
+ $ Weight                 : num  102.1 102.1 68 69.9 44.9 ...
+ $ Age                    : num  25 39 44 53 57 43 38 23 21 24 ...
+ $ GE.Time                : num  74.3 73.3 4.3 NA 13.9 23.3 7.5 5.6 2.73 5.02 ...
+ $ SB.Time                : num  8.4 13.8 6.7 NA 5.1 8.7 3.7 3.4 5.12 3.3 ...
+ $ C.Time                 : num  NA NA NA NA NA ...
+ $ WG.Time                : num  816 168 240 216 120 ...
+ $ S.Contractions         : num  NA NA NA NA NA NA NA NA 145 114 ...
+ $ S.Sum.of.Amplitudes    : num  NA NA NA NA NA ...
+ $ S.Mean.Peak.Amplitude  : num  NA NA NA NA NA ...
+ $ S.Mean.pH              : num  NA NA NA NA NA NA NA NA 2.07 2.28 ...
+ $ SB.Contractions        : num  NA NA NA NA NA NA NA NA 298 782 ...
+ $ SB.Sum.of.Amplitudes   : num  NA NA NA NA NA ...
+ $ SB.Mean.Peak.Amplitude : num  NA NA NA NA NA ...
+ $ SB.Mean.pH             : num  NA NA NA NA NA NA NA NA 7.26 7.21 ...
+ $ Colon.Contractions     : num  NA NA NA NA NA NA NA NA 507 50 ...
+ $ Colon.Sum.of.Amplitudes: num  NA NA NA NA NA ...
+ $ C.Mean.Peak.Amplitude  : num  NA NA NA NA NA ...
+ $ C.Mean.pH              : num  NA NA NA NA NA NA NA NA 7.58 7.21 ...</code></pre>
 </div>
 </div>
-<p>Begin by using the <code>ggplot()</code> function to specify input data. Within, use <code>aes()</code> to specify variables (columns) to use for x and y and any variable-driven formatting like color. Use the appropriate <code>geom_()</code> option to specify type of plot (e.g., scatter plot, bar plot).</p>
+<p>We are going to convert the Group variable to a factor, to make downstream plotting easier when visualizing ‘Group’ as a treatment vs control structure.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> SB.Time, <span class="at">y =</span> GE.Time, <span class="at">color =</span> Weight)) <span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="ot">&lt;-</span> smartpill <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">as.factor</span>(Group))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   95 obs. of  22 variables:
+ $ Group                  : Factor w/ 2 levels "0","1": 1 1 1 1 1 1 1 1 2 2 ...
+ $ Gender                 : num  1 1 1 1 0 1 1 0 1 0 ...
+ $ Race                   : num  NA NA NA NA NA NA NA NA 1 1 ...
+ $ Height                 : num  183 180 180 175 152 ...
+ $ Weight                 : num  102.1 102.1 68 69.9 44.9 ...
+ $ Age                    : num  25 39 44 53 57 43 38 23 21 24 ...
+ $ GE.Time                : num  74.3 73.3 4.3 NA 13.9 23.3 7.5 5.6 2.73 5.02 ...
+ $ SB.Time                : num  8.4 13.8 6.7 NA 5.1 8.7 3.7 3.4 5.12 3.3 ...
+ $ C.Time                 : num  NA NA NA NA NA ...
+ $ WG.Time                : num  816 168 240 216 120 ...
+ $ S.Contractions         : num  NA NA NA NA NA NA NA NA 145 114 ...
+ $ S.Sum.of.Amplitudes    : num  NA NA NA NA NA ...
+ $ S.Mean.Peak.Amplitude  : num  NA NA NA NA NA ...
+ $ S.Mean.pH              : num  NA NA NA NA NA NA NA NA 2.07 2.28 ...
+ $ SB.Contractions        : num  NA NA NA NA NA NA NA NA 298 782 ...
+ $ SB.Sum.of.Amplitudes   : num  NA NA NA NA NA ...
+ $ SB.Mean.Peak.Amplitude : num  NA NA NA NA NA ...
+ $ SB.Mean.pH             : num  NA NA NA NA NA NA NA NA 7.26 7.21 ...
+ $ Colon.Contractions     : num  NA NA NA NA NA NA NA NA 507 50 ...
+ $ Colon.Sum.of.Amplitudes: num  NA NA NA NA NA ...
+ $ C.Mean.Peak.Amplitude  : num  NA NA NA NA NA ...
+ $ C.Mean.pH              : num  NA NA NA NA NA NA NA NA 7.58 7.21 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="basic-plot" class="level2">
+<h2 class="anchored" data-anchor-id="basic-plot">Basic plot</h2>
+<p>A basic scatterplot of the <code>smartpill</code> data looking at small bowel transit time by weight between groups (trauma patients, healthy volunteers):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>
@@ -250,6 +294,316 @@ pre[class] {
 </div>
 </div>
 </div>
+<p>Note the warning about missing values being removed. There are five patients with missing values for SB.Time.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, SB.Time, Weight) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Group     SB.Time           Weight      
+ 0: 8   Min.   : 1.810   Min.   : 44.91  
+ 1:87   1st Qu.: 3.220   1st Qu.: 66.68  
+        Median : 3.775   Median : 74.84  
+        Mean   : 4.297   Mean   : 77.47  
+        3rd Qu.: 4.850   3rd Qu.: 86.18  
+        Max.   :13.800   Max.   :127.01  
+        NA's   :5                        </code></pre>
+</div>
+</div>
+<p>One of these patients is from the critically ill group.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(SB.Time)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, SB.Time, Weight)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Group SB.Time   Weight
+1     0      NA 69.85317
+2     1      NA 77.11064
+3     1      NA 72.57472
+4     1      NA 51.70949
+5     1      NA 77.06528</code></pre>
+</div>
+</div>
+<p>The warning will be suppressed in output moving forward, but not that any data cleanup like remove of missing values should be handled prior to plotting.</p>
+</section>
+<section id="change-axis-labels" class="level2">
+<h2 class="anchored" data-anchor-id="change-axis-labels">Change axis labels</h2>
+<p>Variable names may need to be updated to make for more readable axis labels. The <a href="https://ggplot2.tidyverse.org/reference/labs.html"><code>labs</code></a> function is used to change axis labels.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/axis_labels-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Note</em>: You can also set up a ‘dictionary’ of variables and labels to automatically rename.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">dictionary =</span> <span class="fu">c</span>(<span class="at">SB.Time =</span> <span class="st">"Small bowel transit time (hours)"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Weight  =</span> <span class="st">"Weight (kilograms)"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Group =</span> <span class="st">"Treatment"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/dictionary-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="update-legend" class="level2">
+<h2 class="anchored" data-anchor-id="update-legend">Update legend</h2>
+<p>By default, the legend title will be the the variable used, which in this case is a factored version of the Group variable. Colors of points will also be default colors and color labels map to discrete variable values.</p>
+<p>Because the legend is indicating variable and values related to our specified <strong>color</strong> variable, we can use the <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html"><code>scale_color_manual()</code></a> function to update everything related to the legend.</p>
+<p><em>Caveat</em>: While <code>scale_color_manual()</code> can update titles and labels as well as colors, order of operations matters. Color <strong>must be set in the function</strong>, otherwise you may encounter an error.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set legend title without also setting color</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">"Group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `palette()`:
+! Insufficient values in manual scale. 2 needed but only 0 provided.</code></pre>
+</div>
+</div>
+<p>First, change colors from default:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#update colors --&gt; 0 = red, 1 = navy</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/legend_colors-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Note</em>: You can view all R built-in color names (650+) by running <code>colors()</code>. NCEAS also has an <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R color cheatsheet</a> to visually see what color name maps to which color. There are also numerous pre-defined continuous and discrete <a href="https://r-graph-gallery.com/38-rcolorbrewers-palettes.html">color palettes</a> available to use.</p>
+<p>Next, change 0 / 1 to more complete identifiers. Specify ‘breaks’ as the existing values and ‘labels’ as desired values. In combination with ‘values’ this makes the code much clearer in terms of what values are being changed to what.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/legend_labels-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, update legend title using ‘name’.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/legend_title-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="facet-by-group" class="level2">
+<h2 class="anchored" data-anchor-id="facet-by-group">Facet by group</h2>
+<p>Since the two groups are unbalanced, it may be more useful to view plots separately for each. The function <code>facet_wrap()</code> can create multiples of the same plot (in terms of variables, color, labels, etc.), one for each of a categorical value.</p>
+<p>Split plot into multiples by group:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#facet will only work for categorical (factor) variables</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/facet-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Update panel titles with <code>labeller</code> from 0 / 1 to more complete variable description:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/facet_title-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="suppress-legend" class="level2">
+<h2 class="anchored" data-anchor-id="suppress-legend">Suppress legend</h2>
+<p>Having a color legend is no longer necessary. We can suppress the entire legend using an option in the versatile <a href="https://ggplot2.tidyverse.org/reference/theme.html"><code>theme()</code> function</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/no_legend-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="background-colors-other-clean-up" class="level2">
+<h2 class="anchored" data-anchor-id="background-colors-other-clean-up">Background colors &amp; other clean up</h2>
+<p>The <code>theme()</code> option is also useful for changing the remaining default formatting, like background color and axis lines, text size and font, etc. You can individually adjust certain aspects, as we did to remove the legend above, but the faster option is to use the pre-created entire <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme options</a>.</p>
+<p><em>Note</em>: As with all customization options for a <code>ggplot2</code> object, the order of operations is sequential. You will want to incorporate a general theme option first, then have any remaining theme adjustments, like suppressing a legend. Otherwise, the general theme options will override any specific changes you have made in earlier lines of code.</p>
+<p>Some popular, publication-ready options include:</p>
+<p><code>theme_bw</code> (basic black and white):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/theme_bw-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>theme_linedraw</code> (similar to black and white, but more stark):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_linedraw</span>() <span class="sc">+</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/theme_linedraw-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>classic</code> (no grid lines):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot2_files/figure-html/theme_classic-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are also extension packages like <a href="https://jrnold.github.io/ggthemes/"><code>ggtheme</code></a> that offer additional pre-built theme options.</p>
+</section>
+<section id="saving-plots" class="level2">
+<h2 class="anchored" data-anchor-id="saving-plots">Saving plots</h2>
+<p>Plots created with <code>ggplot()</code> can be saved using the <a href="https://ggplot2.tidyverse.org/reference/ggsave.html"><code>ggsave()</code></a> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#assign ggplot object to Figure 1</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Figure1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Arguments and options available:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  filename, <span class="co">#File name to create on disk.</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">get_last_plot</span>(), <span class="co">#Plot to save, defaults to last plot displayed.</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>, <span class="co">#Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If NULL (default), the device is guessed based on the filename extension.</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="cn">NULL</span>, <span class="co">#Path of the directory to save plot to: path and filename are combined to create the fully qualified file name. Defaults to the working directory.</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="dv">1</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>, <span class="co">#Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>, <span class="co">#Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>, <span class="st">"px"</span>),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>, <span class="co">#Plot resolution. Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">limitsize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="cn">NULL</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">create.dir =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Saving a png to working directory folder:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"Figure1.png"</span>, <span class="at">plot =</span> Figure1, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="additional-resources" class="level2">
+<h2 class="anchored" data-anchor-id="additional-resources">Additional resources</h2>
+<ul>
+<li><a href="https://ggplot2.tidyverse.org/">Primary website for ggplot2</a> including a <a href="https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf">handy cheatsheet</a>.</li>
+<li>The website <a href="https://r-graph-gallery.com/">R Graph Gallery</a> is an excellent source for worked examples and annotated code for various types of plots and graphs, many of which rely on <code>ggplot2</code>.</li>
+</ul>
 
 
 </section>

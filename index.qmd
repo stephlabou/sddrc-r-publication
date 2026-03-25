@@ -29,7 +29,7 @@ data(smartpill)
 
 Data description: This study evaluated gastric emptying, small bowel transit time, and total intestinal transit time in 8 critically ill trauma patients. These data were compared with those obtained in 87 healthy volunteers from a separate trial. Data were obtained with a motility capsule that wirelessly transmitted pH, pressure, and temperature to a recorder attached to each subject's abdomen. Transit times were available for almost all patients, however, pH, pressure and temperature data is missing for all critically ill patients and sparsely missing for the healthy volunteers.
 
-- `Group` = Study group, numeric, 0 = Critically Ill Trama Patient, 1 = Healthy Volunteer
+- `Group` = Study group, numeric, 0 = Critically Ill Trauma Patient, 1 = Healthy Volunteer
 - `Gender` = Gender, numeric, range: 0 = Female, 1 = Male
 - `Race` = Race, numeric, 1 = White, 2 = Black, 3 = Asian/Pacific Islander, 4 = Hispanic, 5 = Other
 - `Height` = Height (centimeters), numeric, range: 132.1-193.0
