@@ -15,10 +15,15 @@ pre[class] {
 
 ```{r eval=T, echo=F, message = F, warning = F}
 library(tidyverse)
+library(gt)
 library(gtsummary)
 library(medicaldata)
 ```
 
+```{r label='group_factor', echo=FALSE}
+smartpill <- smartpill %>% 
+  mutate(Group = as.factor(Group))
+```
 
 ## Introduction to `gtsummary`
 
@@ -39,36 +44,27 @@ tbl_summary(smartpill)
 ```
 
 
+### Change default descriptive values
+
 The default summary statistic presented depends on variable type. Categorical variables get counts and percentages while continuous variables get `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
 
 These defaults are customizable. For instance, if we wanted only a subset of variables:
 
 ```{r label='customize_descriptive'}
-smartpill |>  
+smartpill %>%  
   tbl_summary(
-    include = c(Group, Age, SB.Time, SB.Contractions)
+    include = c(Group, Age, SB.Time, WG.Time)
   )
 ```
 
-We can incorporate other R functions before using `tbl_summary()` to convert any unintentionally numeric variables to categories so they are displayed in the table as distinct groups.
-
-```{r label='customize_factors'}
-smartpill |>  
-  mutate(Group = as.factor(Group)) |>
-  tbl_summary(
-    include = c(Group, Age, SB.Time, SB.Contractions)
-  )
-```
-
-The default summary statistic presented depends on variable type. Categorical variables get counts and percentages while continuous variables get `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
+The default summary statistic presented depends on variable type. Categorical variables are displayed as counts and percentages while continuous variables are displayed as `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
 
 These defaults are customizable. For instance, if we wanted to display continuous variables as minimum, median, and maximum:
 
 ```{r label='customize_continuous'}
-smartpill |>  
-  mutate(Group = as.factor(Group)) |>
+smartpill %>%  
   tbl_summary(
-    include = c(Group, Age, SB.Time, SB.Contractions), 
+    include = c(Group, Age, SB.Time, WG.Time), 
     statistic = list(
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
@@ -76,41 +72,118 @@ smartpill |>
   )
 ```
 
-This table can also be customized with better labels and updated NA indicator:
+### Row labels and NAs
+
+This table can also be customized with better labels for rows and updated NA indicator:
 
 ```{r label='customize_labels'}
-smartpill |>  
-  mutate(Group = as.factor(Group)) |>
+smartpill %>%  
   tbl_summary(
-    include = c(Group, Age, SB.Time, SB.Contractions), 
+    include = c(Group, Age, SB.Time, WG.Time), 
     statistic = list(
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", SB.Contractions = "Small bowel contractions"),
+    #update row labels
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    #change text for NA values
     missing_text = "Missing"
   )
 ```
 
-Finally, this can be extended to produce crosstab tables, for instance with descriptive statistics for selected variables for each group
+### Crosstabs and column names
+
+This structure can be extended to produce crosstab tables, for instance with descriptive statistics for selected variables for each group
 
 ```{r label='crosstab'}
-smartpill |>  
-  mutate(Group = as.factor(Group)) |>
+smartpill %>%  
+  mutate(Group = as.factor(Group)) %>%
   tbl_summary(
     by = Group,
-    include = c(Age, SB.Time, SB.Contractions), 
+    include = c(Age, SB.Time, WG.Time), 
     statistic = list(
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", SB.Contractions = "Small bowel contractions"),
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   )
 ```
 
-Note that warnings will be returned if the metrics are not workable, for instance if all instances in a group are not missing.
+_Note_: Warnings will be returned if the metrics are not workable, for instance if all instances in a group are not missing. If we created this table with variable 'SB.Contractions', we would see NaN values and -Inf as outputs:
 
+```{r label='error'}
+smartpill %>%  
+  mutate(Group = as.factor(Group)) %>%
+  tbl_summary(
+    by = Group,
+    include = c(Age, SB.Time, WG.Time), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    missing_text = "Missing"
+  )
+```
+
+Finally, [column names can be updated](https://www.danieldsjoberg.com/gtsummary/reference/modify.html) as needed.
+
+```{r label='col_names'}
+smartpill %>%  
+  mutate(Group = as.factor(Group)) %>%
+  tbl_summary(
+    by = Group,
+    include = c(Age, SB.Time, WG.Time), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    missing_text = "Missing"
+  ) %>% 
+  #show existing column headers of this table
+  show_header_names()
+
+```
+
+```{r label='modify_cols'}
+smartpill %>%  
+  mutate(Group = as.factor(Group)) %>%
+  tbl_summary(
+    by = Group,
+    include = c(Age, SB.Time, WG.Time), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    missing_text = "Missing"
+  ) %>% 
+  #modify column header text and make bold with **
+  modify_header(label = "**Variable**", stat_1 = "**Critically Ill**", stat_2 = "**Healthy**")
+```
+
+Before we move on to the next section, let's assign our current table to an object to make it easier downstream to see what code is being added.
+
+```{r label='table1'}
+Table1 <- smartpill %>%  
+  mutate(Group = as.factor(Group)) %>%
+  tbl_summary(
+    by = Group,
+    include = c(Age, SB.Time, WG.Time), 
+    statistic = list(
+      #change just way continuous vars are presented
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    missing_text = "Missing"
+  ) %>% 
+  #modify column header text and make bold with **
+  modify_header(label = "**Variable**", stat_1 = "**Critically Ill**", stat_2 = "**Healthy**")
+
+Table1
+```
 
 ## Statistical tests
 
@@ -119,6 +192,63 @@ If we wanted to run statistical analyses on this data, a usual approach would be
 There are many standard [statistical tests integrated into gtsummary](https://www.danieldsjoberg.com/gtsummary/reference/tests.html) including t-test, ANOVA, chi-square, regression, survey sample methods, and more.
 
 Let's look at a couple examples in practice.
+
+Comparing small bowel transit time and whole gut time bewteen the two groups:
+
+```{r label='stat_compare'}
+Table1 %>% 
+  #add p-value
+  add_p()
+```
+
+#### Caveats
+
+Default tests will vary based on data type.
+
+Since we did not define a specific test to use, `add_p()` used the [default tests](https://www.danieldsjoberg.com/gtsummary/reference/add_p.tbl_summary.html), which depend on whether the data is continuous or categorical, how many categories, etc. The test used is always noted at the bottom of the table.
+
+>The default test used in add_p() primarily depends on these factors: 
+>
+>* whether the variable is categorical/dichotomous vs continuous 
+>* number of levels in the tbl_summary(by) variable
+>* whether the add_p(group) argument is specified
+>* whether the add_p(adj.vars) argument is specified
+
+In this case, the variable being compared was continuous and the grouping variable had two levels, so Wilcoxon rank sum test was used.
+
+If for any reason you want to override the default test, you can specify a different test within the `add_p()` function.
+
+```{r label='stat_compare_2'}
+Table1 %>% 
+  #add p-value, override default to specify which test to use for Age (here, a t-test)
+  add_p(test = Age ~ "t.test")
+```
+
+## Footnotes 
+
+For some customization, we'll need to convert our `gtsummary` object to a `gt` object with the [`as_gt()` function](https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html). For instance, to update the footnote to clarify which test was used on which variable.'
+
+# NOTE TO SELF FIX THIS SECTION
+
+```{r label='stat_compare_3'}
+Table1
+  #add p-value, override default to specify which test to use for Age (here, a t-test)
+  add_p(test = Age ~ "t.test") %>% 
+  #convert to gt object keeping everything except the existing footnotes
+  as_gt(include = -tab_footnote) %>% 
+  tab_footnote(footnote = "t.test for age; Wilcox rank sum for others",
+               locations = cells_column_labels(columns = vars(p.value)))
+```
+
+
+
+
+## Model outputs
+
+
+
+
+
 
 
 
