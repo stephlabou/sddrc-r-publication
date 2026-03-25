@@ -1,5 +1,5 @@
 ---
-title: "Beautiful Tables for Models"
+title: "Plots and Graphs"
 ---
 
 ```{css, echo=FALSE}
@@ -15,23 +15,282 @@ pre[class] {
 
 ```{r eval=T, echo=F, message = F, warning = F}
 library(tidyverse)
-library(gtsummary)
 library(medicaldata)
 ```
 
 ## Recap of `ggplot2`
 
-The package `ggplot2` (download as part of the `tidyverse` aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.
+The package `ggplot2` (downloaded as part of the `tidyverse` aggregate package) is the primary publication-suitable plotting package in R. While there are many other domain-specific packages, as well as numerous gg-themed add-on packages, most plots rely on a similar scaffolding plotting logic.
 
-We will start by making some basic summary plots of the `smartpill` data to briefly recap `ggplot2` syntax.
+Recap of order of operations for building a plot:
+1. Use the `ggplot()` function to specify input data. 
+2. Within, use `aes()` to specify variables (columns) to use for x and y and any variable-driven formatting like color.
+3. Use a `+` followed by the appropriate `geom_()` option to specify type of plot (e.g., scatter plot, bar plot).
+4. Various customizations like labels, legends, etc.
+
+## Data structure
+
+Note that all variables are numeric and there are quite a few missing values. In order to make any categorical-type plots (bar graphs, separate plots for individual groups, etc.), variables may need to be converted to avoid plotting errors.
 
 ```{r}
-head(smartpill)
+str(smartpill)
+```
+We are going to convert the Group variable to a factor, to make downstream plotting easier when visualizing 'Group' as a treatment vs control structure. 
+
+```{r label='group_factor'}
+smartpill <- smartpill %>% 
+  mutate(Group = as.factor(Group))
 ```
 
-Begin by using the `ggplot()` function to specify input data. Within, use `aes()` to specify variables (columns) to use for x and y and any variable-driven formatting like color. Use the appropriate `geom_()` option to specify type of plot (e.g., scatter plot, bar plot).
+```{r}
+str(smartpill)
+```
+
+## Basic plot
+
+A basic scatterplot of the `smartpill` data looking at small bowel transit time by weight between groups (trauma patients, healthy volunteers):
+
 ```{r label='basic_plot'}
-ggplot(data = smartpill, aes(x = SB.Time, y = GE.Time, color = Weight)) +
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point()
 ```
 
+Note the warning about missing values being removed. There are five patients with missing values for SB.Time.
+
+```{r}
+smartpill %>% 
+  select(Group, SB.Time, Weight) %>% 
+  summary()
+```
+One of these patients is from the critically ill group.
+
+```{r}
+smartpill %>% 
+  filter(is.na(SB.Time)) %>% 
+  select(Group, SB.Time, Weight)
+```
+The warning will be suppressed in output moving forward, but not that any data cleanup like remove of missing values should be handled prior to plotting.
+
+## Change axis labels
+
+Variable names may need to be updated to make for more readable axis labels. The [`labs`](https://ggplot2.tidyverse.org/reference/labs.html) function is used to change axis labels.
+
+```{r label='axis_labels', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)")
+```
+
+_Note_: You can also set up a 'dictionary' of variables and labels to automatically rename.
+
+```{r label='dictionary', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(dictionary = c(SB.Time = "Small bowel transit time (hours)",
+                      Weight  = "Weight (kilograms)",
+                      Group = "Treatment"))
+```
+
+## Update legend
+
+By default, the legend title will be the the variable used, which in this case is a factored version of the Group variable. Colors of points will also be default colors and color labels map to discrete variable values.
+
+Because the legend is indicating variable and values related to our specified __color__ variable, we can use the [`scale_color_manual()`](https://ggplot2.tidyverse.org/reference/scale_manual.html) function to update everything related to the legend.
+
+_Caveat_: While `scale_color_manual()` can update titles and labels as well as colors, order of operations matters. Color __must be set in the function__, otherwise you may encounter an error.
+
+```{r label='manual_error', error=TRUE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  #set legend title without also setting color
+  scale_color_manual(name = "Group")
+```
+First, change colors from default:
+
+```{r label='legend_colors', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  #update colors --> 0 = red, 1 = navy
+  scale_color_manual(values = c("red", "navy"))
+```
+
+_Note_: You can view all R built-in color names (650+) by running `colors()`. NCEAS also has an [R color cheatsheet](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) to visually see what color name maps to which color. There are also numerous pre-defined continuous and discrete [color palettes](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html) available to use.
+
+Next, change 0 / 1 to more complete identifiers. Specify 'breaks' as the existing values and 'labels' as desired values. In combination with 'values' this makes the code much clearer in terms of what values are being changed to what.
+
+```{r label='legend_labels', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"))
+```
+
+Finally, update legend title using 'name'.
+```{r label='legend_title', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group")
+```
+
+## Facet by group
+
+Since the two groups are unbalanced, it may be more useful to view plots separately for each. The function `facet_wrap()` can create multiples of the same plot (in terms of variables, color, labels, etc.), one for each of a categorical value.
+
+Split plot into multiples by group:
+
+```{r label='facet', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  #facet will only work for categorical (factor) variables
+  facet_wrap(~Group)
+```
+
+Update panel titles with `labeller` from 0 / 1 to more complete variable description:
+
+```{r label='facet_title', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy")))
+```
+
+## Suppress legend
+
+Having a color legend is no longer necessary. We can suppress the entire legend using an option in the versatile [`theme()` function](https://ggplot2.tidyverse.org/reference/theme.html).
+
+```{r label='no_legend', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme(legend.position = "none")
+```
+
+## Background colors & other clean up
+
+The `theme()` option is also useful for changing the remaining default formatting, like background color and axis lines, text size and font, etc. You can individually adjust certain aspects, as we did to remove the legend above, but the faster option is to use the pre-created entire [theme options](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+
+_Note_: As with all customization options for a `ggplot2` object, the order of operations is sequential. You will want to incorporate a general theme option first, then have any remaining theme adjustments, like suppressing a legend. Otherwise, the general theme options will override any specific changes you have made in earlier lines of code.
+
+Some popular, publication-ready options include:
+
+`theme_bw` (basic black and white):
+
+```{r label='theme_bw', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+`theme_linedraw` (similar to black and white, but more stark):
+
+```{r label='theme_linedraw', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme_linedraw() +
+  theme(legend.position = "none")
+```
+
+`classic` (no grid lines):
+
+```{r label='theme_classic', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+There are also extension packages like [`ggtheme`](https://jrnold.github.io/ggthemes/) that offer additional pre-built theme options.
+
+## Saving plots
+
+Plots created with `ggplot()` can be saved using the [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html) function.
+
+```{r label='saving', warning=FALSE}
+#assign ggplot object to Figure 1
+Figure1 <- ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+Arguments and options available:
+``` {r, eval=FALSE}
+ggsave(
+  filename, #File name to create on disk.
+  plot = get_last_plot(), #Plot to save, defaults to last plot displayed.
+  device = NULL, #Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If NULL (default), the device is guessed based on the filename extension.
+  path = NULL, #Path of the directory to save plot to: path and filename are combined to create the fully qualified file name. Defaults to the working directory.
+  scale = 1,
+  width = NA, #Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.
+  height = NA, #Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.
+  units = c("in", "cm", "mm", "px"),
+  dpi = 300, #Plot resolution. Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).
+  limitsize = TRUE,
+  bg = NULL,
+  create.dir = FALSE,
+  ...
+)
+```
+
+Saving a png to working directory folder:
+```{r label='save_plot', warning=FALSE}
+ggsave(filename = "Figure1.png", plot = Figure1, height = 4, width = 5, units = "in")
+```
+
+
+## Additional resources
+* [Primary website for ggplot2](https://ggplot2.tidyverse.org/) including a [handy cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf).
+* The website [R Graph Gallery](https://r-graph-gallery.com/) is an excellent source for worked examples and annotated code for various types of plots and graphs, many of which rely on `ggplot2`. 
