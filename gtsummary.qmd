@@ -230,7 +230,7 @@ For some customization, we'll need to convert our `gtsummary` object to a `gt` o
 
 # NOTE TO SELF FIX THIS SECTION
 
-```{r label='stat_compare_3'}
+```{r label='stat_compare_3', eval=FALSE}
 Table1
   #add p-value, override default to specify which test to use for Age (here, a t-test)
   add_p(test = Age ~ "t.test") %>% 

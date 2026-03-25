@@ -12,7 +12,7 @@ website:
       - href: index.qmd
         text: Introduction
       - href: ggplot2.qmd
-        text: "Custome Plots"
+        text: "Custom Plots"
       - href: stat_plots.qmd
         text: "Statistical Plots"
       - href: gt.qmd

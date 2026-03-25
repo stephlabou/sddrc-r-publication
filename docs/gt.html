@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./ggplot2.html"> 
-<span class="menu-text">Custome Plots</span></a>
+<span class="menu-text">Custom Plots</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./stat_plots.html"> 
@@ -163,20 +163,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#a-few-words-on-the-gt-package" id="toc-a-few-words-on-the-gt-package" class="nav-link active" data-scroll-target="#a-few-words-on-the-gt-package">A few words on the <code>gt</code> package</a></li>
+  <li><a href="#overview-of-gt" id="toc-overview-of-gt" class="nav-link active" data-scroll-target="#overview-of-gt">Overview of <code>gt</code></a></li>
   <li><a href="#our-example" id="toc-our-example" class="nav-link" data-scroll-target="#our-example">Our example</a>
   <ul class="collapse">
   <li><a href="#load-the-libraries" id="toc-load-the-libraries" class="nav-link" data-scroll-target="#load-the-libraries">Load the libraries</a></li>
-  <li><a href="#load-the-data" id="toc-load-the-data" class="nav-link" data-scroll-target="#load-the-data">Load the data</a></li>
-  <li><a href="#have-a-look-at-the-data" id="toc-have-a-look-at-the-data" class="nav-link" data-scroll-target="#have-a-look-at-the-data">Have a look at the data</a></li>
-  <li><a href="#a-simple-table" id="toc-a-simple-table" class="nav-link" data-scroll-target="#a-simple-table">A simple table</a></li>
-  <li><a href="#now-lets-make-this-a-nice-table" id="toc-now-lets-make-this-a-nice-table" class="nav-link" data-scroll-target="#now-lets-make-this-a-nice-table">Now let’s make this a nice table</a></li>
-  <li><a href="#add-a-title" id="toc-add-a-title" class="nav-link" data-scroll-target="#add-a-title">Add a Title</a></li>
-  <li><a href="#add-better-column-names" id="toc-add-better-column-names" class="nav-link" data-scroll-target="#add-better-column-names">Add better column names</a>
-  <ul class="collapse">
-  <li><a href="#add-title-and-footnote" id="toc-add-title-and-footnote" class="nav-link" data-scroll-target="#add-title-and-footnote">Add title and Footnote</a></li>
-  </ul></li>
+  <li><a href="#a-basic-table" id="toc-a-basic-table" class="nav-link" data-scroll-target="#a-basic-table">A basic table</a></li>
+  <li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title">Title</a></li>
+  <li><a href="#column-names" id="toc-column-names" class="nav-link" data-scroll-target="#column-names">Column names</a></li>
+  <li><a href="#footnote" id="toc-footnote" class="nav-link" data-scroll-target="#footnote">Footnote</a></li>
   <li><a href="#styling" id="toc-styling" class="nav-link" data-scroll-target="#styling">Styling</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -203,9 +199,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="a-few-words-on-the-gt-package" class="level2">
-<h2 class="anchored" data-anchor-id="a-few-words-on-the-gt-package">A few words on the <code>gt</code> package</h2>
-<p>With <code>gt</code> you can construct a wide variety of useful tables with a cohesive set of table parts. Here is the main workflow to transform a data frame into a beautiful table:</p>
+<div class="cell">
+<style type="text/css">
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 300px;
+}
+</style>
+</div>
+<section id="overview-of-gt" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-gt">Overview of <code>gt</code></h2>
+<p>With <code>gt</code> you can construct a wide variety of useful tables with a cohesive set of table parts. Here is the main workflow to transform a data frame into a publication-ready table:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg" class="img-fluid figure-img"></p>
@@ -219,7 +227,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg</figcaption>
 </figure>
 </div>
-<p>Checkout the <code>gt</code> website for more information: <a href="https://gt.rstudio.com/articles/gt.html" class="uri">https://gt.rstudio.com/articles/gt.html</a></p>
 </section>
 <section id="our-example" class="level1">
 <h1>Our example</h1>
@@ -233,728 +240,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(medicaldata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="load-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#included in the medicaldata package</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(smartpill)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(smartpill)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="have-a-look-at-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="have-a-look-at-the-data">Have a look at the data</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 95
-Columns: 22
-$ Group                   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1…
-$ Gender                  &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1…
-$ Race                    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 1, 1, 3, 1, 1,…
-$ Height                  &lt;dbl&gt; 182.88, 180.34, 180.34, 175.26, 152.40, 185.42…
-$ Weight                  &lt;dbl&gt; 102.05820, 102.05820, 68.03880, 69.85317, 44.9…
-$ Age                     &lt;dbl&gt; 25, 39, 44, 53, 57, 43, 38, 23, 21, 24, 24, 28…
-$ GE.Time                 &lt;dbl&gt; 74.30, 73.30, 4.30, NA, 13.90, 23.30, 7.50, 5.…
-$ SB.Time                 &lt;dbl&gt; 8.40, 13.80, 6.70, NA, 5.10, 8.70, 3.70, 3.40,…
-$ C.Time                  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 43.28, 14.03, …
-$ WG.Time                 &lt;dbl&gt; 816.00, 168.00, 240.00, 216.00, 120.00, 384.00…
-$ S.Contractions          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 145, 114, 47, …
-$ S.Sum.of.Amplitudes     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2254.16, 3747.…
-$ S.Mean.Peak.Amplitude   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 15.545931, 32.…
-$ S.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2.07, 2.28, 3.…
-$ SB.Contractions         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 298, 782, 514,…
-$ SB.Sum.of.Amplitudes    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 5382.65, 14044…
-$ SB.Mean.Peak.Amplitude  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 18.06258, 17.9…
-$ SB.Mean.pH              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.26, 7.21, 7.…
-$ Colon.Contractions      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 507, 50, 615, …
-$ Colon.Sum.of.Amplitudes &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 19073.39, 1872…
-$ C.Mean.Peak.Amplitude   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 37.62010, 37.4…
-$ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21, 6.…</code></pre>
-</div>
-</div>
-<p>Let’s have a look at the first rows of our dataset, but this time we are going to use the <code>gt</code> package</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>smartpill <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div id="ikwocusaxp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ikwocusaxp table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#ikwocusaxp thead, #ikwocusaxp tbody, #ikwocusaxp tfoot, #ikwocusaxp tr, #ikwocusaxp td, #ikwocusaxp th {
-  border-style: none;
-}
-
-#ikwocusaxp p {
-  margin: 0;
-  padding: 0;
-}
-
-#ikwocusaxp .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#ikwocusaxp .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#ikwocusaxp .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#ikwocusaxp .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#ikwocusaxp .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#ikwocusaxp .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#ikwocusaxp .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#ikwocusaxp .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#ikwocusaxp .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#ikwocusaxp .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#ikwocusaxp .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#ikwocusaxp .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#ikwocusaxp .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#ikwocusaxp .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#ikwocusaxp .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#ikwocusaxp .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#ikwocusaxp .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#ikwocusaxp .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#ikwocusaxp .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#ikwocusaxp .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#ikwocusaxp .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#ikwocusaxp .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#ikwocusaxp .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#ikwocusaxp .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#ikwocusaxp .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#ikwocusaxp .gt_left {
-  text-align: left;
-}
-
-#ikwocusaxp .gt_center {
-  text-align: center;
-}
-
-#ikwocusaxp .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#ikwocusaxp .gt_font_normal {
-  font-weight: normal;
-}
-
-#ikwocusaxp .gt_font_bold {
-  font-weight: bold;
-}
-
-#ikwocusaxp .gt_font_italic {
-  font-style: italic;
-}
-
-#ikwocusaxp .gt_super {
-  font-size: 65%;
-}
-
-#ikwocusaxp .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#ikwocusaxp .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#ikwocusaxp .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#ikwocusaxp .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#ikwocusaxp .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#ikwocusaxp .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#ikwocusaxp .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#ikwocusaxp .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#ikwocusaxp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
-<th id="Gender" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Gender</th>
-<th id="Race" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Race</th>
-<th id="Height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Height</th>
-<th id="Weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Weight</th>
-<th id="Age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Age</th>
-<th id="GE.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">GE.Time</th>
-<th id="SB.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Time</th>
-<th id="C.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Time</th>
-<th id="WG.Time" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">WG.Time</th>
-<th id="S.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Contractions</th>
-<th id="S.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Sum.of.Amplitudes</th>
-<th id="S.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Mean.Peak.Amplitude</th>
-<th id="S.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">S.Mean.pH</th>
-<th id="SB.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Contractions</th>
-<th id="SB.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Sum.of.Amplitudes</th>
-<th id="SB.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Mean.Peak.Amplitude</th>
-<th id="SB.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SB.Mean.pH</th>
-<th id="Colon.Contractions" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Colon.Contractions</th>
-<th id="Colon.Sum.of.Amplitudes" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Colon.Sum.of.Amplitudes</th>
-<th id="C.Mean.Peak.Amplitude" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Mean.Peak.Amplitude</th>
-<th id="C.Mean.pH" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">C.Mean.pH</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">1</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">182.88</td>
-<td class="gt_row gt_right" headers="Weight">102.05820</td>
-<td class="gt_row gt_right" headers="Age">25</td>
-<td class="gt_row gt_right" headers="GE.Time">74.3</td>
-<td class="gt_row gt_right" headers="SB.Time">8.4</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">816</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">1</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">180.34</td>
-<td class="gt_row gt_right" headers="Weight">102.05820</td>
-<td class="gt_row gt_right" headers="Age">39</td>
-<td class="gt_row gt_right" headers="GE.Time">73.3</td>
-<td class="gt_row gt_right" headers="SB.Time">13.8</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">168</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">1</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">180.34</td>
-<td class="gt_row gt_right" headers="Weight">68.03880</td>
-<td class="gt_row gt_right" headers="Age">44</td>
-<td class="gt_row gt_right" headers="GE.Time">4.3</td>
-<td class="gt_row gt_right" headers="SB.Time">6.7</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">240</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">1</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">175.26</td>
-<td class="gt_row gt_right" headers="Weight">69.85317</td>
-<td class="gt_row gt_right" headers="Age">53</td>
-<td class="gt_row gt_right" headers="GE.Time">NA</td>
-<td class="gt_row gt_right" headers="SB.Time">NA</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">216</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">0</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">152.40</td>
-<td class="gt_row gt_right" headers="Weight">44.90561</td>
-<td class="gt_row gt_right" headers="Age">57</td>
-<td class="gt_row gt_right" headers="GE.Time">13.9</td>
-<td class="gt_row gt_right" headers="SB.Time">5.1</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">120</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="Group">0</td>
-<td class="gt_row gt_right" headers="Gender">1</td>
-<td class="gt_row gt_right" headers="Race">NA</td>
-<td class="gt_row gt_right" headers="Height">185.42</td>
-<td class="gt_row gt_right" headers="Weight">94.80073</td>
-<td class="gt_row gt_right" headers="Age">43</td>
-<td class="gt_row gt_right" headers="GE.Time">23.3</td>
-<td class="gt_row gt_right" headers="SB.Time">8.7</td>
-<td class="gt_row gt_right" headers="C.Time">NA</td>
-<td class="gt_row gt_right" headers="WG.Time">384</td>
-<td class="gt_row gt_right" headers="S.Contractions">NA</td>
-<td class="gt_row gt_right" headers="S.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="S.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="SB.Contractions">NA</td>
-<td class="gt_row gt_right" headers="SB.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="SB.Mean.pH">NA</td>
-<td class="gt_row gt_right" headers="Colon.Contractions">NA</td>
-<td class="gt_row gt_right" headers="Colon.Sum.of.Amplitudes">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.Peak.Amplitude">NA</td>
-<td class="gt_row gt_right" headers="C.Mean.pH">NA</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</section>
-<section id="a-simple-table" class="level2">
-<h2 class="anchored" data-anchor-id="a-simple-table">A simple table</h2>
+<section id="a-basic-table" class="level2">
+<h2 class="anchored" data-anchor-id="a-basic-table">A basic table</h2>
 <p>Now let’s create a summary table of demographics of study participants.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> smartpill <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, Gender, Height, Weight, Age) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">average_age =</span> <span class="fu">mean</span>(Age),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_height =</span> <span class="fu">mean</span>(Height),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_weight =</span> <span class="fu">mean</span>(Weight))</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>table1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> smartpill  <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, Gender, Height, Weight, Age) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">average_age =</span> <span class="fu">mean</span>(Age),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_height =</span> <span class="fu">mean</span>(Height),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">average_weight =</span> <span class="fu">mean</span>(Weight))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>table1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 4
   Group average_age average_height average_weight
-  &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
-1     0        40.2           176.           80.5
-2     1        37.2           172.           77.2</code></pre>
+  &lt;fct&gt;       &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+1 0            40.2           176.           80.5
+2 1            37.2           172.           77.2</code></pre>
 </div>
 </div>
-</section>
-<section id="now-lets-make-this-a-nice-table" class="level2">
-<h2 class="anchored" data-anchor-id="now-lets-make-this-a-nice-table">Now let’s make this a nice table</h2>
+<p>We can turn this into a <code>gt</code> table with function <code>gt()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="ot">&lt;-</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  table1 <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the gt Table</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>table1_pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  table1 <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#make gt object</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>table1_pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="qtbxjvgxso" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qtbxjvgxso table {
+<div id="qhfmysvzvh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qhfmysvzvh table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qtbxjvgxso thead, #qtbxjvgxso tbody, #qtbxjvgxso tfoot, #qtbxjvgxso tr, #qtbxjvgxso td, #qtbxjvgxso th {
+#qhfmysvzvh thead, #qhfmysvzvh tbody, #qhfmysvzvh tfoot, #qhfmysvzvh tr, #qhfmysvzvh td, #qhfmysvzvh th {
   border-style: none;
 }
 
-#qtbxjvgxso p {
+#qhfmysvzvh p {
   margin: 0;
   padding: 0;
 }
 
-#qtbxjvgxso .gt_table {
+#qhfmysvzvh .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -980,12 +311,12 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-left-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_caption {
+#qhfmysvzvh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qtbxjvgxso .gt_title {
+#qhfmysvzvh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -997,7 +328,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-width: 0;
 }
 
-#qtbxjvgxso .gt_subtitle {
+#qhfmysvzvh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1009,7 +340,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-top-width: 0;
 }
 
-#qtbxjvgxso .gt_heading {
+#qhfmysvzvh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1021,13 +352,13 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_bottom_border {
+#qhfmysvzvh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_col_headings {
+#qhfmysvzvh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1042,7 +373,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_col_heading {
+#qhfmysvzvh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1062,7 +393,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   overflow-x: hidden;
 }
 
-#qtbxjvgxso .gt_column_spanner_outer {
+#qhfmysvzvh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1074,15 +405,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 4px;
 }
 
-#qtbxjvgxso .gt_column_spanner_outer:first-child {
+#qhfmysvzvh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qtbxjvgxso .gt_column_spanner_outer:last-child {
+#qhfmysvzvh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qtbxjvgxso .gt_column_spanner {
+#qhfmysvzvh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1094,11 +425,11 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   width: 100%;
 }
 
-#qtbxjvgxso .gt_spanner_row {
+#qhfmysvzvh .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qtbxjvgxso .gt_group_heading {
+#qhfmysvzvh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1124,7 +455,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   text-align: left;
 }
 
-#qtbxjvgxso .gt_empty_group_heading {
+#qhfmysvzvh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1139,15 +470,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   vertical-align: middle;
 }
 
-#qtbxjvgxso .gt_from_md > :first-child {
+#qhfmysvzvh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qtbxjvgxso .gt_from_md > :last-child {
+#qhfmysvzvh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qtbxjvgxso .gt_row {
+#qhfmysvzvh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1166,7 +497,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   overflow-x: hidden;
 }
 
-#qtbxjvgxso .gt_stub {
+#qhfmysvzvh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1179,7 +510,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#qtbxjvgxso .gt_stub_row_group {
+#qhfmysvzvh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1193,15 +524,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   vertical-align: top;
 }
 
-#qtbxjvgxso .gt_row_group_first td {
+#qhfmysvzvh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qtbxjvgxso .gt_row_group_first th {
+#qhfmysvzvh .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qtbxjvgxso .gt_summary_row {
+#qhfmysvzvh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1211,16 +542,16 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#qtbxjvgxso .gt_first_summary_row {
+#qhfmysvzvh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_first_summary_row.thick {
+#qhfmysvzvh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qtbxjvgxso .gt_last_summary_row {
+#qhfmysvzvh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1230,7 +561,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_grand_summary_row {
+#qhfmysvzvh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1240,7 +571,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#qtbxjvgxso .gt_first_grand_summary_row {
+#qhfmysvzvh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1250,7 +581,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-top-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_last_grand_summary_row_top {
+#qhfmysvzvh .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1260,11 +591,11 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_striped {
+#qhfmysvzvh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qtbxjvgxso .gt_table_body {
+#qhfmysvzvh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1273,7 +604,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_footnotes {
+#qhfmysvzvh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1287,7 +618,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_footnote {
+#qhfmysvzvh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1296,7 +627,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#qtbxjvgxso .gt_sourcenotes {
+#qhfmysvzvh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1310,7 +641,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#qtbxjvgxso .gt_sourcenote {
+#qhfmysvzvh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1318,72 +649,72 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#qtbxjvgxso .gt_left {
+#qhfmysvzvh .gt_left {
   text-align: left;
 }
 
-#qtbxjvgxso .gt_center {
+#qhfmysvzvh .gt_center {
   text-align: center;
 }
 
-#qtbxjvgxso .gt_right {
+#qhfmysvzvh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qtbxjvgxso .gt_font_normal {
+#qhfmysvzvh .gt_font_normal {
   font-weight: normal;
 }
 
-#qtbxjvgxso .gt_font_bold {
+#qhfmysvzvh .gt_font_bold {
   font-weight: bold;
 }
 
-#qtbxjvgxso .gt_font_italic {
+#qhfmysvzvh .gt_font_italic {
   font-style: italic;
 }
 
-#qtbxjvgxso .gt_super {
+#qhfmysvzvh .gt_super {
   font-size: 65%;
 }
 
-#qtbxjvgxso .gt_footnote_marks {
+#qhfmysvzvh .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qtbxjvgxso .gt_asterisk {
+#qhfmysvzvh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qtbxjvgxso .gt_indent_1 {
+#qhfmysvzvh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qtbxjvgxso .gt_indent_2 {
+#qhfmysvzvh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qtbxjvgxso .gt_indent_3 {
+#qhfmysvzvh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qtbxjvgxso .gt_indent_4 {
+#qhfmysvzvh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qtbxjvgxso .gt_indent_5 {
+#qhfmysvzvh .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qtbxjvgxso .katex-display {
+#qhfmysvzvh .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qtbxjvgxso div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qhfmysvzvh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1391,7 +722,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
-<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
+<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Group</th>
 <th id="average_age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_age</th>
 <th id="average_height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_height</th>
 <th id="average_weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_weight</th>
@@ -1399,13 +730,13 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_center" headers="Group">0</td>
 <td class="gt_row gt_right" headers="average_age">40.25000</td>
 <td class="gt_row gt_right" headers="average_height">176.2125</td>
 <td class="gt_row gt_right" headers="average_weight">80.51258</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Group">1</td>
+<td class="gt_row gt_center" headers="Group">1</td>
 <td class="gt_row gt_right" headers="average_age">37.22989</td>
 <td class="gt_row gt_right" headers="average_height">171.6018</td>
 <td class="gt_row gt_right" headers="average_weight">77.18989</td>
@@ -1420,32 +751,32 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 <h4 class="anchored" data-anchor-id="note-to-self---transpose-example"><em>NOTE TO SELF - transpose example</em></h4>
 </section>
 </section>
-<section id="add-a-title" class="level2">
-<h2 class="anchored" data-anchor-id="add-a-title">Add a Title</h2>
+<section id="title" class="level2">
+<h2 class="anchored" data-anchor-id="title">Title</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Table 1. Demographic and morphometric characteristics"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"smartpill dataset"</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>table1_pub <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Table 1. Demographic and morphometric characteristics"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"smartpill dataset"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="bfikruphhi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bfikruphhi table {
+<div id="osqqibbvwf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#osqqibbvwf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bfikruphhi thead, #bfikruphhi tbody, #bfikruphhi tfoot, #bfikruphhi tr, #bfikruphhi td, #bfikruphhi th {
+#osqqibbvwf thead, #osqqibbvwf tbody, #osqqibbvwf tfoot, #osqqibbvwf tr, #osqqibbvwf td, #osqqibbvwf th {
   border-style: none;
 }
 
-#bfikruphhi p {
+#osqqibbvwf p {
   margin: 0;
   padding: 0;
 }
 
-#bfikruphhi .gt_table {
+#osqqibbvwf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1471,12 +802,12 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-left-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_caption {
+#osqqibbvwf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bfikruphhi .gt_title {
+#osqqibbvwf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1488,7 +819,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-width: 0;
 }
 
-#bfikruphhi .gt_subtitle {
+#osqqibbvwf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1500,7 +831,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-top-width: 0;
 }
 
-#bfikruphhi .gt_heading {
+#osqqibbvwf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1512,13 +843,13 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_bottom_border {
+#osqqibbvwf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_col_headings {
+#osqqibbvwf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1533,7 +864,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_col_heading {
+#osqqibbvwf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1553,7 +884,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   overflow-x: hidden;
 }
 
-#bfikruphhi .gt_column_spanner_outer {
+#osqqibbvwf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1565,15 +896,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 4px;
 }
 
-#bfikruphhi .gt_column_spanner_outer:first-child {
+#osqqibbvwf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bfikruphhi .gt_column_spanner_outer:last-child {
+#osqqibbvwf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bfikruphhi .gt_column_spanner {
+#osqqibbvwf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1585,11 +916,11 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   width: 100%;
 }
 
-#bfikruphhi .gt_spanner_row {
+#osqqibbvwf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bfikruphhi .gt_group_heading {
+#osqqibbvwf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1615,7 +946,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   text-align: left;
 }
 
-#bfikruphhi .gt_empty_group_heading {
+#osqqibbvwf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1630,15 +961,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   vertical-align: middle;
 }
 
-#bfikruphhi .gt_from_md > :first-child {
+#osqqibbvwf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bfikruphhi .gt_from_md > :last-child {
+#osqqibbvwf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bfikruphhi .gt_row {
+#osqqibbvwf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1657,7 +988,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   overflow-x: hidden;
 }
 
-#bfikruphhi .gt_stub {
+#osqqibbvwf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1670,7 +1001,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#bfikruphhi .gt_stub_row_group {
+#osqqibbvwf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1684,15 +1015,15 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   vertical-align: top;
 }
 
-#bfikruphhi .gt_row_group_first td {
+#osqqibbvwf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bfikruphhi .gt_row_group_first th {
+#osqqibbvwf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bfikruphhi .gt_summary_row {
+#osqqibbvwf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1702,16 +1033,16 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#bfikruphhi .gt_first_summary_row {
+#osqqibbvwf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_first_summary_row.thick {
+#osqqibbvwf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bfikruphhi .gt_last_summary_row {
+#osqqibbvwf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1721,7 +1052,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_grand_summary_row {
+#osqqibbvwf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1731,7 +1062,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#bfikruphhi .gt_first_grand_summary_row {
+#osqqibbvwf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1741,7 +1072,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-top-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_last_grand_summary_row_top {
+#osqqibbvwf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1751,11 +1082,11 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_striped {
+#osqqibbvwf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bfikruphhi .gt_table_body {
+#osqqibbvwf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1764,7 +1095,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-bottom-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_footnotes {
+#osqqibbvwf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1778,7 +1109,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_footnote {
+#osqqibbvwf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1787,7 +1118,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#bfikruphhi .gt_sourcenotes {
+#osqqibbvwf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1801,7 +1132,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   border-right-color: #D3D3D3;
 }
 
-#bfikruphhi .gt_sourcenote {
+#osqqibbvwf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1809,72 +1140,72 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
   padding-right: 5px;
 }
 
-#bfikruphhi .gt_left {
+#osqqibbvwf .gt_left {
   text-align: left;
 }
 
-#bfikruphhi .gt_center {
+#osqqibbvwf .gt_center {
   text-align: center;
 }
 
-#bfikruphhi .gt_right {
+#osqqibbvwf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bfikruphhi .gt_font_normal {
+#osqqibbvwf .gt_font_normal {
   font-weight: normal;
 }
 
-#bfikruphhi .gt_font_bold {
+#osqqibbvwf .gt_font_bold {
   font-weight: bold;
 }
 
-#bfikruphhi .gt_font_italic {
+#osqqibbvwf .gt_font_italic {
   font-style: italic;
 }
 
-#bfikruphhi .gt_super {
+#osqqibbvwf .gt_super {
   font-size: 65%;
 }
 
-#bfikruphhi .gt_footnote_marks {
+#osqqibbvwf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bfikruphhi .gt_asterisk {
+#osqqibbvwf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bfikruphhi .gt_indent_1 {
+#osqqibbvwf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bfikruphhi .gt_indent_2 {
+#osqqibbvwf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bfikruphhi .gt_indent_3 {
+#osqqibbvwf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bfikruphhi .gt_indent_4 {
+#osqqibbvwf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bfikruphhi .gt_indent_5 {
+#osqqibbvwf .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bfikruphhi .katex-display {
+#osqqibbvwf .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bfikruphhi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#osqqibbvwf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1888,7 +1219,7 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 <td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">smartpill dataset</td>
 </tr>
 <tr class="gt_col_headings header">
-<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Group</th>
+<th id="Group" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Group</th>
 <th id="average_age" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_age</th>
 <th id="average_height" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_height</th>
 <th id="average_weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">average_weight</th>
@@ -1896,13 +1227,13 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_right" headers="Group">0</td>
+<td class="gt_row gt_center" headers="Group">0</td>
 <td class="gt_row gt_right" headers="average_age">40.25000</td>
 <td class="gt_row gt_right" headers="average_height">176.2125</td>
 <td class="gt_row gt_right" headers="average_weight">80.51258</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Group">1</td>
+<td class="gt_row gt_center" headers="Group">1</td>
 <td class="gt_row gt_right" headers="average_age">37.22989</td>
 <td class="gt_row gt_right" headers="average_height">171.6018</td>
 <td class="gt_row gt_right" headers="average_weight">77.18989</td>
@@ -1914,16 +1245,21 @@ $ C.Mean.pH               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 7.58, 7.21
 </div>
 </div>
 </section>
-<section id="add-better-column-names" class="level2">
-<h2 class="anchored" data-anchor-id="add-better-column-names">Add better column names</h2>
-<section id="add-title-and-footnote" class="level3">
-<h3 class="anchored" data-anchor-id="add-title-and-footnote">Add title and Footnote</h3>
+<section id="column-names" class="level2">
+<h2 class="anchored" data-anchor-id="column-names">Column names</h2>
 </section>
+<section id="footnote" class="level2">
+<h2 class="anchored" data-anchor-id="footnote">Footnote</h2>
 </section>
 <section id="styling" class="level2">
 <h2 class="anchored" data-anchor-id="styling">Styling</h2>
-<p>There are 36 combinations of style and color to choose from: <a href="https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples" class="uri">https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples</a></p>
-<p>And of course you can do conditional cell formatting: <a href="https://gt.rstudio.com/reference/tab_style.html" class="uri">https://gt.rstudio.com/reference/tab_style.html</a></p>
+<p>There are 30+ combinations of <a href="https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples">style and color</a> to choose from as well as <a href="https://gt.rstudio.com/reference/tab_style.html">conditional cell formatting</a>.</p>
+</section>
+<section id="additional-resources" class="level2">
+<h2 class="anchored" data-anchor-id="additional-resources">Additional resources</h2>
+<ul>
+<li><a href="https://gt.rstudio.com/articles/gt.html"><code>gt</code> website</a></li>
+</ul>
 
 
 </section>
