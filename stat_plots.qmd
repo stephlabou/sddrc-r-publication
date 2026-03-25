@@ -1,0 +1,105 @@
+---
+title: "Create Statistical Plots"
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 300px;
+}
+```
+
+```{r eval=T, echo=F, message = F, warning = F}
+library(tidyverse)
+library(medicaldata)
+```
+There a many packages that can be used to add statistical values to ggplot objects. This section will briefly cover two: `ggstats` and `ggstatplot`. Which is most suitable will depend on your statistical visualization goals.
+
+## Overview of `ggstats`
+
+The `ggstats` package is an extension of `ggplot2` for plotting statistical result in the style and format of ggplot objects.
+
+```{r}
+library(ggstats)
+```
+
+
+## Overview of `ggstatplot`
+
+The `ggstatplot` package is an extension of `ggplot2` for adding statistical results to ggplot objects. 
+
+```{r}
+library(ggstatsplot)
+```
+
+### Statistics for scatterplots
+
+Returning to the faceted scatterplot from the previous section:
+
+```{r label='fix_group', echo=FALSE}
+smartpill <- smartpill %>% 
+  mutate(Group = as.factor(Group))
+```
+
+```{r label='ggscatter_grouped', warning=FALSE}
+ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
+  geom_point() +
+  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
+  scale_color_manual(values = c("red", "navy"),
+                     breaks = c("0", "1"),
+                     labels = c("Critically Ill", "Healthy"),
+                     name = "Group") +
+  facet_wrap(~Group, 
+             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
+  theme(legend.position = "none")
+```
+
+Use the [`grouped_ggscatterstats` function](https://indrajeetpatil.github.io/ggstatsplot/reference/grouped_ggscatterstats.html):
+
+```{r}
+grouped_ggscatterstats(data = smartpill, 
+                       x = Weight, 
+                       y = SB.Time,
+                       grouping.var = Group)
+```
+
+There is a lot going on under the hood of the output plots. But, if this format is closer than not to your desired output, it is possible to change portions to suit your needs. 
+
+Turn off statistical results, but retain plot:
+```{r label='group_plain'}
+grouped_ggscatterstats(data = smartpill, 
+                       x = Weight, 
+                       y = SB.Time,
+                       grouping.var = Group,
+                       #turn off subtitles
+                       results.subtitle = FALSE)
+```
+
+Can use ggplot options through 'ggplot.component' to further customize output:
+```{r label='group_pretty'}
+grouped_ggscatterstats(data = smartpill, 
+                       x = Weight, 
+                       y = SB.Time,
+                       grouping.var = Group,
+                       #turn off subtitles
+                       results.subtitle = FALSE,
+                       ggplot.component = labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)"))
+```
+
+Extract just the statistical results ([default stats used](https://indrajeetpatil.github.io/ggstatsplot/index.html?q=statistical%20test#statistical-reporting), can be changed if needed);
+```{r label='get_stats'}
+output2 <- grouped_ggscatterstats(data = smartpill, 
+                       x = Weight, 
+                       y = SB.Time,
+                       grouping.var = Group)
+
+extract_stats(output2)
+```
+
+## Additional resources
+* [ggstats website](https://larmarange.github.io/ggstats/)
+* [ggstatsplot website](https://indrajeetpatil.github.io/ggstatsplot/index.html) with vignettes for included functions

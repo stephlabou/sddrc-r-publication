@@ -13,7 +13,7 @@ website:
         text: Introduction
       - href: ggplot2.qmd
         text: "Custome Plots"
-      - href: ggstatplot.qmd
+      - href: stat_plots.qmd
         text: "Statistical Plots"
       - href: gt.qmd
         text: "Custom Tables"
