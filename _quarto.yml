@@ -12,11 +12,13 @@ website:
       - href: index.qmd
         text: Introduction
       - href: ggplot2.qmd
-        text: "Plots and Graphs"
+        text: "Custome Plots"
+      - href: ggstatplot.qmd
+        text: "Statistical Plots"
       - href: gt.qmd
-        text: "Tables"
+        text: "Custom Tables"
       - href: gtsummary.qmd
-        text: "Tables for Models"
+        text: "Statistical Tables"
 
 format:
   html:

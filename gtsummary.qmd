@@ -1,5 +1,5 @@
 ---
-title: "Beautiful Tables for Models"
+title: "Create Statistical Tables"
 ---
 
 ```{css, echo=FALSE}

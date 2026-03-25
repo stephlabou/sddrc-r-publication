@@ -1,0 +1,29 @@
+---
+title: "Create Statistical Plots"
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 300px;
+}
+```
+
+```{r eval=T, echo=F, message = F, warning = F}
+library(tidyverse)
+library(medicaldata)
+library(ggstatplot)
+```
+
+## Overview of `ggstatplot`
+
+The `ggstatplot` is an extension package of `ggplot2` for adding statistical results to ggplot objects.
+
+```{r}
+library(ggstatsplot)
+```
+

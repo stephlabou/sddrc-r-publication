@@ -1,5 +1,5 @@
 ---
-title: "Customize tables with `gt`"
+title: "Customize Tables"
 ---
 
 ## A few words on the `gt` package
