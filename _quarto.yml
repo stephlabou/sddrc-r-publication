@@ -7,6 +7,8 @@ execute:
 
 website:
   title: "Publication Ready Graphs and Tables in R (SDDRC)"
+  page-navigation: true
+  back-to-top-navigation: true
   navbar:
     left:
       - href: index.qmd
