@@ -19,126 +19,7 @@ library(medicaldata)
 ```
 There are many R packages that can be used to plot statistical results. This section will briefly cover `ggpmisc` and `ggpubr` for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot
 
-## Overview of `ggstats`
-
-The `ggstats` package is an extension of `ggplot2` for plotting statistical results, like model coefficients and standard errors, in the style and format of ggplot objects.
-
-```{r}
-library(ggstats)
-```
-
-For example, plot the coefficents of a linear model of small bowel transit time based on weight and group.
-
-```{r label='fix_group', echo=FALSE}
-smartpill <- smartpill %>% 
-  mutate(Group = as.factor(Group))
-```
-
-```{r}
-#create model object using standard lm() function for linear model
-mod1 <- lm(SB.Time ~ Weight + Group, data = smartpill)
-
-#model results
-summary(mod1)
-```
-```{r}
-#use ggcoef_model() function from ggstats to plot the model coefficients
-ggcoef_model(mod1)
-```
-P-values are indicated on the left and significance is displayed with a filled or partial circle. Coefficient estimates with standard error bars are displayed visually for each variable.
-
-Plots can be customized further with `ggplot` options (example for [ggcoef_model](https://larmarange.github.io/ggstats/articles/ggcoef_model.html) - change title, axis labels, colors, etc.) including by adding a table of results alongside the plot.
-
-```{r}
-#output table as well as plot for model results
-ggcoef_table(mod1)
-```
-As with `ggplot` objects, these plots can be saved using `ggsave()`.
-
-```{r}
-ggcoef_table(mod1) %>% 
-  ggsave(filename = "Model1_viz.png", height = 4, width = 5, units = "in")
-```
-
-
-## Overview of `ggstatplot`
-
-The `ggstatplot` package is an extension of `ggplot2` for adding statistical results, like model coefficients, directly to ggplot-style plots. 
-
-```{r}
-library(ggstatsplot)
-```
-
-### Statistics for scatterplots
-
-Returning to the faceted scatterplot of weight vs small bowel transit time from the previous section:
-
-```{r label='ggscatter_grouped', warning=FALSE}
-facet_plot <- ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
-  geom_point() +
-  labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
-  scale_color_manual(values = c("red", "navy"),
-                     breaks = c("0", "1"),
-                     labels = c("Critically Ill", "Healthy"),
-                     name = "Group") +
-  facet_wrap(~Group, 
-             labeller = as_labeller(c("0" = "Critically Ill", "1" = "Healthy"))) +
-  theme_bw() +
-  theme(legend.position = "none")
-
-facet_plot
-```
-
-Use the [`grouped_ggscatterstats` function](https://indrajeetpatil.github.io/ggstatsplot/reference/grouped_ggscatterstats.html) to create the same visualization, but with additional plots and statistical results:
-
-```{r}
-grouped_ggscatterstats(data = smartpill, 
-                       x = Weight, 
-                       y = SB.Time,
-                       grouping.var = Group)
-```
-
-There is a lot going on in the output plots. But, if this format is closer than not to your desired output, it is possible to change portions to suit your needs. 
-
-Turn off statistical results, but retain plot:
-```{r label='group_plain'}
-grouped_ggscatterstats(data = smartpill, 
-                       x = Weight, 
-                       y = SB.Time,
-                       grouping.var = Group,
-                       #turn off subtitles
-                       results.subtitle = FALSE)
-```
-
-Use standard `ggplot` options through 'ggplot.component' to further customize output:
-```{r label='group_pretty'}
-grouped_ggscatterstats(data = smartpill, 
-                       x = Weight, 
-                       y = SB.Time,
-                       grouping.var = Group,
-                       #turn off subtitles
-                       results.subtitle = FALSE,
-                       ggplot.component = labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)"))
-```
-
-Or, extract just the statistical results ([default stats used](https://indrajeetpatil.github.io/ggstatsplot/index.html?q=statistical%20test#statistical-reporting):
-```{r label='get_stats'}
-output2 <- grouped_ggscatterstats(data = smartpill, 
-                       x = Weight, 
-                       y = SB.Time,
-                       grouping.var = Group)
-
-extract_stats(output2)
-```
-
-As usual, plots can be saved with `ggsave()`.
-
-```{r}
-output2 %>% 
-  ggsave(filename = "grouped_stat_viz.png", height = 5, width = 10, units = "in")
-```
-
-## Overview of `ggpmisc`
+## ggpmisc
 
 The `ggpmisc` package is an extension of `ggplot2` for labeling plots with statistical results of data in the plot, for instance model equation or p-values.
 
@@ -177,14 +58,14 @@ The [`ggpmisc` user guide](https://docs.r4photobiology.info/ggpmisc/articles/use
 Since this is a `gg` object, we can save it using the standard `ggsave()` function:
 
 ```{r}
-model_label_plot2 <- facet_plot +
+ggpmisc_plot <- facet_plot +
   stat_poly_line(se = FALSE) +
   stat_poly_eq(use_label())
 
-ggsave(filename = "ggpmisc_plot.png", plot = model_label_plot2, height = 5, width = 7, units = "in")
+ggsave(filename = "ggpmisc_plot.png", plot = ggpmisc_plot, height = 5, width = 7, units = "in")
 ```
 
-## Overview of `ggpubr`
+## ggpubr
 
 The `ggpubr` package is another extension package of `ggplot2` for adding statistical results to `ggplot` plots.
 
@@ -223,6 +104,7 @@ ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
 facet_wrap(~Group)
 #could continue with further label customization, as in prior section
 ```
+
 The regression equation can be added using [`stat_regline_equation()`](https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html).
 
 ```{r warning=FALSE}
@@ -239,9 +121,27 @@ facet_wrap(~Group) +
 stat_regline_equation(label.y = 12)
 ```
 
+And as usual, the plot can be saved using the `ggsave()` function:
+
+```{r}
+ggpubr_plot <- ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
+  color = "Group", palette = c("red", "navy"),
+  add = "reg.line",
+  conf.int = FALSE,
+  cor.coef = TRUE
+   ) +
+facet_wrap(~Group) +
+stat_regline_equation(label.y = 12)
+
+ggsave(filename = "ggpubr_plot.png", plot = ggpubr_plot, height = 5, width = 7, units = "in")
+```
+
+## Choosing a package
+
+There are many more [ggplot extension](https://exts.ggplot2.tidyverse.org/index.html) packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in `ggpmisc` or `ggpubr`, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, [phylogenetic trees](https://exts.ggplot2.tidyverse.org/ggtree.html) or [comparative genomics](https://thackl.github.io/gggenomes/).
+
 ## Additional resources
-* [ggstats website](https://larmarange.github.io/ggstats/)
-* [ggstatsplot website](https://indrajeetpatil.github.io/ggstatsplot/index.html) with vignettes for included functions
 * [ggpmisc website](https://docs.r4photobiology.info/ggpmisc/index.html)
 * [ggpubr website](https://rpkgs.datanovia.com/ggpubr/index.html)
-* Many more [ggplot extension](https://exts.ggplot2.tidyverse.org/index.html)
+* Many more [ggplot extensions](https://exts.ggplot2.tidyverse.org/index.html)
+* Also check out [tidyplots](https://tidyplots.org/), another good option for publication-ready plots. 
