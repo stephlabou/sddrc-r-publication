@@ -17,12 +17,7 @@ pre[class] {
 library(tidyverse)
 library(medicaldata)
 ```
-There are many R packages that can be used to plot statistical results. This section will briefly cover three: 
-1. `ggstats` for making plots of statistical results (model coefficients, standard errors, etc.)
-2. `ggstatplot` for all-in-one statistical results (model coefficients, distributions) + plots in one object [_REMOVE ME_]
-3. `ggpmisc` and `ggpubr` for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot
-
-Which is most suitable will depend on your statistical visualization goals.
+There are many R packages that can be used to plot statistical results. This section will briefly cover `ggpmisc` and `ggpubr` for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot
 
 ## Overview of `ggstats`
 
@@ -190,6 +185,59 @@ ggsave(filename = "ggpmisc_plot.png", plot = model_label_plot2, height = 5, widt
 ```
 
 ## Overview of `ggpubr`
+
+The `ggpubr` package is another extension package of `ggplot2` for adding statistical results to `ggplot` plots.
+
+```{r message=FALSE}
+library(ggpubr)
+```
+
+Before, we added a trend line and model equation to our existing `ggplot` object, by adding additional functions from a new package. In the case of `ggpubr`, we can use this package's functions, which recreate ggplot-style plots with additional options.
+
+To recreate the faceted scatterplot, use the [`ggscatter()` function, with associated add-ons](https://rpkgs.datanovia.com/ggpubr/reference/index.html#plot-two-continuous-variables) from `ggpubr`.
+
+```{r warning=FALSE}
+ggscatter(data = smartpill, x = "Weight", y = "SB.Time", facet.by = "Group",
+  #color points
+  color = "Group", palette = c("red", "navy"),
+  #add regression line
+  add = "reg.line",
+  #remove confidence interval of regression line
+  conf.int = FALSE,
+  #add correlation coefficient
+  cor.coef = TRUE
+   )
+```
+
+Note that the syntax is a bit different from ggplot-style: variable names need to be in quotes, and arguments for color, etc. have different names. We'd need to do a bit more work to update labels and such. You can also do a mix-and-match approach using the `ggpubr` functions and `ggplot2` functions for the same plot.
+
+```{r warning=FALSE}
+#use ggscatter to specify data and color and regression line
+ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
+  color = "Group", palette = c("red", "navy"),
+  add = "reg.line",
+  conf.int = FALSE,
+  cor.coef = TRUE
+   ) +
+#use facet_wrap from ggplot2 to make the facets by group
+facet_wrap(~Group)
+#could continue with further label customization, as in prior section
+```
+The regression equation can be added using [`stat_regline_equation()`](https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html).
+
+```{r warning=FALSE}
+ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
+  color = "Group", palette = c("red", "navy"),
+  add = "reg.line",
+  conf.int = FALSE,
+  cor.coef = TRUE
+   ) +
+facet_wrap(~Group) +
+#add regression equation
+#move position so doesn't overlap with correlation values
+#this may take some trial and error
+stat_regline_equation(label.y = 12)
+```
 
 ## Additional resources
 * [ggstats website](https://larmarange.github.io/ggstats/)
