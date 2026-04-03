@@ -77,7 +77,7 @@ The [`ggpmisc` user guide](https://docs.r4photobiology.info/ggpmisc/articles/use
 
 Since this is a `gg` object, we can save it using the standard `ggsave()` function:
 
-```{r}
+```{r warning=FALSE}
 ggpmisc_plot <- facet_plot +
   stat_poly_line(se = FALSE) +
   stat_poly_eq(use_label())
@@ -98,7 +98,7 @@ Before, we added a trend line and model equation to our existing `ggplot` object
 To recreate the faceted scatterplot, use the [`ggscatter()` function, with associated add-ons](https://rpkgs.datanovia.com/ggpubr/reference/index.html#plot-two-continuous-variables) from `ggpubr`.
 
 ```{r warning=FALSE}
-ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
+ggscatter(data = smartpill, x = "Weight", y = "SB.Time", facet.by = "Group",
   #color points
   color = "Group", palette = c("red", "navy"),
   #add regression line

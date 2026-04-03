@@ -85,7 +85,8 @@ smartpill %>%
       all_continuous() ~ "{median} ({min}, {max})"
     ),
     #update row labels
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     #change text for NA values
     missing_text = "Missing"
   )
@@ -105,7 +106,8 @@ smartpill %>%
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   )
 ```
@@ -122,7 +124,8 @@ smartpill %>%
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   )
 ```
@@ -139,7 +142,8 @@ smartpill %>%
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   ) %>% 
   #show existing column headers of this table
@@ -157,11 +161,14 @@ smartpill %>%
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   ) %>% 
   #modify column header text and make bold with **
-  modify_header(label = "**Variable**", stat_1 = "**Critically Ill**", stat_2 = "**Healthy**")
+  modify_header(label = "**Variable**", 
+                stat_1 = "**Critically Ill**", 
+                stat_2 = "**Healthy**")
 ```
 
 Before we move on to the next section, let's assign our current table to an object to make it easier downstream to see what code is being added.
@@ -176,11 +183,14 @@ Table1 <- smartpill %>%
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
     ),
-    label = list(SB.Time = "Small bowel transit time (hours)", WG.Time = "Whole gut time (hours)"),
+    label = list(SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   ) %>% 
   #modify column header text and make bold with **
-  modify_header(label = "**Variable**", stat_1 = "**Critically Ill**", stat_2 = "**Healthy**")
+  modify_header(label = "**Variable**", 
+                stat_1 = "**Critically Ill**", 
+                stat_2 = "**Healthy**")
 
 Table1
 ```

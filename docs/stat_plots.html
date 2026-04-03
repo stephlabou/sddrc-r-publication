@@ -163,11 +163,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview-of-ggstats" id="toc-overview-of-ggstats" class="nav-link active" data-scroll-target="#overview-of-ggstats">Overview of <code>ggstats</code></a></li>
-  <li><a href="#overview-of-ggstatplot" id="toc-overview-of-ggstatplot" class="nav-link" data-scroll-target="#overview-of-ggstatplot">Overview of <code>ggstatplot</code></a>
-  <ul class="collapse">
-  <li><a href="#statistics-for-scatterplots" id="toc-statistics-for-scatterplots" class="nav-link" data-scroll-target="#statistics-for-scatterplots">Statistics for scatterplots</a></li>
-  </ul></li>
+  <li><a href="#ggpmisc" id="toc-ggpmisc" class="nav-link active" data-scroll-target="#ggpmisc">ggpmisc</a></li>
+  <li><a href="#ggpubr" id="toc-ggpubr" class="nav-link" data-scroll-target="#ggpubr">ggpubr</a></li>
+  <li><a href="#choosing-a-package" id="toc-choosing-a-package" class="nav-link" data-scroll-target="#choosing-a-package">Choosing a package</a></li>
   <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a></li>
   </ul>
 </nav>
@@ -206,59 +204,54 @@ pre[class] {
 }
 </style>
 </div>
-<p>There a many packages that can be used to add statistical values to ggplot objects. This section will briefly cover two: <code>ggstats</code> and <code>ggstatplot</code>. Which is most suitable will depend on your statistical visualization goals.</p>
-<section id="overview-of-ggstats" class="level2">
-<h2 class="anchored" data-anchor-id="overview-of-ggstats">Overview of <code>ggstats</code></h2>
-<p>The <code>ggstats</code> package is an extension of <code>ggplot2</code> for plotting statistical result in the style and format of ggplot objects.</p>
+<p>There are many R packages that can be used to plot statistical results. This section will briefly cover <code>ggpmisc</code> and <code>ggpubr</code> for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot</p>
+<section id="ggpmisc" class="level2">
+<h2 class="anchored" data-anchor-id="ggpmisc">ggpmisc</h2>
+<p>The <code>ggpmisc</code> package is an extension of <code>ggplot2</code> for labeling plots with statistical results of data in the plot, for instance model equation or p-values.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstats)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="overview-of-ggstatplot" class="level2">
-<h2 class="anchored" data-anchor-id="overview-of-ggstatplot">Overview of <code>ggstatplot</code></h2>
-<p>The <code>ggstatplot</code> package is an extension of <code>ggplot2</code> for adding statistical results to ggplot objects.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#leaving in warnings to recognize some functions are overwritten</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#if concerned, can always specify exact function by first indicating package</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#for instance ggplot2:heightDetail.titleGrob to use the ggplot2 version of that same name function</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpmisc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>You can cite this package as:
-     Patil, I. (2021). Visualizations with statistical details: The 'ggstatsplot' approach.
-     Journal of Open Source Software, 6(61), 3167, doi:10.21105/joss.03167</code></pre>
+<pre><code>Loading required package: ggpp</code></pre>
 </div>
-</div>
-<section id="statistics-for-scatterplots" class="level3">
-<h3 class="anchored" data-anchor-id="statistics-for-scatterplots">Statistics for scatterplots</h3>
-<p>Returning to the faceted scatterplot from the previous section:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="stat_plots_files/figure-html/ggscatter_grouped-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Use the <a href="https://indrajeetpatil.github.io/ggstatsplot/reference/grouped_ggscatterstats.html"><code>grouped_ggscatterstats</code> function</a>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grouped_ggscatterstats</span>(<span class="at">data =</span> smartpill, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> Weight, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> SB.Time,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">grouping.var =</span> Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+<pre><code>Registered S3 methods overwritten by 'ggpp':
+  method                  from   
+  heightDetails.titleGrob ggplot2
+  widthDetails.titleGrob  ggplot2</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggpp'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    annotate</code></pre>
+</div>
+</div>
+<p>For our faceted scatter plot</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>facet_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Critically Ill"</span>, <span class="st">"Healthy"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Group"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Group, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"Critically Ill"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Healthy"</span>))) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Fit a polynomial (by default, a basic linear model using <code>lm()</code>) using the <a href="https://docs.r4photobiology.info/ggpmisc/reference/stat_poly_line.html"><code>stat_poly_line()</code> function</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>facet_plot <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#fits lm by default, can be customized</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#se = FALSE -&gt; no shaded confidence interval, just line</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_line</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -267,161 +260,171 @@ pre[class] {
 </div>
 </div>
 </div>
-<p>There is a lot going on under the hood of the output plots. But, if this format is closer than not to your desired output, it is possible to change portions to suit your needs.</p>
-<p>Turn off statistical results, but retain plot:</p>
+<p>Then use the <a href="https://docs.r4photobiology.info/ggpmisc/reference/stat_poly_eq.html"><code>stat_poly_eq()</code> function</a> to add the R<sup>2</sup> value to the plot.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grouped_ggscatterstats</span>(<span class="at">data =</span> smartpill, </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> Weight, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> SB.Time,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">grouping.var =</span> Group,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#turn off subtitles</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">results.subtitle =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>facet_plot <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_line</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_eq</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="stat_plots_files/figure-html/group_plain-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="stat_plots_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Can use ggplot options through ‘ggplot.component’ to further customize output:</p>
+<p>Further customize with full model equation and more by specifying <a href="https://docs.r4photobiology.info/ggpmisc/reference/use_label.html"><code>use_label()</code></a> within <code>stat_poly_eq()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grouped_ggscatterstats</span>(<span class="at">data =</span> smartpill, </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> Weight, </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> SB.Time,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">grouping.var =</span> Group,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#turn off subtitles</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">results.subtitle =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ggplot.component =</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_xsidebin()` using `bins = 30`. Pick better value `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>facet_plot <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_line</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#defaults include model equation and p-value</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#can be changed as needed, many options</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_eq</span>(<span class="fu">use_label</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="stat_plots_files/figure-html/group_pretty-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="stat_plots_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Extract just the statistical results (<a href="https://indrajeetpatil.github.io/ggstatsplot/index.html?q=statistical%20test#statistical-reporting">default stats used</a>, can be changed if needed);</p>
+<p>The <a href="https://docs.r4photobiology.info/ggpmisc/articles/user-guide.html"><code>ggpmisc</code> user guide</a> contains many more options for model equations, lines, and tables.</p>
+<p>Since this is a <code>gg</code> object, we can save it using the standard <code>ggsave()</code> function:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>output2 <span class="ot">&lt;-</span> <span class="fu">grouped_ggscatterstats</span>(<span class="at">data =</span> smartpill, </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> Weight, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> SB.Time,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">grouping.var =</span> Group)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_stats</span>(output2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-$subtitle_data
-# A tibble: 1 × 14
-  parameter1 parameter2 effectsize          estimate conf.level conf.low
-  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 Weight     SB.Time    Pearson correlation    0.594       0.95   -0.288
-  conf.high statistic df.error p.value method              n.obs conf.method
-      &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;      
-1     0.931      1.65        5   0.160 Pearson correlation     7 normal     
-  expression
-  &lt;list&gt;    
-1 &lt;language&gt;
-
-$caption_data
-# A tibble: 1 × 17
-  parameter1 parameter2 effectsize                   estimate conf.level
-  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;                           &lt;dbl&gt;      &lt;dbl&gt;
-1 Weight     SB.Time    Bayesian Pearson correlation    0.407       0.95
-  conf.low conf.high    pd rope.percentage prior.distribution prior.location
-     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;
-1   -0.188     0.877 0.872           0.116 beta                         1.41
-  prior.scale  bf10 method                       n.obs conf.method expression
-        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                        &lt;int&gt; &lt;chr&gt;       &lt;list&gt;    
-1        1.41  1.16 Bayesian Pearson correlation     7 HDI         &lt;language&gt;
-
-$pairwise_comparisons_data
-NULL
-
-$descriptive_data
-NULL
-
-$one_sample_data
-NULL
-
-$tidy_data
-NULL
-
-$glance_data
-NULL
-
-attr(,"class")
-[1] "ggstatsplot_stats" "list"             
-
-[[2]]
-$subtitle_data
-# A tibble: 1 × 14
-  parameter1 parameter2 effectsize          estimate conf.level conf.low
-  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 Weight     SB.Time    Pearson correlation    0.102       0.95   -0.117
-  conf.high statistic df.error p.value method              n.obs conf.method
-      &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;      
-1     0.310     0.919       81   0.361 Pearson correlation    83 normal     
-  expression
-  &lt;list&gt;    
-1 &lt;language&gt;
-
-$caption_data
-# A tibble: 1 × 17
-  parameter1 parameter2 effectsize                   estimate conf.level
-  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;                           &lt;dbl&gt;      &lt;dbl&gt;
-1 Weight     SB.Time    Bayesian Pearson correlation    0.100       0.95
-  conf.low conf.high    pd rope.percentage prior.distribution prior.location
-     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;
-1   -0.104     0.304 0.824           0.468 beta                         1.41
-  prior.scale  bf10 method                       n.obs conf.method expression
-        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                        &lt;int&gt; &lt;chr&gt;       &lt;list&gt;    
-1        1.41 0.252 Bayesian Pearson correlation    83 HDI         &lt;language&gt;
-
-$pairwise_comparisons_data
-NULL
-
-$descriptive_data
-NULL
-
-$one_sample_data
-NULL
-
-$tidy_data
-NULL
-
-$glance_data
-NULL
-
-attr(,"class")
-[1] "ggstatsplot_stats" "list"             </code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ggpmisc_plot <span class="ot">&lt;-</span> facet_plot <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_line</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_poly_eq</span>(<span class="fu">use_label</span>())</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"ggpmisc_plot.png"</span>, <span class="at">plot =</span> ggpmisc_plot, <span class="at">height =</span> <span class="dv">5</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
+(`stat_poly_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
+(`stat_poly_eq()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
 </div>
 </div>
 </section>
+<section id="ggpubr" class="level2">
+<h2 class="anchored" data-anchor-id="ggpubr">ggpubr</h2>
+<p>The <code>ggpubr</code> package is another extension package of <code>ggplot2</code> for adding statistical results to <code>ggplot</code> plots.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Before, we added a trend line and model equation to our existing <code>ggplot</code> object, by adding additional functions from a new package. In the case of <code>ggpubr</code>, we can use this package’s functions, which recreate ggplot-style plots with additional options.</p>
+<p>To recreate the faceted scatterplot, use the <a href="https://rpkgs.datanovia.com/ggpubr/reference/index.html#plot-two-continuous-variables"><code>ggscatter()</code> function, with associated add-ons</a> from <code>ggpubr</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#color points</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add regression line</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove confidence interval of regression line</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add correlation coefficient</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>   )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stat_plots_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that the syntax is a bit different from ggplot-style: variable names need to be in quotes, and arguments for color, etc. have different names. We’d need to do a bit more work to update labels and such. You can also do a mix-and-match approach using the <code>ggpubr</code> functions and <code>ggplot2</code> functions for the same plot.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use ggscatter to specify data and color and regression line</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#use facet_wrap from ggplot2 to make the facets by group</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stat_plots_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#could continue with further label customization, as in prior section</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The regression equation can be added using <a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html"><code>stat_regline_equation()</code></a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#add regression equation</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#move position so doesn't overlap with correlation values</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#this may take some trial and error</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stat_plots_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And as usual, the plot can be saved using the <code>ggsave()</code> function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ggpubr_plot <span class="ot">&lt;-</span> <span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"ggpubr_plot.png"</span>, <span class="at">plot =</span> ggpubr_plot, <span class="at">height =</span> <span class="dv">5</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
+(`stat_cor()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
+(`stat_regline_equation()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+</div>
+</section>
+<section id="choosing-a-package" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-a-package">Choosing a package</h2>
+<p>There are many more <a href="https://exts.ggplot2.tidyverse.org/index.html">ggplot extension</a> packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in <code>ggpmisc</code> or <code>ggpubr</code>, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, <a href="https://exts.ggplot2.tidyverse.org/ggtree.html">phylogenetic trees</a> or <a href="https://thackl.github.io/gggenomes/">comparative genomics</a>.</p>
 </section>
 <section id="additional-resources" class="level2">
 <h2 class="anchored" data-anchor-id="additional-resources">Additional resources</h2>
 <ul>
-<li><a href="https://larmarange.github.io/ggstats/">ggstats website</a></li>
-<li><a href="https://indrajeetpatil.github.io/ggstatsplot/index.html">ggstatsplot website</a> with vignettes for included functions</li>
+<li><a href="https://docs.r4photobiology.info/ggpmisc/index.html">ggpmisc website</a></li>
+<li><a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr website</a></li>
+<li>Many more <a href="https://exts.ggplot2.tidyverse.org/index.html">ggplot extensions</a></li>
+<li>Also check out <a href="https://tidyplots.org/">tidyplots</a>, another good option for publication-ready plots.</li>
 </ul>
 
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
