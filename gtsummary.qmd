@@ -242,7 +242,7 @@ Table1 %>%
   add_p()
 ```
 
-#### Caveats
+### Caveats
 
 Default tests will vary based on data type.
 
@@ -266,43 +266,86 @@ Table1 %>%
 ```
 
 
+## Further customization 
 
+For some customizations, we'll need to convert our `gtsummary` object to a `gt` object with the [`as_gt()` function](https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html). 
 
+![https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg)
 
-
-
-## Footnotes 
-
-For some customization, we'll need to convert our `gtsummary` object to a `gt` object with the [`as_gt()` function](https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html). For instance, to update the footnote to clarify which test was used on which variable.'
-
-# NOTE TO SELF FIX THIS SECTION
+For instance, to update the footnote to clarify which test was used on which variable.
 
 ```{r label='stat_compare_3', eval=FALSE}
-Table1
-  #add p-value, override default to specify which test to use for Age (here, a t-test)
+Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   #convert to gt object keeping everything except the existing footnotes
   as_gt(include = -tab_footnote) %>% 
-  tab_footnote(footnote = "t.test for age; Wilcox rank sum for others",
-               locations = cells_column_labels(columns = vars(p.value)))
+  #add new footnote specifying which test used for which variable
+  tab_footnote(footnote = "t.test for Age; Wilcox rank sum for others",
+               locations = cells_column_labels(columns = c(p.value)))
 ```
 
+Or to add a title and/or subtitle to the table:
 
+```{r label='table_title', eval=FALSE}
+Table1 %>% 
+  add_p(test = Age ~ "t.test") %>% 
+  as_gt(include = -tab_footnote) %>% 
+  tab_footnote(footnote = "t.test for Age; Wilcox rank sum for others",
+               locations = cells_column_labels(columns = c(p.value))) %>% 
+  #add table title and subtitle
+  tab_header(title = "Table 1",
+             subtitle = "smartpill dataset")
+```
 
+As with plots, there are many options for table styling: [36 combinations of style and color to choose from](https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples) plus [conditional cell formatting](https://gt.rstudio.com/reference/tab_style.html)
 
-## Model outputs
+```{r label='styling', eval=FALSE}
+Table1 %>% 
+  add_p(test = Age ~ "t.test") %>% 
+  as_gt(include = -tab_footnote) %>% 
+  tab_footnote(footnote = "t.test for Age; Wilcox rank sum for others",
+               locations = cells_column_labels(columns = c(p.value))) %>% 
+  tab_header(title = "Table 1",
+             subtitle = "smartpill dataset") %>% 
+  #styling function
+  opt_stylize(style = 6, color = 'gray')
+```
 
+## Saving tables
 
+The [function `gtsave()`](https://gt.rstudio.com/reference/gtsave.html) is the parallel table save function to `ggsave()` for plots.
 
+```{r label='styling', eval=FALSE}
+#assign updates to Table1 object
+Table1 <- Table1 %>% 
+          add_p(test = Age ~ "t.test") %>% 
+          as_gt(include = -tab_footnote) %>% 
+          tab_footnote(footnote = "t.test for Age; Wilcox rank sum for others",
+                       locations = cells_column_labels(columns = c(p.value))) %>% 
+          tab_header(title = "Table 1",
+                     subtitle = "smartpill dataset") %>% 
+          opt_stylize(style = 6, color = 'gray')
+```
 
+Specify object, filename, and path (if necessary, defaults to current working directory). Options for output format are .html, .tex, .ltx, .rtf, .docx.
 
+Example saving as Word file:
+```{r}
+gtsave(data = Table1, filename = "Table1.docx")
+```
 
+_Caveat_: Word files sometimes struggle to retain proper color formatting. 
 
+Saving a PNG is possible - it results in a cropped image of an HTML table. The amount of whitespace can be set with the expand option.
+```{r}
+gtsave(data = Table1, filename = "Table1.png", expand = 5)
+```
 
-
+__Note__: You may get a warning 'The package "webshot2" is required to save gt tables as images.' R will prompt you to install `webshot2` if you want to save images of tables like this.
 
 ## Additional resources
 
 * [Primary website for gtsummary](https://www.danieldsjoberg.com/gtsummary/) including how to [cite use of the package](https://www.danieldsjoberg.com/gtsummary/authors.html#citation).
 * gtsummary [reference manual](https://cran.r-project.org/web/packages/gtsummary/refman/gtsummary.html) with complete details on functions and arguments.
 * Examples of [gtsummary in practice from R Graph Gallery](https://r-graph-gallery.com/package/gtsummary.html). 
+* [Primary website for `gt`](https://gt.rstudio.com/articles/gt.html)
