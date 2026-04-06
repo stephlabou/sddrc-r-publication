@@ -27,7 +27,7 @@ smartpill <- smartpill %>%
 
 ## Introduction to `gtsummary`
 
-Next, we'll use the `gtsummary` package, an extension of `gt` that can incorporate statistical model outputs into publication-ready tables.
+Next, we'll use the `gtsummary` package, an extension of the `gt` table formatting package, that can incorporate statistical model outputs into publication-ready tables.
 
 ## Descriptive statistics
 
@@ -72,9 +72,9 @@ smartpill %>%
   )
 ```
 
-### Row labels and NAs
+### Variable labels and NAs
 
-This table can also be customized with better labels for rows and updated NA indicator:
+This table can also be customized with better labels for rows (variables) and updated NA indicator:
 
 ```{r label='customize_labels'}
 smartpill %>%  
@@ -85,9 +85,46 @@ smartpill %>%
       all_continuous() ~ "{median} ({min}, {max})"
     ),
     #update row labels
-    label = list(SB.Time = "Small bowel transit time (hours)", 
+    label = list(Group = "Patient Group",
+                 SB.Time = "Small bowel transit time (hours)", 
                  WG.Time = "Whole gut time (hours)"),
     #change text for NA values
+    missing_text = "Missing"
+  )
+```
+
+Note that if we want to change any categorical/character variable _values_, this needs to be done outside `tbl_summary`. Example process to reset factor level names of Group variable:
+
+```{r}
+#check existing levels
+levels(smartpill$Group)
+```
+
+```{r}
+#count of each level
+summary(smartpill$Group)
+```
+
+```{r}
+#relace level values
+levels(smartpill$Group) <- c("Critically Ill", "Healthy")
+```
+
+```{r}
+#confirm accurate counts
+summary(smartpill$Group)
+```
+
+```{r}
+smartpill %>%  
+  tbl_summary(
+    include = c(Group, Age, SB.Time, WG.Time), 
+    statistic = list(
+      all_continuous() ~ "{median} ({min}, {max})"
+    ),
+    label = list(Group = "Patient Group",
+                 SB.Time = "Small bowel transit time (hours)", 
+                 WG.Time = "Whole gut time (hours)"),
     missing_text = "Missing"
   )
 ```
@@ -98,7 +135,6 @@ This structure can be extended to produce crosstab tables, for instance with des
 
 ```{r label='crosstab'}
 smartpill %>%  
-  mutate(Group = as.factor(Group)) %>%
   tbl_summary(
     by = Group,
     include = c(Age, SB.Time, WG.Time), 
@@ -116,7 +152,6 @@ _Note_: Warnings will be returned if the metrics are not workable, for instance 
 
 ```{r label='error'}
 smartpill %>%  
-  mutate(Group = as.factor(Group)) %>%
   tbl_summary(
     by = Group,
     include = c(Age, SB.Time, WG.Time), 
@@ -130,7 +165,7 @@ smartpill %>%
   )
 ```
 
-Finally, [column names can be updated](https://www.danieldsjoberg.com/gtsummary/reference/modify.html) as needed.
+If needed, [column names can be updated](https://www.danieldsjoberg.com/gtsummary/reference/modify.html).
 
 ```{r label='col_names'}
 smartpill %>%  
@@ -153,7 +188,6 @@ smartpill %>%
 
 ```{r label='modify_cols'}
 smartpill %>%  
-  mutate(Group = as.factor(Group)) %>%
   tbl_summary(
     by = Group,
     include = c(Age, SB.Time, WG.Time), 
@@ -167,15 +201,14 @@ smartpill %>%
   ) %>% 
   #modify column header text and make bold with **
   modify_header(label = "**Variable**", 
-                stat_1 = "**Critically Ill**", 
-                stat_2 = "**Healthy**")
+                stat_1 = "**Critically Ill Trauma Patients**", 
+                stat_2 = "**Healthy Volunteers**")
 ```
 
 Before we move on to the next section, let's assign our current table to an object to make it easier downstream to see what code is being added.
 
 ```{r label='table1'}
 Table1 <- smartpill %>%  
-  mutate(Group = as.factor(Group)) %>%
   tbl_summary(
     by = Group,
     include = c(Age, SB.Time, WG.Time), 
@@ -189,10 +222,8 @@ Table1 <- smartpill %>%
   ) %>% 
   #modify column header text and make bold with **
   modify_header(label = "**Variable**", 
-                stat_1 = "**Critically Ill**", 
-                stat_2 = "**Healthy**")
-
-Table1
+                stat_1 = "**Critically Ill Trauma Patients**", 
+                stat_2 = "**Healthy Volunteers**")
 ```
 
 ## Statistical tests
@@ -233,6 +264,12 @@ Table1 %>%
   #add p-value, override default to specify which test to use for Age (here, a t-test)
   add_p(test = Age ~ "t.test")
 ```
+
+
+
+
+
+
 
 ## Footnotes 
 
