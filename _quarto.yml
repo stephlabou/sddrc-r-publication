@@ -17,8 +17,6 @@ website:
         text: "Custom Plots"
       - href: stat_plots.qmd
         text: "Statistical Plots"
-      - href: gt.qmd
-        text: "Custom Tables"
       - href: gtsummary.qmd
         text: "Statistical Tables"
 
