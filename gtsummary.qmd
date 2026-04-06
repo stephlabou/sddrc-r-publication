@@ -315,9 +315,9 @@ Table1 %>%
 
 The [function `gtsave()`](https://gt.rstudio.com/reference/gtsave.html) is the parallel table save function to `ggsave()` for plots.
 
-```{r label='styling', eval=FALSE}
+```{r label='saving', eval=FALSE}
 #assign updates to Table1 object
-Table1 <- Table1 %>% 
+Table1_save <- Table1 %>% 
           add_p(test = Age ~ "t.test") %>% 
           as_gt(include = -tab_footnote) %>% 
           tab_footnote(footnote = "t.test for Age; Wilcox rank sum for others",
@@ -330,15 +330,15 @@ Table1 <- Table1 %>%
 Specify object, filename, and path (if necessary, defaults to current working directory). Options for output format are .html, .tex, .ltx, .rtf, .docx.
 
 Example saving as Word file:
-```{r}
-gtsave(data = Table1, filename = "Table1.docx")
+```{r warning=FALSE, eval=FALSE}
+gtsave(data = Table1_save, filename = "Table1.docx")
 ```
 
 _Caveat_: Word files sometimes struggle to retain proper color formatting. 
 
 Saving a PNG is possible - it results in a cropped image of an HTML table. The amount of whitespace can be set with the expand option.
-```{r}
-gtsave(data = Table1, filename = "Table1.png", expand = 5)
+```{r warning=FALSE, eval=FALSE}
+gtsave(data = Table1_save, filename = "Table1.png", expand = 5)
 ```
 
 __Note__: You may get a warning 'The package "webshot2" is required to save gt tables as images.' R will prompt you to install `webshot2` if you want to save images of tables like this.
