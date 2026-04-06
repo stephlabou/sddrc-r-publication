@@ -140,10 +140,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Statistical Plots</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./gt.html"> 
-<span class="menu-text">Custom Tables</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./gtsummary.html"> 
 <span class="menu-text">Statistical Tables</span></a>
   </li>  
@@ -167,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data structure</a></li>
   <li><a href="#basic-plot" id="toc-basic-plot" class="nav-link" data-scroll-target="#basic-plot">Basic plot</a></li>
   <li><a href="#change-axis-labels" id="toc-change-axis-labels" class="nav-link" data-scroll-target="#change-axis-labels">Change axis labels</a></li>
-  <li><a href="#update-legend" id="toc-update-legend" class="nav-link" data-scroll-target="#update-legend">Update legend</a></li>
+  <li><a href="#update-colors-and-legend" id="toc-update-colors-and-legend" class="nav-link" data-scroll-target="#update-colors-and-legend">Update colors and legend</a></li>
   <li><a href="#facet-by-group" id="toc-facet-by-group" class="nav-link" data-scroll-target="#facet-by-group">Facet by group</a></li>
   <li><a href="#suppress-legend" id="toc-suppress-legend" class="nav-link" data-scroll-target="#suppress-legend">Suppress legend</a></li>
   <li><a href="#background-colors-other-clean-up" id="toc-background-colors-other-clean-up" class="nav-link" data-scroll-target="#background-colors-other-clean-up">Background colors &amp; other clean up</a></li>
@@ -361,8 +357,8 @@ pre[class] {
 </div>
 </div>
 </section>
-<section id="update-legend" class="level2">
-<h2 class="anchored" data-anchor-id="update-legend">Update legend</h2>
+<section id="update-colors-and-legend" class="level2">
+<h2 class="anchored" data-anchor-id="update-colors-and-legend">Update colors and legend</h2>
 <p>By default, the legend title will be the the variable used, which in this case is a factored version of the Group variable. Colors of points will also be default colors and color labels map to discrete variable values.</p>
 <p>Because the legend is indicating variable and values related to our specified <strong>color</strong> variable, we can use the <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html"><code>scale_color_manual()</code></a> function to update everything related to the legend.</p>
 <p><em>Caveat</em>: While <code>scale_color_manual()</code> can update titles and labels as well as colors, order of operations matters. Color <strong>must be set in the function</strong>, otherwise you may encounter an error.</p>

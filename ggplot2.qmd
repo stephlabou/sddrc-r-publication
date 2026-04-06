@@ -91,7 +91,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
                       Group = "Treatment"))
 ```
 
-## Update legend
+## Update colors and legend
 
 By default, the legend title will be the the variable used, which in this case is a factored version of the Group variable. Colors of points will also be default colors and color labels map to discrete variable values.
 

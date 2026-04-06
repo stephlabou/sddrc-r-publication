@@ -49,6 +49,8 @@ facet_plot <- ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Grou
   theme(legend.position = "none")
 ```
 
+### Fit line
+
 Fit a polynomial (by default, a basic linear model using `lm()`) using the [`stat_poly_line()` function](https://docs.r4photobiology.info/ggpmisc/reference/stat_poly_line.html).
 ```{r warning=FALSE}
 facet_plot +
@@ -56,6 +58,8 @@ facet_plot +
   #se = FALSE -> no shaded confidence interval, just line
   stat_poly_line(se = FALSE)
 ```
+
+### Add function to plot
 
 Then use the [`stat_poly_eq()` function](https://docs.r4photobiology.info/ggpmisc/reference/stat_poly_eq.html) to add the R^2^ value to the plot.
 ```{r warning=FALSE}
@@ -75,6 +79,8 @@ facet_plot +
 
 The [`ggpmisc` user guide](https://docs.r4photobiology.info/ggpmisc/articles/user-guide.html) contains many more options for model equations, lines, and tables.
 
+### Save ggpmisc plot
+
 Since this is a `gg` object, we can save it using the standard `ggsave()` function:
 
 ```{r warning=FALSE}
@@ -92,6 +98,8 @@ The `ggpubr` package is another extension package of `ggplot2` for adding statis
 ```{r message=FALSE}
 library(ggpubr)
 ```
+
+### Add line and function
 
 Before, we added a trend line and model equation to our existing `ggplot` object, by adding additional functions from a new package. In the case of `ggpubr`, we can use this package's functions, which recreate ggplot-style plots with additional options.
 
@@ -140,8 +148,9 @@ facet_wrap(~Group) +
 #this may take some trial and error
 stat_regline_equation(label.y = 12)
 ```
+### Save ggpubr plot
 
-And as usual, the plot can be saved using the `ggsave()` function:
+As usual, the plot can be saved using the `ggsave()` function:
 
 ```{r}
 ggpubr_plot <- ggscatter(data = smartpill, x = "Weight", y = "SB.Time",

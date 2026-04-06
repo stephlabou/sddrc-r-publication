@@ -27,6 +27,6 @@ format:
       - brand
     css: styles.css
     toc: true
-
+    html-table-processing: none
 
 

@@ -40,7 +40,7 @@ summary(smartpill)
 The equivalent summary statistics function from `gtsummary` is `tbl_summary()`.
 
 ```{r label='tbl_summary'}
-tbl_summary(smartpill)
+tbl_summary(smartpill) 
 ```
 
 
