@@ -274,7 +274,7 @@ For some customizations, we'll need to convert our `gtsummary` object to a `gt` 
 
 For instance, to update the footnote to clarify which test was used on which variable.
 
-```{r label='stat_compare_3', eval=FALSE}
+```{r label='stat_compare_3'}
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   #convert to gt object keeping everything except the existing footnotes
@@ -286,7 +286,7 @@ Table1 %>%
 
 Or to add a title and/or subtitle to the table:
 
-```{r label='table_title', eval=FALSE}
+```{r label='table_title'}
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   as_gt(include = -tab_footnote) %>% 
@@ -299,7 +299,7 @@ Table1 %>%
 
 As with plots, there are many options for table styling: [36 combinations of style and color to choose from](https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples) plus [conditional cell formatting](https://gt.rstudio.com/reference/tab_style.html)
 
-```{r label='styling', eval=FALSE}
+```{r label='styling'}
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   as_gt(include = -tab_footnote) %>% 
@@ -315,7 +315,7 @@ Table1 %>%
 
 The [function `gtsave()`](https://gt.rstudio.com/reference/gtsave.html) is the parallel table save function to `ggsave()` for plots.
 
-```{r label='saving', eval=FALSE}
+```{r label='saving'}
 #assign updates to Table1 object
 Table1_save <- Table1 %>% 
           add_p(test = Age ~ "t.test") %>% 
