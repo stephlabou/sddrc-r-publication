@@ -23,38 +23,10 @@ library(medicaldata)
 Along with statistical annotation extensions of `ggplot2`, there are also [many extension packages](https://exts.ggplot2.tidyverse.org/) designed to visualize specific types or formats of data, like sequencing data files or genomics data formats.
 
 This section includes a brief demo of three of these packages:
-* [`ggseqplot`](https://maraab23.github.io/ggseqplot/index.html)
 * [`ggDNAvis`](https://ejade42.github.io/ggDNAvis/)
 * [`gggenomes`](https://thackl.github.io/gggenomes/)
 * [`ggtranscript`](https://dzhang32.github.io/ggtranscript/)
 
-## Sequence plots
-
-The [`ggseqplot`](https://maraab23.github.io/ggseqplot/articles/ggseqplot.html) package makes ggplot-style representation and summarization plots for sequence data:
-
-| {ggseqplot} includes five types of summarization plots:
-| * State distribution plots (ggseqdplot)
-| * Entropy line plots (ggseqplot)
-| * Modal state sequence plot (ggseqmsplot)
-| * Mean time plot (ggseqmtplot)
-| * Transition rate plots (ggseqtrplot)
-
-| {ggseqplot} supports both full and subset-based representation plots, offering the following plot types:
-| * Sequence index plot (ggseqiplot)
-| * Sequence frequency plot (ggseqfplot)
-| * Representative sequence plot (ggseqrplot)
-| * Relative frequency sequence plot (ggseqrfplot)
-
-This package is an adaptation of the R package [`TraMineR`](https://traminer.unige.ch/), which we will also install and load to access some built-in datasets.
-
-```{r eval=FALSE}
-install.packages(c("TraMineR", "ggseqplot"))
-```
-
-```{r message=FALSE}
-library(TraMineR)
-library(ggseqplot)
-```
 
 ### Sequence strings
 The [`ggDNAviz`](https://ejade42.github.io/ggDNAvis/index.html) package can make ggplot-style plots for genetic data:
@@ -72,7 +44,9 @@ library(ggDNAvis)
 library(tidyverse) #loads ggplot2 and other useful dependencies
 ```
 
-This package contains a built-in dataset `example_many_sequences`, which we will use to recreate some of the plots from the official documentation for this package.
+Let's recreate some of the plots in the official pcakge documentation, using the built-in dataset `example_many_sequences`.
+
+First, check out the sample data:
 
 ```{r}
 str(example_many_sequences)
@@ -82,17 +56,23 @@ str(example_many_sequences)
 head(example_many_sequences)
 ```
 
-Function [visualize_many_sequences()](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html) creates a ggplot-style visualization of sequences:
+To create a ggplot-style visualization of sequence data:
+
+First, use one of the [data processing function](https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions) to extract and sort the sequence data from the full dataframe.
 
 ```{r}
-# Create sequences vector using helper function extract_and_sort_sequences
 sequences <- extract_and_sort_sequences(example_many_sequences)
 
 head(sequences)
 ```
+Then, use the [`visualize_many_sequqneces()` function](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html). We will save the image to a file within the same function, then import it back in to view. (If following along locally, you can directly open the created png from your local file explorer to view.)
+
 ```{r}
 #viewing in R isn't great; write to file image
-visualize_many_sequences(sequences, filename = "ggDNAviz_plot.png", return = FALSE)
+visualize_many_sequences(sequences_vector = sequences, 
+                         filename = "ggDNAviz_plot.png",
+                         #don't also show image in R
+                         return = FALSE)
 ```
 
 ```{r}
@@ -103,9 +83,90 @@ grid::grid.newpage()
 grid::grid.raster(image)
 ```
 
-Colors can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
+Colors for ACTG are the default ggplot-style colors, but can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
+
+Next, update this image to visualize methylation probabilities for these sequences.
+
+Use the methylation [data processing function](https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions) to extract relevant data.
+
+```{r}
+methylation_info <- extract_and_sort_methylation(example_many_sequences)
+
+str(methylation_info)
+```
+Then use the [`visualise_methylation()` function](https://ejade42.github.io/ggDNAvis/reference/visualise_methylation.html) to create a new image with this information. As before, save the image within the function and then read in to view. 
+
+There are many customization options available:
+
+```{r}
+visualise_methylation(
+  #specify where to get data for locations, probabilities, and sequences
+    modification_locations = methylation_info$locations,
+    modification_probabilities = methylation_info$probabilities,
+    sequences = methylation_info$sequences,
+  #set colors and annotations
+    low_colour = "white",
+    high_colour = "black",
+    index_annotation_lines = c(1, 23, 37),
+    index_annotation_interval = 3,
+    index_annotation_full_line = FALSE,
+    index_annotation_always_first_base = TRUE,
+    index_annotation_always_last_base = TRUE,
+    other_bases_colour = "lightblue1",
+    other_bases_outline_linewidth = 1,
+    other_bases_outline_colour = "grey",
+    modified_bases_outline_linewidth = 3,
+    modified_bases_outline_colour = "black",
+    margin = 0.3,
+  #save image to png file, do not also show in R console
+    filename = "methylation.png",
+    return = FALSE
+)
+```
+
+```{r}
+image1 <- visualise_methylation(
+  #specify where to get data for locations, probabilities, and sequences
+    modification_locations = methylation_info$locations,
+    modification_probabilities = methylation_info$probabilities,
+    sequences = methylation_info$sequences,
+  #set colors and annotations
+    low_colour = "white",
+    high_colour = "black",
+    index_annotation_lines = c(1, 23, 37),
+    index_annotation_interval = 3,
+    index_annotation_full_line = FALSE,
+    index_annotation_always_first_base = TRUE,
+    index_annotation_always_last_base = TRUE,
+    other_bases_colour = "lightblue1",
+    other_bases_outline_linewidth = 1,
+    other_bases_outline_colour = "grey",
+    modified_bases_outline_linewidth = 3,
+    modified_bases_outline_colour = "black",
+    margin = 0.3)
+
+```
+
+```{r}
+image1 +
+  labs(title = "test")
+```
 
 
+```{r}
+image <- png::readPNG("test.png")
+unlink("test.png")
+grid::grid.newpage()
+grid::grid.raster(image)
+```
+
+
+```{r}
+image <- png::readPNG("methylation.png")
+unlink("methylation.png")
+grid::grid.newpage()
+grid::grid.raster(image)
+```
 
 There is also a [web-based interactive version of this package](https://ejade42-ggdnavis.share.connect.posit.cloud/) for users to upload data files and customize visualizations for download, without any coding needed.
 
