@@ -1,0 +1,112 @@
+---
+title: "Demo: Sequencing Plots"
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 300px;
+}
+```
+
+```{r eval=T, echo=F, message = F, warning = F}
+library(tidyverse)
+library(medicaldata)
+```
+
+## ggplot extensions for specific data types
+
+Along with statistical annotation extensions of `ggplot2`, there are also [many extension packages](https://exts.ggplot2.tidyverse.org/) designed to visualize specific types or formats of data, like sequencing data files or genomics data formats.
+
+This section includes a brief demo of three of these packages:
+* [`ggseqplot`](https://maraab23.github.io/ggseqplot/index.html)
+* [`ggDNAvis`](https://ejade42.github.io/ggDNAvis/)
+* [`gggenomes`](https://thackl.github.io/gggenomes/)
+* [`ggtranscript`](https://dzhang32.github.io/ggtranscript/)
+
+## Sequence plots
+
+The [`ggseqplot`](https://maraab23.github.io/ggseqplot/articles/ggseqplot.html) package makes ggplot-style representation and summarization plots for sequence data:
+
+| {ggseqplot} includes five types of summarization plots:
+| * State distribution plots (ggseqdplot)
+| * Entropy line plots (ggseqplot)
+| * Modal state sequence plot (ggseqmsplot)
+| * Mean time plot (ggseqmtplot)
+| * Transition rate plots (ggseqtrplot)
+
+| {ggseqplot} supports both full and subset-based representation plots, offering the following plot types:
+| * Sequence index plot (ggseqiplot)
+| * Sequence frequency plot (ggseqfplot)
+| * Representative sequence plot (ggseqrplot)
+| * Relative frequency sequence plot (ggseqrfplot)
+
+This package is an adaptation of the R package [`TraMineR`](https://traminer.unige.ch/), which we will also install and load to access some built-in datasets.
+
+```{r eval=FALSE}
+install.packages(c("TraMineR", "ggseqplot"))
+```
+
+```{r message=FALSE}
+library(TraMineR)
+library(ggseqplot)
+```
+
+### Sequence strings
+The [`ggDNAviz`](https://ejade42.github.io/ggDNAvis/index.html) package can make ggplot-style plots for genetic data:
+| a single DNA/RNA sequence split across multiple lines,
+| multiple DNA/RNA sequences, each occupying a whole line, or
+| base modifications such as DNA methylation called by modified-bases models in Dorado or Guppy.
+
+```{r eval=FALSE}
+#Install package (only the first time)
+install.packages("ggDNAvis")
+```
+
+```{r}
+library(ggDNAvis)
+library(tidyverse) #loads ggplot2 and other useful dependencies
+```
+
+This package contains a built-in dataset `example_many_sequences`, which we will use to recreate some of the plots from the official documentation for this package.
+
+```{r}
+str(example_many_sequences)
+```
+
+```{r}
+head(example_many_sequences)
+```
+
+Function [visualize_many_sequences()](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html) creates a ggplot-style visualization of sequences:
+
+```{r}
+# Create sequences vector using helper function extract_and_sort_sequences
+sequences <- extract_and_sort_sequences(example_many_sequences)
+
+head(sequences)
+```
+```{r}
+#viewing in R isn't great; write to file image
+visualize_many_sequences(sequences, filename = "ggDNAviz_plot.png", return = FALSE)
+```
+
+```{r}
+#view created image
+image <- png::readPNG("ggDNAviz_plot.png")
+unlink("ggDNAviz_plot.png")
+grid::grid.newpage()
+grid::grid.raster(image)
+```
+
+Colors can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
+
+
+
+There is also a [web-based interactive version of this package](https://ejade42-ggdnavis.share.connect.posit.cloud/) for users to upload data files and customize visualizations for download, without any coding needed.
+
+
