@@ -13,11 +13,6 @@ pre[class] {
 }
 ```
 
-```{r eval=T, echo=F, message = F, warning = F}
-library(tidyverse)
-library(medicaldata)
-```
-
 ## ggplot extensions for specific data types
 
 Along with statistical annotation extensions of `ggplot2`, there are also [many extension packages](https://exts.ggplot2.tidyverse.org/) designed to visualize specific types or formats of data, like sequencing data files or genomics data formats.
@@ -39,12 +34,12 @@ The [`ggDNAviz`](https://ejade42.github.io/ggDNAvis/index.html) package can make
 install.packages("ggDNAvis")
 ```
 
-```{r}
-library(ggDNAvis)
+```{r message=FALSE}
 library(tidyverse) #loads ggplot2 and other useful dependencies
+library(ggDNAvis)
 ```
 
-Let's recreate some of the plots in the official pcakge documentation, using the built-in dataset `example_many_sequences`.
+Let's recreate some of the plots in the official package documentation, using the built-in dataset `example_many_sequences`.
 
 First, check out the sample data:
 
@@ -85,9 +80,21 @@ grid::grid.raster(image)
 
 Colors for ACTG are the default ggplot-style colors, but can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
 
+Note that [under the hood](https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R) this function makes use of ggplot2 functions. From the code for this particular function:
+| result <- ggplot(image_data, aes(x = .data$x, y = .data$y)) +
+|            ## Background
+|            geom_tile(data = filter(image_data, .data$value == 0), width = tile_width, height = tile_height, fill = background_colour) +
+|
+|            ## Base boxes
+|            geom_tile(data = filter(image_data, .data$value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)),
+|                      col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) |+
+|            scale_fill_manual(values = sequence_colours)
+
+Note the standard ggplot syntax of `ggplot()` and use of `geom_tile()` and `scale_fill_manual()` to specify how data should be visualized. This means that while there aren't built in functions in the `ggDNAvis` package to, say, add a figure title using `labs()` as in normal ggplot images, users could in theory build their own versions of this using `geom_tile()`. But in most cases, using existing extension packages that have done the hard work already is the more appealing option.
+
 Next, update this image to visualize methylation probabilities for these sequences.
 
-Use the methylation [data processing function](https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions) to extract relevant data.
+Back to the `ggDNAvis` package, use the methylation [data processing function](https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions) to extract relevant data.
 
 ```{r}
 methylation_info <- extract_and_sort_methylation(example_many_sequences)
@@ -125,43 +132,6 @@ visualise_methylation(
 ```
 
 ```{r}
-image1 <- visualise_methylation(
-  #specify where to get data for locations, probabilities, and sequences
-    modification_locations = methylation_info$locations,
-    modification_probabilities = methylation_info$probabilities,
-    sequences = methylation_info$sequences,
-  #set colors and annotations
-    low_colour = "white",
-    high_colour = "black",
-    index_annotation_lines = c(1, 23, 37),
-    index_annotation_interval = 3,
-    index_annotation_full_line = FALSE,
-    index_annotation_always_first_base = TRUE,
-    index_annotation_always_last_base = TRUE,
-    other_bases_colour = "lightblue1",
-    other_bases_outline_linewidth = 1,
-    other_bases_outline_colour = "grey",
-    modified_bases_outline_linewidth = 3,
-    modified_bases_outline_colour = "black",
-    margin = 0.3)
-
-```
-
-```{r}
-image1 +
-  labs(title = "test")
-```
-
-
-```{r}
-image <- png::readPNG("test.png")
-unlink("test.png")
-grid::grid.newpage()
-grid::grid.raster(image)
-```
-
-
-```{r}
 image <- png::readPNG("methylation.png")
 unlink("methylation.png")
 grid::grid.newpage()
@@ -170,4 +140,157 @@ grid::grid.raster(image)
 
 There is also a [web-based interactive version of this package](https://ejade42-ggdnavis.share.connect.posit.cloud/) for users to upload data files and customize visualizations for download, without any coding needed.
 
+## Genomic data
 
+The package [`gggenomes`](https://thackl.github.io/gggenomes/)"extends the popular R visualization package ggplot2 by adding dedicated plot functions for genes, syntenic regions, etc. and verbs to manipulate the plot to, for example, quickly zoom in into gene neighborhoods."
+
+```{r eval=FALSE, message=FALSE}
+#Install package (only the first time)
+install.packages("gggenomes")
+```
+
+```{r message=FALSE}
+library(gggenomes)
+```
+
+Like most R packages, this one comes with example datasets we will use to recreate some plots from the official package documentation.
+
+```{r}
+data(package="gggenomes")
+```
+
+| emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes
+| emale_cogs - Clusters of orthologs of 6 EMALE proteomes
+| emale_gc - Relative GC-content along 6 EMALE genomes
+| emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages)
+| emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes
+| emale_prot_ava - All-versus-all alignments 6 EMALE proteomes
+| emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages)
+| emale_tirs - Terminal inverted repeats of 6 EMALE genomes
+
+The primary function is [`gggenomes()](https://thackl.github.io/gggenomes/reference/gggenomes.html) and like `ggplot2`, `gggenomes` uses the concept of "geoms" (visualization geometry) to [build up a plot](https://thackl.github.io/gggenomes/articles/gggenomes.html):
+
+| [geom_seq()](https://thackl.github.io/gggenomes/reference/geom_seq.html) : data=seqs() for the seq track
+| [geom_feat()](https://thackl.github.io/gggenomes/reference/geom_feat.html) : data=feats() for the first feat track not named “genes”
+| [geom_link()](https://thackl.github.io/gggenomes/reference/geom_link.html) : data=links() for the first link track
+| [geom_gene()](https://thackl.github.io/gggenomes/reference/geom_gene.html) : data=genes() for the first feat track with some extras for geneish features
+
+Example plot:
+```{r warning=FALSE}
+gggenomes(
+  #specify genes, sequences, links, and feature tracks
+  genes = emale_genes,
+  seqs = emale_seqs,
+  feats = emale_tirs,
+  links = emale_ava
+) +
+  #chromosomes
+  geom_seq() + 
+  #labels
+  geom_bin_label() + 
+  #terminal inverted repeats
+  geom_feat(linewidth= 8) + 
+  #genes
+  geom_gene(aes(fill = strand), position = "strand") + 
+  #synteny-blocks
+  geom_link(offset = 0.15) 
+```
+
+This can be customized for colors and annotations mixing and matching `gggenomes` and `ggplot2` functions.
+
+From`gggenomes`, add genomes tags.
+
+```{r warning=FALSE}
+gggenomes(
+  genes = emale_genes,
+  seqs = emale_seqs,
+  feats = emale_tirs,
+  links = emale_ava
+) +
+  geom_seq() + 
+  geom_bin_label() + 
+  geom_feat(linewidth= 8) + 
+  geom_gene(aes(fill = strand), position = "strand") + 
+  geom_link(offset = 0.15) +
+  #add genome gene tag, format so no overlap
+  geom_gene_tag(aes(label=name), 
+                nudge_y=0.1, check_overlap = TRUE) 
+```
+
+From `ggplot`, change the colors using the`scale_color_discrete()` function's [palette argument](https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html#arg-palette). 
+
+There are a variety of discrete color palette options from the [`scales` package](https://scales.r-lib.org/reference/pal_brewer.html) which is installed as part of `ggplot` (which we installed as part of `tidyverse`); in this case, the [`pal_brewer()` function](https://scales.r-lib.org/reference/pal_brewer.html) (handy [cheatsheet](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html) for palette names).
+
+```{r warning=FALSE}
+gggenomes(
+  genes = emale_genes,
+  seqs = emale_seqs,
+  feats = emale_tirs,
+  links = emale_ava
+) +
+  geom_seq() + 
+  geom_bin_label() + 
+  geom_feat(linewidth= 8) + 
+  geom_gene(aes(fill = strand), position = "strand") + 
+  geom_link(offset = 0.15) +
+  geom_gene_tag(aes(label=name), 
+                nudge_y=0.1, check_overlap = TRUE) +
+  #change colors
+  scale_fill_discrete(palette = scales::pal_brewer(palette = "Accent")) 
+```
+Also from `ggplot2`, adding a title using the `labs()` option.
+
+```{r warning=FALSE}
+gggenomes(
+  genes = emale_genes,
+  seqs = emale_seqs,
+  feats = emale_tirs,
+  links = emale_ava
+) +
+  geom_seq() + 
+  geom_bin_label() + 
+  geom_feat(linewidth= 8) + 
+  geom_gene(aes(fill = strand), position = "strand") + 
+  geom_link(offset = 0.15) +
+  geom_gene_tag(aes(label=name), 
+                nudge_y=0.1, check_overlap = TRUE) +
+  scale_fill_discrete(palette = scales::pal_brewer(palette = "Accent")) +
+  #add title
+  labs(title = "gggenomes plot")
+```
+
+_Note_: If adding a `ggplot2` function does not work - either by returning an error or unexpected results - it may be that the extension package has a built-in function to do something similar. Always refer back to the package documentation (usually an online site with tutorials) to see what functions are available within-package.
+
+And from `gggenomes`, add genomes tags.
+
+```{r warning=FALSE}
+gggenomes(
+  genes = emale_genes,
+  seqs = emale_seqs,
+  feats = emale_tirs,
+  links = emale_ava
+) +
+  geom_seq() + 
+  geom_bin_label() + 
+  geom_feat(linewidth= 8) + 
+  geom_gene(aes(fill = strand), position = "strand") + 
+  geom_link(offset = 0.15) +
+  #add genome gene tag, format so no overlap
+  geom_gene_tag(aes(label=name), 
+                nudge_y=0.1, check_overlap = TRUE) +
+  scale_fill_discrete(palette = scales::pal_brewer(palette = "Accent")) +
+  labs(title = "gggenomes plot")
+```
+Since this is a ggplot object, we can save using the standard `ggsave()` options. By default, `ggsave()` will use the last plotted object as input; we could also assign the code above to an an object and specifically call that object in the code below.
+
+```{r}
+ggsave("gggenomes_plot.png", width=8, height=4)
+```
+
+A [complete example](https://thackl.github.io/gggenomes/articles/emales.html) of this package, from raw data to full plot, is included the package documentation.
+
+## Additional resources
+
+* There are also many non-ggplot-style plotting R packages for sequence-type data ([overview in Table 1](https://pmc.ncbi.nlm.nih.gov/articles/PMC11541695/)).
+
+* More [R color palettes](https://emilhvitfeldt.github.io/r-color-palettes/discrete.html)
