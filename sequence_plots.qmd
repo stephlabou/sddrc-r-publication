@@ -25,9 +25,9 @@ This section includes a brief demo of three of these packages:
 
 ### Sequence strings
 The [`ggDNAviz`](https://ejade42.github.io/ggDNAvis/index.html) package can make ggplot-style plots for genetic data:
-| a single DNA/RNA sequence split across multiple lines,
-| multiple DNA/RNA sequences, each occupying a whole line, or
-| base modifications such as DNA methylation called by modified-bases models in Dorado or Guppy.
+> a single DNA/RNA sequence split across multiple lines,
+> multiple DNA/RNA sequences, each occupying a whole line, or
+> base modifications such as DNA methylation called by modified-bases models in Dorado or Guppy.
 
 ```{r eval=FALSE}
 #Install package (only the first time)
@@ -81,14 +81,14 @@ grid::grid.raster(image)
 Colors for ACTG are the default ggplot-style colors, but can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
 
 Note that [under the hood](https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R) this function makes use of ggplot2 functions. From the code for this particular function:
-| result <- ggplot(image_data, aes(x = .data$x, y = .data$y)) +
-|            ## Background
-|            geom_tile(data = filter(image_data, .data$value == 0), width = tile_width, height = tile_height, fill = background_colour) +
-|
-|            ## Base boxes
-|            geom_tile(data = filter(image_data, .data$value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)),
-|                      col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) |+
-|            scale_fill_manual(values = sequence_colours)
+> result <- ggplot(image_data, aes(x = .data$x, y = .data$y)) +
+>            ## Background
+>            geom_tile(data = filter(image_data, .data$value == 0), width = tile_width, height = tile_height, fill = background_colour) +
+>
+>            ## Base boxes
+>            geom_tile(data = filter(image_data, .data$value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)),
+>                      col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) >+
+>            scale_fill_manual(values = sequence_colours)
 
 Note the standard ggplot syntax of `ggplot()` and use of `geom_tile()` and `scale_fill_manual()` to specify how data should be visualized. This means that while there aren't built in functions in the `ggDNAvis` package to, say, add a figure title using `labs()` as in normal ggplot images, users could in theory build their own versions of this using `geom_tile()`. But in most cases, using existing extension packages that have done the hard work already is the more appealing option.
 
@@ -159,21 +159,21 @@ Like most R packages, this one comes with example datasets we will use to recrea
 data(package="gggenomes")
 ```
 
-| emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes
-| emale_cogs - Clusters of orthologs of 6 EMALE proteomes
-| emale_gc - Relative GC-content along 6 EMALE genomes
-| emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages)
-| emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes
-| emale_prot_ava - All-versus-all alignments 6 EMALE proteomes
-| emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages)
-| emale_tirs - Terminal inverted repeats of 6 EMALE genomes
+> emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes
+> emale_cogs - Clusters of orthologs of 6 EMALE proteomes
+> emale_gc - Relative GC-content along 6 EMALE genomes
+> emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages)
+> emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes
+> emale_prot_ava - All-versus-all alignments 6 EMALE proteomes
+> emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages)
+> emale_tirs - Terminal inverted repeats of 6 EMALE genomes
 
 The primary function is [`gggenomes()](https://thackl.github.io/gggenomes/reference/gggenomes.html) and like `ggplot2`, `gggenomes` uses the concept of "geoms" (visualization geometry) to [build up a plot](https://thackl.github.io/gggenomes/articles/gggenomes.html):
 
-| [geom_seq()](https://thackl.github.io/gggenomes/reference/geom_seq.html) : data=seqs() for the seq track
-| [geom_feat()](https://thackl.github.io/gggenomes/reference/geom_feat.html) : data=feats() for the first feat track not named “genes”
-| [geom_link()](https://thackl.github.io/gggenomes/reference/geom_link.html) : data=links() for the first link track
-| [geom_gene()](https://thackl.github.io/gggenomes/reference/geom_gene.html) : data=genes() for the first feat track with some extras for geneish features
+> [geom_seq()](https://thackl.github.io/gggenomes/reference/geom_seq.html) : data=seqs() for the seq track
+> [geom_feat()](https://thackl.github.io/gggenomes/reference/geom_feat.html) : data=feats() for the first feat track not named “genes”
+> [geom_link()](https://thackl.github.io/gggenomes/reference/geom_link.html) : data=links() for the first link track
+> [geom_gene()](https://thackl.github.io/gggenomes/reference/geom_gene.html) : data=genes() for the first feat track with some extras for geneish features
 
 Example plot:
 ```{r warning=FALSE}
