@@ -27,7 +27,7 @@ smartpill <- smartpill %>%
 
 ## Introduction to `gtsummary`
 
-Next, we'll use the `gtsummary` package, an extension of the `gt` table formatting package, that can incorporate statistical model outputs into publication-ready tables.
+Next, we'll to back to the `smartpill` dataset and use the `gtsummary` package, an extension of the `gt` table formatting package, that can incorporate statistical model outputs into publication-ready tables.
 
 ## Descriptive statistics
 

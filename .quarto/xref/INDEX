@@ -16,5 +16,8 @@
   },
   "stat_plots.qmd": {
     "stat_plots.html": "9ffe3e02"
+  },
+  "sequence_plots.qmd": {
+    "sequence_plots.html": "f5e3b2d8"
   }
 }

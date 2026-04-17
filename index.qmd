@@ -8,18 +8,20 @@ Note that this workshops assumes a working knowledge of R; we will dive straight
 
 ### Install and load packages
 
-This workshop will use the packages `tidyverse` (for data manipulation and plotting), `gtsummary` (for table formatting) and `medicaldata` for example datasets.
+This workshop will use the packages `tidyverse` (for data manipulation and plotting; this includes the `ggplot2` package), `ggpmisc` (for adding statistical annotations to plots),  `gtsummary` (for table formatting) and `medicaldata` for example datasets.
 
-```{r eval=T, echo=T, message = F, warning = F}
-library(tidyverse)
-library(gtsummary)
-library(medicaldata)
+```{r eval=F, echo=T, message = F, warning = F}
+#Install package (only the first time)
+install.packages(c("tidyverse", "ggpmisc", "gtsummary", "medicaldata"))
 ```
-
 
 ### About the data
 
 This session will use the [smartpill dataset](https://cran.r-project.org/web/packages/medicaldata/refman/medicaldata.html#smartpill) from the `medicaldata` package.
+
+```{r echo=F}
+library(medicaldata)
+```
 
 
 ```{r eval=T, echo=T}

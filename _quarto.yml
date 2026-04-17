@@ -17,6 +17,8 @@ website:
         text: "Custom Plots"
       - href: stat_plots.qmd
         text: "Statistical Plots"
+      - href: sequence_plots.qmd
+        text: "Sequencing Plots"
       - href: gtsummary.qmd
         text: "Statistical Tables"
 
