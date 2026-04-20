@@ -122,7 +122,6 @@ visualise_methylation(
     other_bases_outline_colour = "grey",
     modified_bases_outline_linewidth = 3,
     modified_bases_outline_colour = "black",
-    margin = 0.3,
   #save image to png file, do not also show in R console
     filename = "methylation.png",
     return = FALSE
@@ -178,8 +177,8 @@ Example plot:
 ```{r warning=FALSE}
 gggenomes(
   #specify genes, sequences, links, and feature tracks
-  genes = emale_genes,
-  seqs = emale_seqs,
+  genes = emale_genes, 
+  seqs = emale_seqs, 
   feats = emale_tirs,
   links = emale_ava
 ) +
@@ -201,10 +200,7 @@ From`gggenomes`, add genomes tags.
 
 ```{r warning=FALSE}
 gggenomes(
-  genes = emale_genes,
-  seqs = emale_seqs,
-  feats = emale_tirs,
-  links = emale_ava
+  genes = emale_genes, seqs = emale_seqs, feats = emale_tirs, links = emale_ava
 ) +
   geom_seq() + 
   geom_bin_label() + 
@@ -222,10 +218,7 @@ There are a variety of discrete color palette options from the [`scales` package
 
 ```{r warning=FALSE}
 gggenomes(
-  genes = emale_genes,
-  seqs = emale_seqs,
-  feats = emale_tirs,
-  links = emale_ava
+  genes = emale_genes, seqs = emale_seqs, feats = emale_tirs, links = emale_ava
 ) +
   geom_seq() + 
   geom_bin_label() + 
@@ -242,10 +235,7 @@ Also from `ggplot2`, adding a title using the `labs()` option.
 
 ```{r warning=FALSE}
 gggenomes(
-  genes = emale_genes,
-  seqs = emale_seqs,
-  feats = emale_tirs,
-  links = emale_ava
+  genes = emale_genes, seqs = emale_seqs, feats = emale_tirs, links = emale_ava
 ) +
   geom_seq() + 
   geom_bin_label() + 
@@ -265,10 +255,7 @@ And from `gggenomes`, add genomes tags.
 
 ```{r warning=FALSE}
 gggenomes(
-  genes = emale_genes,
-  seqs = emale_seqs,
-  feats = emale_tirs,
-  links = emale_ava
+  genes = emale_genes, seqs = emale_seqs, feats = emale_tirs, links = emale_ava
 ) +
   geom_seq() + 
   geom_bin_label() + 
