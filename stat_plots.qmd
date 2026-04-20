@@ -21,11 +21,11 @@ smartpill <- smartpill %>%
   mutate(Group = as.factor(Group))
 ```
 
-There are many R packages that can be used to plot statistical results. This section will briefly cover `ggpmisc` and `ggpubr` for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot
+There are many R packages that can be used to plot statistical results. This section will briefly cover `ggpmisc` and `ggpubr` for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot.
 
 ## ggpmisc
 
-The `ggpmisc` package is an extension of `ggplot2` for labeling plots with statistical results of data in the plot, for instance model equation or p-values.
+The [`ggpmisc` package](https://docs.r4photobiology.info/ggpmisc/) is an extension of `ggplot2` for labeling plots with statistical results of data in the plot, for instance model equation or p-values.
 
 ```{r}
 #leaving in warnings to recognize some functions are overwritten
@@ -34,7 +34,7 @@ The `ggpmisc` package is an extension of `ggplot2` for labeling plots with stati
 library(ggpmisc)
 ```
 
-For our faceted scatter plot
+Use faceted scatterplot from prior section as base plot:
 ```{r warning=FALSE}
 facet_plot <- ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
@@ -93,7 +93,7 @@ ggsave(filename = "ggpmisc_plot.png", plot = ggpmisc_plot, height = 5, width = 7
 
 ## ggpubr
 
-The `ggpubr` package is another extension package of `ggplot2` for adding statistical results to `ggplot` plots.
+The [`ggpubr` package](https://rpkgs.datanovia.com/ggpubr/) is another extension package of `ggplot2` for adding statistical results to `ggplot` plots.
 
 ```{r message=FALSE}
 library(ggpubr)
@@ -129,8 +129,9 @@ ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
   cor.coef = TRUE
    ) +
 #use facet_wrap from ggplot2 to make the facets by group
-facet_wrap(~Group)
-#could continue with further label customization, as in prior section
+facet_wrap(~Group) +
+#suppress legend
+theme(legend.position = "none")
 ```
 
 The regression equation can be added using [`stat_regline_equation()`](https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html).
@@ -152,7 +153,7 @@ stat_regline_equation(label.y = 12)
 
 As usual, the plot can be saved using the `ggsave()` function:
 
-```{r}
+```{r warning=FALSE}
 ggpubr_plot <- ggscatter(data = smartpill, x = "Weight", y = "SB.Time",
   color = "Group", palette = c("red", "navy"),
   add = "reg.line",
@@ -167,10 +168,10 @@ ggsave(filename = "ggpubr_plot.png", plot = ggpubr_plot, height = 5, width = 7, 
 
 ## Choosing a package
 
-There are many more [ggplot extension](https://exts.ggplot2.tidyverse.org/index.html) packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in `ggpmisc` or `ggpubr`, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, [phylogenetic trees](https://exts.ggplot2.tidyverse.org/ggtree.html) or [comparative genomics](https://thackl.github.io/gggenomes/).
+There are many more [ggplot extension](https://exts.ggplot2.tidyverse.org/index.html) packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in `ggpmisc` or `ggpubr`, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, [phylogenetic trees](https://exts.ggplot2.tidyverse.org/ggtree.html) or [survival analysis](https://rpkgs.datanovia.com/survminer/index.html).
 
 ## Additional resources
 * [ggpmisc website](https://docs.r4photobiology.info/ggpmisc/index.html)
 * [ggpubr website](https://rpkgs.datanovia.com/ggpubr/index.html)
 * Many more [ggplot extensions](https://exts.ggplot2.tidyverse.org/index.html)
-* Also check out [tidyplots](https://tidyplots.org/), another good option for publication-ready plots. 
+* Also check out [tidyplots](https://tidyplots.org/), another good option for publication-ready plots.  Includes many [use cases with example code](https://tidyplots.org/use-cases/) including plots suitable for bioinformatics (volcano plots, principal component, gene expression, correlation, etc.).

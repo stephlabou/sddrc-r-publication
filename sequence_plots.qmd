@@ -5,7 +5,7 @@ title: "Demo: Sequencing Plots"
 ```{css, echo=FALSE}
 pre {
   max-height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 pre[class] {
@@ -17,11 +17,7 @@ pre[class] {
 
 Along with statistical annotation extensions of `ggplot2`, there are also [many extension packages](https://exts.ggplot2.tidyverse.org/) designed to visualize specific types or formats of data, like sequencing data files or genomics data formats.
 
-This section includes a brief demo of three of these packages:
-* [`ggDNAvis`](https://ejade42.github.io/ggDNAvis/)
-* [`gggenomes`](https://thackl.github.io/gggenomes/)
-* [`ggtranscript`](https://dzhang32.github.io/ggtranscript/)
-
+This section includes a brief demo of [`ggDNAvis`](https://ejade42.github.io/ggDNAvis/) and [`gggenomes`](https://thackl.github.io/gggenomes/).
 
 ### Sequence strings
 The [`ggDNAviz`](https://ejade42.github.io/ggDNAvis/index.html) package can make ggplot-style plots for genetic data:
@@ -175,6 +171,7 @@ The primary function is [`gggenomes()](https://thackl.github.io/gggenomes/refere
 > [geom_link()](https://thackl.github.io/gggenomes/reference/geom_link.html) : data=links() for the first link track
 > [geom_gene()](https://thackl.github.io/gggenomes/reference/geom_gene.html) : data=genes() for the first feat track with some extras for geneish features
 
+
 Example plot:
 ```{r warning=FALSE}
 gggenomes(
@@ -238,6 +235,7 @@ gggenomes(
   #change colors
   scale_fill_discrete(palette = scales::pal_brewer(palette = "Accent")) 
 ```
+
 Also from `ggplot2`, adding a title using the `labs()` option.
 
 ```{r warning=FALSE}
@@ -283,7 +281,7 @@ gggenomes(
 ```
 Since this is a ggplot object, we can save using the standard `ggsave()` options. By default, `ggsave()` will use the last plotted object as input; we could also assign the code above to an an object and specifically call that object in the code below.
 
-```{r}
+```{r warning=FALSE}
 ggsave("gggenomes_plot.png", width=8, height=4)
 ```
 
@@ -292,5 +290,4 @@ A [complete example](https://thackl.github.io/gggenomes/articles/emales.html) of
 ## Additional resources
 
 * There are also many non-ggplot-style plotting R packages for sequence-type data ([overview in Table 1](https://pmc.ncbi.nlm.nih.gov/articles/PMC11541695/)).
-
 * More [R color palettes](https://emilhvitfeldt.github.io/r-color-palettes/discrete.html)

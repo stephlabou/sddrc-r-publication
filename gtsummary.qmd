@@ -27,7 +27,7 @@ smartpill <- smartpill %>%
 
 ## Introduction to `gtsummary`
 
-Next, we'll to back to the `smartpill` dataset and use the `gtsummary` package, an extension of the `gt` table formatting package, that can incorporate statistical model outputs into publication-ready tables.
+Next, we'll go back to the `smartpill` dataset and use the `gtsummary` package, an extension of the `gt` table formatting package, that can incorporate statistical model outputs into publication-ready tables.
 
 ## Descriptive statistics
 
@@ -46,7 +46,7 @@ tbl_summary(smartpill)
 
 ### Change default descriptive values
 
-The default summary statistic presented depends on variable type. Categorical variables get counts and percentages while continuous variables get `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
+The default summary statistic presented depends on variable type. Categorical variables get 'counts (percent)' while continuous variables get 'median(first quartile, third quartile)'. Any NA values are listed in a separate row as "unknown".
 
 These defaults are customizable. For instance, if we wanted only a subset of variables:
 
@@ -57,9 +57,7 @@ smartpill %>%
   )
 ```
 
-The default summary statistic presented depends on variable type. Categorical variables are displayed as counts and percentages while continuous variables are displayed as `median(first quartile, third quartile)`. Any NA values are listed in a separate row as "unknown".
-
-These defaults are customizable. For instance, if we wanted to display continuous variables as minimum, median, and maximum:
+Or if we wanted to display continuous variables as minimum, median, and maximum:
 
 ```{r label='customize_continuous'}
 smartpill %>%  
@@ -93,7 +91,7 @@ smartpill %>%
   )
 ```
 
-Note that if we want to change any categorical/character variable _values_, this needs to be done outside `tbl_summary`. Example process to reset factor level names of Group variable:
+Note that if we want to change any categorical/character variable _values_, this needs to be done outside `tbl_summary()`. Example process to reset factor level names of Group variable:
 
 ```{r}
 #check existing levels

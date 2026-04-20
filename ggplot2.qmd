@@ -69,7 +69,7 @@ smartpill %>%
   filter(is.na(SB.Time)) %>% 
   select(Group, SB.Time, Weight)
 ```
-The warning will be suppressed in output moving forward, but not that any data cleanup like remove of missing values should be handled prior to plotting.
+The warning will be suppressed in output moving forward, but note that any data cleanup like remove of missing values should be handled prior to plotting.
 
 ## Change axis labels
 
@@ -97,13 +97,13 @@ By default, the legend title will be the the variable used, which in this case i
 
 Because the legend is indicating variable and values related to our specified __color__ variable, we can use the [`scale_color_manual()`](https://ggplot2.tidyverse.org/reference/scale_manual.html) function to update everything related to the legend.
 
-_Caveat_: While `scale_color_manual()` can update titles and labels as well as colors, order of operations matters. Color __must be set in the function__, otherwise you may encounter an error.
+_Caveat_: While `scale_color_manual()` can update titles and labels as well as colors, order of operations matters. Colors __must be assigned in this function__, otherwise you may encounter an error.
 
 ```{r label='manual_error', error=TRUE}
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
-  #set legend title without also setting color
+  #set legend title without also assigning color values below
   scale_color_manual(name = "Group")
 ```
 First, change colors from default:
@@ -112,7 +112,7 @@ First, change colors from default:
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
-  #update colors --> 0 = red, 1 = navy
+  #set color values --> 0 = red, 1 = navy
   scale_color_manual(values = c("red", "navy"))
 ```
 
@@ -158,7 +158,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   facet_wrap(~Group)
 ```
 
-Update panel titles with `labeller` from 0 / 1 to more complete variable description:
+Update panel titles with [`labeller`](https://ggplot2.tidyverse.org/reference/labeller.html), within `facet_wrap`, from 0 / 1 to more complete variable description:
 
 ```{r label='facet_title', warning=FALSE}
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
@@ -269,19 +269,29 @@ Figure1 <- ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group))
 Arguments and options available:
 ``` {r, eval=FALSE}
 ggsave(
-  filename, #File name to create on disk.
-  plot = get_last_plot(), #Plot to save, defaults to last plot displayed.
-  device = NULL, #Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If NULL (default), the device is guessed based on the filename extension.
-  path = NULL, #Path of the directory to save plot to: path and filename are combined to create the fully qualified file name. Defaults to the working directory.
+  #File name to create on disk.
+  filename, 
+  #Plot to save, defaults to last plot displayed.
+  plot = get_last_plot(), 
+  #Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), 
+  #"pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). 
+  #If NULL (default), the device is guessed based on the filename extension.
+  device = NULL, 
+  #Path of the directory to save plot to
+  #path and filename are combined to create the fully qualified file name. 
+  #Defaults to the working directory.
+  path = NULL, 
   scale = 1,
-  width = NA, #Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.
-  height = NA, #Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.
+  #Plot size in units expressed by the units argument. 
+  width = NA, 
+  height = NA, 
   units = c("in", "cm", "mm", "px"),
-  dpi = 300, #Plot resolution. Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).
+  #Plot resolution. 
+  #Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).
+  dpi = 300, 
   limitsize = TRUE,
   bg = NULL,
-  create.dir = FALSE,
-  ...
+  create.dir = FALSE
 )
 ```
 
