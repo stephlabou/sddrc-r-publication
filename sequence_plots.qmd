@@ -4,12 +4,12 @@ title: "Demo: Sequencing Plots"
 
 ```{css, echo=FALSE}
 pre {
-  max-height: 300px;
-  overflow-y: scroll;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 pre[class] {
-  max-height: 300px;
+  max-height: 500px;
 }
 ```
 
@@ -77,6 +77,7 @@ grid::grid.raster(image)
 Colors for ACTG are the default ggplot-style colors, but can be updating using the [sequence_colors](https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours) argument within the `visualize_many_sequences()` function.
 
 Note that [under the hood](https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R) this function makes use of ggplot2 functions. From the code for this particular function:
+``` {r eval=FALSE}
 > result <- ggplot(image_data, aes(x = .data$x, y = .data$y)) +
 >            ## Background
 >            geom_tile(data = filter(image_data, .data$value == 0), width = tile_width, height = tile_height, fill = background_colour) +
@@ -85,6 +86,7 @@ Note that [under the hood](https://github.com/ejade42/ggDNAvis/blob/main/R/visua
 >            geom_tile(data = filter(image_data, .data$value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)),
 >                      col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) >+
 >            scale_fill_manual(values = sequence_colours)
+```
 
 Note the standard ggplot syntax of `ggplot()` and use of `geom_tile()` and `scale_fill_manual()` to specify how data should be visualized. This means that while there aren't built in functions in the `ggDNAvis` package to, say, add a figure title using `labs()` as in normal ggplot images, users could in theory build their own versions of this using `geom_tile()`. But in most cases, using existing extension packages that have done the hard work already is the more appealing option.
 
