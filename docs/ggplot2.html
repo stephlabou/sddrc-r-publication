@@ -328,7 +328,7 @@ pre[class] {
 5     1      NA 77.06528</code></pre>
 </div>
 </div>
-<p>The warning will be suppressed in output moving forward, but not that any data cleanup like remove of missing values should be handled prior to plotting.</p>
+<p>The warning will be suppressed in output moving forward, but note that any data cleanup like remove of missing values should be handled prior to plotting.</p>
 </section>
 <section id="change-axis-labels" class="level2">
 <h2 class="anchored" data-anchor-id="change-axis-labels">Change axis labels</h2>
@@ -365,12 +365,12 @@ pre[class] {
 <h2 class="anchored" data-anchor-id="update-colors-and-legend">Update colors and legend</h2>
 <p>By default, the legend title will be the the variable used, which in this case is a factored version of the Group variable. Colors of points will also be default colors and color labels map to discrete variable values.</p>
 <p>Because the legend is indicating variable and values related to our specified <strong>color</strong> variable, we can use the <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html"><code>scale_color_manual()</code></a> function to update everything related to the legend.</p>
-<p><em>Caveat</em>: While <code>scale_color_manual()</code> can update titles and labels as well as colors, order of operations matters. Color <strong>must be set in the function</strong>, otherwise you may encounter an error.</p>
+<p><em>Caveat</em>: While <code>scale_color_manual()</code> can update titles and labels as well as colors, order of operations matters. Colors <strong>must be assigned in this function</strong>, otherwise you may encounter an error.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set legend title without also setting color</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set legend title without also assigning color values below</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">"Group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `palette()`:
@@ -382,7 +382,7 @@ pre[class] {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight (kilograms)"</span>, <span class="at">y =</span> <span class="st">"Small bowel transit time (hours)"</span>) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#update colors --&gt; 0 = red, 1 = navy</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set color values --&gt; 0 = red, 1 = navy</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -449,7 +449,7 @@ pre[class] {
 </div>
 </div>
 </div>
-<p>Update panel titles with <code>labeller</code> from 0 / 1 to more complete variable description:</p>
+<p>Update panel titles with <a href="https://ggplot2.tidyverse.org/reference/labeller.html"><code>labeller</code></a>, within <code>facet_wrap</code>, from 0 / 1 to more complete variable description:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -582,20 +582,30 @@ pre[class] {
 <p>Arguments and options available:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  filename, <span class="co">#File name to create on disk.</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">get_last_plot</span>(), <span class="co">#Plot to save, defaults to last plot displayed.</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>, <span class="co">#Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If NULL (default), the device is guessed based on the filename extension.</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="cn">NULL</span>, <span class="co">#Path of the directory to save plot to: path and filename are combined to create the fully qualified file name. Defaults to the working directory.</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="dv">1</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>, <span class="co">#Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>, <span class="co">#Plot size in units expressed by the units argument. If not supplied, uses the size of the current graphics device.</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>, <span class="st">"px"</span>),</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>, <span class="co">#Plot resolution. Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">limitsize =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="cn">NULL</span>,</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">create.dir =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#File name to create on disk.</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  filename, </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Plot to save, defaults to last plot displayed.</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">get_last_plot</span>(), </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Can either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), </span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#"pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). </span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#If NULL (default), the device is guessed based on the filename extension.</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>, </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Path of the directory to save plot to</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#path and filename are combined to create the fully qualified file name. </span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Defaults to the working directory.</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="cn">NULL</span>, </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="dv">1</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Plot size in units expressed by the units argument. </span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>, </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>, </span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>, <span class="st">"px"</span>),</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Plot resolution. </span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Also accepts a string input: "retina" (320), "print" (300), or "screen" (72).</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>, </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">limitsize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="cn">NULL</span>,</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">create.dir =</span> <span class="cn">FALSE</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Saving a png to working directory folder:</p>
 <div class="cell">

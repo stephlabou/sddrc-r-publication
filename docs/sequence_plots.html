@@ -227,7 +227,7 @@ window.Quarto = {
 <style type="text/css">
 pre {
   max-height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 pre[class] {
@@ -238,10 +238,10 @@ pre[class] {
 <section id="ggplot-extensions-for-specific-data-types" class="level2">
 <h2 class="anchored" data-anchor-id="ggplot-extensions-for-specific-data-types">ggplot extensions for specific data types</h2>
 <p>Along with statistical annotation extensions of <code>ggplot2</code>, there are also <a href="https://exts.ggplot2.tidyverse.org/">many extension packages</a> designed to visualize specific types or formats of data, like sequencing data files or genomics data formats.</p>
-<p>This section includes a brief demo of three of these packages: * <a href="https://ejade42.github.io/ggDNAvis/"><code>ggDNAvis</code></a> * <a href="https://thackl.github.io/gggenomes/"><code>gggenomes</code></a> * <a href="https://dzhang32.github.io/ggtranscript/"><code>ggtranscript</code></a></p>
+<p>This section includes a brief demo of <a href="https://ejade42.github.io/ggDNAvis/"><code>ggDNAvis</code></a> and <a href="https://thackl.github.io/gggenomes/"><code>gggenomes</code></a>.</p>
 <section id="sequence-strings" class="level3">
 <h3 class="anchored" data-anchor-id="sequence-strings">Sequence strings</h3>
-<p>The <a href="https://ejade42.github.io/ggDNAvis/index.html"><code>ggDNAviz</code></a> package can make ggplot-style plots for genetic data: | a single DNA/RNA sequence split across multiple lines, | multiple DNA/RNA sequences, each occupying a whole line, or | base modifications such as DNA methylation called by modified-bases models in Dorado or Guppy.</p>
+<p>The <a href="https://ejade42.github.io/ggDNAvis/index.html"><code>ggDNAviz</code></a> package can make ggplot-style plots for genetic data: &gt; a single DNA/RNA sequence split across multiple lines, &gt; multiple DNA/RNA sequences, each occupying a whole line, or &gt; base modifications such as DNA methylation called by modified-bases models in Dorado or Guppy.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install package (only the first time)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggDNAvis"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -367,10 +367,10 @@ pre[class] {
 </div>
 </div>
 <p>Colors for ACTG are the default ggplot-style colors, but can be updating using the <a href="https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours">sequence_colors</a> argument within the <code>visualize_many_sequences()</code> function.</p>
-<p>Note that <a href="https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R">under the hood</a> this function makes use of ggplot2 functions. From the code for this particular function: | result &lt;- ggplot(image_data, aes(x = .data<span class="math inline">\(x, y = .data\)</span>y)) + | ## Background | geom_tile(data = filter(image_data, .data<span class="math inline">\(value == 0), width = tile_width, height = tile_height, fill = background_colour) +
-|
-|            ## Base boxes
-|            geom_tile(data = filter(image_data, .data\)</span>value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)), | col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) |+ | scale_fill_manual(values = sequence_colours)</p>
+<p>Note that <a href="https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R">under the hood</a> this function makes use of ggplot2 functions. From the code for this particular function: &gt; result &lt;- ggplot(image_data, aes(x = .data<span class="math inline">\(x, y = .data\)</span>y)) + &gt; ## Background &gt; geom_tile(data = filter(image_data, .data<span class="math inline">\(value == 0), width = tile_width, height = tile_height, fill = background_colour) +
+&gt;
+&gt;            ## Base boxes
+&gt;            geom_tile(data = filter(image_data, .data\)</span>value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)), &gt; col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) &gt;+ &gt; scale_fill_manual(values = sequence_colours)</p>
 <p>Note the standard ggplot syntax of <code>ggplot()</code> and use of <code>geom_tile()</code> and <code>scale_fill_manual()</code> to specify how data should be visualized. This means that while there aren’t built in functions in the <code>ggDNAvis</code> package to, say, add a figure title using <code>labs()</code> as in normal ggplot images, users could in theory build their own versions of this using <code>geom_tile()</code>. But in most cases, using existing extension packages that have done the hard work already is the more appealing option.</p>
 <p>Next, update this image to visualize methylation probabilities for these sequences.</p>
 <p>Back to the <code>ggDNAvis</code> package, use the methylation <a href="https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions">data processing function</a> to extract relevant data.</p>
@@ -443,19 +443,13 @@ pre[class] {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package=</span><span class="st">"gggenomes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="line-block">emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes<br>
-emale_cogs - Clusters of orthologs of 6 EMALE proteomes<br>
-emale_gc - Relative GC-content along 6 EMALE genomes<br>
-emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages)<br>
-emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes<br>
-emale_prot_ava - All-versus-all alignments 6 EMALE proteomes<br>
-emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages)<br>
-emale_tirs - Terminal inverted repeats of 6 EMALE genomes</div>
+<blockquote class="blockquote">
+<p>emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes emale_cogs - Clusters of orthologs of 6 EMALE proteomes emale_gc - Relative GC-content along 6 EMALE genomes emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages) emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes emale_prot_ava - All-versus-all alignments 6 EMALE proteomes emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages) emale_tirs - Terminal inverted repeats of 6 EMALE genomes</p>
+</blockquote>
 <p>The primary function is [<code>gggenomes()](https://thackl.github.io/gggenomes/reference/gggenomes.html) and like</code>ggplot2<code>,</code>gggenomes` uses the concept of “geoms” (visualization geometry) to <a href="https://thackl.github.io/gggenomes/articles/gggenomes.html">build up a plot</a>:</p>
-<div class="line-block"><a href="https://thackl.github.io/gggenomes/reference/geom_seq.html">geom_seq()</a> : data=seqs() for the seq track<br>
-<a href="https://thackl.github.io/gggenomes/reference/geom_feat.html">geom_feat()</a> : data=feats() for the first feat track not named “genes”<br>
-<a href="https://thackl.github.io/gggenomes/reference/geom_link.html">geom_link()</a> : data=links() for the first link track<br>
-<a href="https://thackl.github.io/gggenomes/reference/geom_gene.html">geom_gene()</a> : data=genes() for the first feat track with some extras for geneish features</div>
+<blockquote class="blockquote">
+<p><a href="https://thackl.github.io/gggenomes/reference/geom_seq.html">geom_seq()</a> : data=seqs() for the seq track <a href="https://thackl.github.io/gggenomes/reference/geom_feat.html">geom_feat()</a> : data=feats() for the first feat track not named “genes” <a href="https://thackl.github.io/gggenomes/reference/geom_link.html">geom_link()</a> : data=links() for the first link track <a href="https://thackl.github.io/gggenomes/reference/geom_gene.html">geom_gene()</a> : data=genes() for the first feat track with some extras for geneish features</p>
+</blockquote>
 <p>Example plot:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
@@ -590,27 +584,14 @@ emale_tirs - Terminal inverted repeats of 6 EMALE genomes</div>
 <p>Since this is a ggplot object, we can save using the standard <code>ggsave()</code> options. By default, <code>ggsave()</code> will use the last plotted object as input; we could also assign the code above to an an object and specifically call that object in the code below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"gggenomes_plot.png"</span>, <span class="at">width=</span><span class="dv">8</span>, <span class="at">height=</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: There were 6 warnings in `dplyr::mutate()`.
-The first warning was:
-ℹ In argument: `yoff = *...`.
-ℹ In group 1: `y = 1`, `is_reverse = FALSE`.
-Caused by warning:
-! Bioconductor IRanges required for stacking features. Defaulting to no stacking
-ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 95 rows containing missing values or values outside the scale range
-(`geom_feat_text()`).</code></pre>
-</div>
 </div>
 <p>A <a href="https://thackl.github.io/gggenomes/articles/emales.html">complete example</a> of this package, from raw data to full plot, is included the package documentation.</p>
 </section>
 <section id="additional-resources" class="level2">
 <h2 class="anchored" data-anchor-id="additional-resources">Additional resources</h2>
 <ul>
-<li><p>There are also many non-ggplot-style plotting R packages for sequence-type data (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11541695/">overview in Table 1</a>).</p></li>
-<li><p>More <a href="https://emilhvitfeldt.github.io/r-color-palettes/discrete.html">R color palettes</a></p></li>
+<li>There are also many non-ggplot-style plotting R packages for sequence-type data (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11541695/">overview in Table 1</a>).</li>
+<li>More <a href="https://emilhvitfeldt.github.io/r-color-palettes/discrete.html">R color palettes</a></li>
 </ul>
 
 

@@ -213,10 +213,10 @@ pre[class] {
 }
 </style>
 </div>
-<p>There are many R packages that can be used to plot statistical results. This section will briefly cover <code>ggpmisc</code> and <code>ggpubr</code> for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot</p>
+<p>There are many R packages that can be used to plot statistical results. This section will briefly cover <code>ggpmisc</code> and <code>ggpubr</code> for labeling ggplot plots with statistical results (model coefficients, significance) of data in that plot.</p>
 <section id="ggpmisc" class="level2">
 <h2 class="anchored" data-anchor-id="ggpmisc">ggpmisc</h2>
-<p>The <code>ggpmisc</code> package is an extension of <code>ggplot2</code> for labeling plots with statistical results of data in the plot, for instance model equation or p-values.</p>
+<p>The <a href="https://docs.r4photobiology.info/ggpmisc/"><code>ggpmisc</code> package</a> is an extension of <code>ggplot2</code> for labeling plots with statistical results of data in the plot, for instance model equation or p-values.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#leaving in warnings to recognize some functions are overwritten</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#if concerned, can always specify exact function by first indicating package</span></span>
@@ -241,7 +241,7 @@ Attaching package: 'ggpp'</code></pre>
     annotate</code></pre>
 </div>
 </div>
-<p>For our faceted scatter plot</p>
+<p>Use faceted scatterplot from prior section as base plot:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>facet_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> smartpill, <span class="fu">aes</span>(<span class="at">x =</span> Weight, <span class="at">y =</span> SB.Time, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -318,7 +318,7 @@ Attaching package: 'ggpp'</code></pre>
 </section>
 <section id="ggpubr" class="level2">
 <h2 class="anchored" data-anchor-id="ggpubr">ggpubr</h2>
-<p>The <code>ggpubr</code> package is another extension package of <code>ggplot2</code> for adding statistical results to <code>ggplot</code> plots.</p>
+<p>The <a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code> package</a> is another extension package of <code>ggplot2</code> for adding statistical results to <code>ggplot</code> plots.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -355,7 +355,9 @@ Attaching package: 'ggpp'</code></pre>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#use facet_wrap from ggplot2 to make the facets by group</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#suppress legend</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -363,21 +365,20 @@ Attaching package: 'ggpp'</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#could continue with further label customization, as in prior section</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The regression equation can be added using <a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html"><code>stat_regline_equation()</code></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#add regression equation</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#move position so doesn't overlap with correlation values</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#this may take some trial and error</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#add regression equation</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#move position so doesn't overlap with correlation values</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#this may take some trial and error</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -391,38 +392,22 @@ Attaching package: 'ggpp'</code></pre>
 <h3 class="anchored" data-anchor-id="save-ggpubr-plot">Save ggpubr plot</h3>
 <p>As usual, the plot can be saved using the <code>ggsave()</code> function:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ggpubr_plot <span class="ot">&lt;-</span> <span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"ggpubr_plot.png"</span>, <span class="at">plot =</span> ggpubr_plot, <span class="at">height =</span> <span class="dv">5</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
-(`stat_smooth()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
-(`stat_cor()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 5 rows containing non-finite outside the scale range
-(`stat_regline_equation()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
-(`geom_point()`).</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ggpubr_plot <span class="ot">&lt;-</span> <span class="fu">ggscatter</span>(<span class="at">data =</span> smartpill, <span class="at">x =</span> <span class="st">"Weight"</span>, <span class="at">y =</span> <span class="st">"SB.Time"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Group"</span>, <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"navy"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="st">"reg.line"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.coef =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>Group) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_regline_equation</span>(<span class="at">label.y =</span> <span class="dv">12</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"ggpubr_plot.png"</span>, <span class="at">plot =</span> ggpubr_plot, <span class="at">height =</span> <span class="dv">5</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="choosing-a-package" class="level2">
 <h2 class="anchored" data-anchor-id="choosing-a-package">Choosing a package</h2>
-<p>There are many more <a href="https://exts.ggplot2.tidyverse.org/index.html">ggplot extension</a> packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in <code>ggpmisc</code> or <code>ggpubr</code>, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, <a href="https://exts.ggplot2.tidyverse.org/ggtree.html">phylogenetic trees</a> or <a href="https://thackl.github.io/gggenomes/">comparative genomics</a>.</p>
+<p>There are many more <a href="https://exts.ggplot2.tidyverse.org/index.html">ggplot extension</a> packages, many of which relate to adding statistical results or context to plots. Which package you choose will depend on your visualization needs and which statistical analysis you are doing. Most standard statistical tests will be included in <code>ggpmisc</code> or <code>ggpubr</code>, but for more complex analyses, you may need to expand your package search if these options do not include it. For instance, <a href="https://exts.ggplot2.tidyverse.org/ggtree.html">phylogenetic trees</a> or <a href="https://rpkgs.datanovia.com/survminer/index.html">survival analysis</a>.</p>
 </section>
 <section id="additional-resources" class="level2">
 <h2 class="anchored" data-anchor-id="additional-resources">Additional resources</h2>
@@ -430,7 +415,7 @@ Attaching package: 'ggpp'</code></pre>
 <li><a href="https://docs.r4photobiology.info/ggpmisc/index.html">ggpmisc website</a></li>
 <li><a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr website</a></li>
 <li>Many more <a href="https://exts.ggplot2.tidyverse.org/index.html">ggplot extensions</a></li>
-<li>Also check out <a href="https://tidyplots.org/">tidyplots</a>, another good option for publication-ready plots.</li>
+<li>Also check out <a href="https://tidyplots.org/">tidyplots</a>, another good option for publication-ready plots. Includes many <a href="https://tidyplots.org/use-cases/">use cases with example code</a> including plots suitable for bioinformatics (volcano plots, principal component, gene expression, correlation, etc.).</li>
 </ul>
 
 
