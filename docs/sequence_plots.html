@@ -77,7 +77,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1de071e047e49cd083ceb1b25ae4a66d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,36 +105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
+<style>
+.cell-output-stdout {
+overflow-y: scroll;
+max-height: 500px;
 }
-window.Quarto = {
-  typesetMath
-};
-</script>
+</style>
+
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -226,12 +203,12 @@ window.Quarto = {
 <div class="cell">
 <style type="text/css">
 pre {
-  max-height: 300px;
-  overflow-y: scroll;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 pre[class] {
-  max-height: 300px;
+  max-height: 500px;
 }
 </style>
 </div>
@@ -367,17 +344,24 @@ pre[class] {
 </div>
 </div>
 <p>Colors for ACTG are the default ggplot-style colors, but can be updating using the <a href="https://ejade42.github.io/ggDNAvis/reference/visualise_many_sequences.html#arg-sequence-colours">sequence_colors</a> argument within the <code>visualize_many_sequences()</code> function.</p>
-<p>Note that <a href="https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R">under the hood</a> this function makes use of ggplot2 functions. From the code for this particular function: &gt; result &lt;- ggplot(image_data, aes(x = .data<span class="math inline">\(x, y = .data\)</span>y)) + &gt; ## Background &gt; geom_tile(data = filter(image_data, .data<span class="math inline">\(value == 0), width = tile_width, height = tile_height, fill = background_colour) +
-&gt;
-&gt;            ## Base boxes
-&gt;            geom_tile(data = filter(image_data, .data\)</span>value != 0), width = tile_width, height = tile_height, aes(fill = as.character(.data$value)), &gt; col = outline_colour, linewidth = outline_linewidth, linejoin = tolower(outline_join)) &gt;+ &gt; scale_fill_manual(values = sequence_colours)</p>
+<p>Note that <a href="https://github.com/ejade42/ggDNAvis/blob/main/R/visualise_many_sequences.R">under the hood</a> this function makes use of ggplot2 functions. From the code for this particular function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> result <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(image_data, <span class="fu">aes</span>(<span class="at">x =</span> .data<span class="sc">$</span>x, <span class="at">y =</span> .data<span class="sc">$</span>y)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>            <span class="do">## Background</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>            <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">filter</span>(image_data, .data<span class="sc">$</span>value <span class="sc">==</span> <span class="dv">0</span>), <span class="at">width =</span> tile_width, <span class="at">height =</span> tile_height, <span class="at">fill =</span> background_colour) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>            <span class="do">## Base boxes</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>            <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">filter</span>(image_data, .data<span class="sc">$</span>value <span class="sc">!=</span> <span class="dv">0</span>), <span class="at">width =</span> tile_width, <span class="at">height =</span> tile_height, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">as.character</span>(.data<span class="sc">$</span>value)),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      <span class="at">col =</span> outline_colour, <span class="at">linewidth =</span> outline_linewidth, <span class="at">linejoin =</span> <span class="fu">tolower</span>(outline_join)) <span class="sc">&gt;+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>            <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> sequence_colours)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Note the standard ggplot syntax of <code>ggplot()</code> and use of <code>geom_tile()</code> and <code>scale_fill_manual()</code> to specify how data should be visualized. This means that while there aren’t built in functions in the <code>ggDNAvis</code> package to, say, add a figure title using <code>labs()</code> as in normal ggplot images, users could in theory build their own versions of this using <code>geom_tile()</code>. But in most cases, using existing extension packages that have done the hard work already is the more appealing option.</p>
 <p>Next, update this image to visualize methylation probabilities for these sequences.</p>
 <p>Back to the <code>ggDNAvis</code> package, use the methylation <a href="https://ejade42.github.io/ggDNAvis/reference/index.html#key-data-processing-functions">data processing function</a> to extract relevant data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>methylation_info <span class="ot">&lt;-</span> <span class="fu">extract_and_sort_methylation</span>(example_many_sequences)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(methylation_info)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>methylation_info <span class="ot">&lt;-</span> <span class="fu">extract_and_sort_methylation</span>(example_many_sequences)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(methylation_info)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 4
  $ locations    : chr [1:51] "3,6,9,12,15,18,21,24,27,36,39,42,51,54,57,66,69,72,81,84,87,96,99" "3,6,9,12,15,18,27,30,33,42,45,48,57,60,63,72,75,78,87,90" "3,6,9,12,15,18,21,24,27,36,39,42,51,54,57,66,69,72,81,84" "3,6,9,12,15,18,21,24,27,30,33,36,45,48,51,60,63,66,75,78" ...
@@ -389,39 +373,38 @@ pre[class] {
 <p>Then use the <a href="https://ejade42.github.io/ggDNAvis/reference/visualise_methylation.html"><code>visualise_methylation()</code> function</a> to create a new image with this information. As before, save the image within the function and then read in to view.</p>
 <p>There are many customization options available:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualise_methylation</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#specify where to get data for locations, probabilities, and sequences</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">modification_locations =</span> methylation_info<span class="sc">$</span>locations,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">modification_probabilities =</span> methylation_info<span class="sc">$</span>probabilities,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sequences =</span> methylation_info<span class="sc">$</span>sequences,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set colors and annotations</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">low_colour =</span> <span class="st">"white"</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">high_colour =</span> <span class="st">"black"</span>,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_lines =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">23</span>, <span class="dv">37</span>),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_interval =</span> <span class="dv">3</span>,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_full_line =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_always_first_base =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_always_last_base =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_colour =</span> <span class="st">"lightblue1"</span>,</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_outline_linewidth =</span> <span class="dv">1</span>,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_outline_colour =</span> <span class="st">"grey"</span>,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">modified_bases_outline_linewidth =</span> <span class="dv">3</span>,</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">modified_bases_outline_colour =</span> <span class="st">"black"</span>,</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="fl">0.3</span>,</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save image to png file, do not also show in R console</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="st">"methylation.png"</span>,</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">return =</span> <span class="cn">FALSE</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualise_methylation</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#specify where to get data for locations, probabilities, and sequences</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">modification_locations =</span> methylation_info<span class="sc">$</span>locations,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">modification_probabilities =</span> methylation_info<span class="sc">$</span>probabilities,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sequences =</span> methylation_info<span class="sc">$</span>sequences,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set colors and annotations</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">low_colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">high_colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_lines =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">23</span>, <span class="dv">37</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_interval =</span> <span class="dv">3</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_full_line =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_always_first_base =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">index_annotation_always_last_base =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_colour =</span> <span class="st">"lightblue1"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_outline_linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">other_bases_outline_colour =</span> <span class="st">"grey"</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">modified_bases_outline_linewidth =</span> <span class="dv">3</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">modified_bases_outline_colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save image to png file, do not also show in R console</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="st">"methylation.png"</span>,</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">return =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> png<span class="sc">::</span><span class="fu">readPNG</span>(<span class="st">"methylation.png"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">"methylation.png"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.newpage</span>()</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> png<span class="sc">::</span><span class="fu">readPNG</span>(<span class="st">"methylation.png"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">"methylation.png"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.newpage</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sequence_plots_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sequence_plots_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -433,15 +416,15 @@ pre[class] {
 <h2 class="anchored" data-anchor-id="genomic-data">Genomic data</h2>
 <p>The package <a href="https://thackl.github.io/gggenomes/"><code>gggenomes</code></a>“extends the popular R visualization package ggplot2 by adding dedicated plot functions for genes, syntenic regions, etc. and verbs to manipulate the plot to, for example, quickly zoom in into gene neighborhoods.”</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install package (only the first time)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gggenomes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install package (only the first time)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gggenomes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gggenomes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gggenomes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Like most R packages, this one comes with example datasets we will use to recreate some plots from the official package documentation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package=</span><span class="st">"gggenomes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package=</span><span class="st">"gggenomes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote class="blockquote">
 <p>emale_ava - All-versus-all whole genome alignments of 6 EMALE genomes emale_cogs - Clusters of orthologs of 6 EMALE proteomes emale_gc - Relative GC-content along 6 EMALE genomes emale_genes - Gene annotations if 6 EMALE genomes (endogenous virophages) emale_ngaros - Integrated Ngaro retrotransposons of 6 EMALE genomes emale_prot_ava - All-versus-all alignments 6 EMALE proteomes emale_seqs - Sequence index of 6 EMALE genomes (endogenous virophages) emale_tirs - Terminal inverted repeats of 6 EMALE genomes</p>
@@ -452,48 +435,23 @@ pre[class] {
 </blockquote>
 <p>Example plot:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#specify genes, sequences, links, and feature tracks</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#chromosomes</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labels</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#terminal inverted repeats</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#genes</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#synteny-blocks</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sequence_plots_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This can be customized for colors and annotations mixing and matching <code>gggenomes</code> and <code>ggplot2</code> functions.</p>
-<p>From<code>gggenomes</code>, add genomes tags.</p>
-<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add genome gene tag, format so no overlap</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#specify genes, sequences, links, and feature tracks</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#chromosomes</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labels</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#terminal inverted repeats</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#genes</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#synteny-blocks</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -502,24 +460,20 @@ pre[class] {
 </div>
 </div>
 </div>
-<p>From <code>ggplot</code>, change the colors using the<code>scale_color_discrete()</code> function’s <a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html#arg-palette">palette argument</a>.</p>
-<p>There are a variety of discrete color palette options from the <a href="https://scales.r-lib.org/reference/pal_brewer.html"><code>scales</code> package</a> which is installed as part of <code>ggplot</code> (which we installed as part of <code>tidyverse</code>); in this case, the <a href="https://scales.r-lib.org/reference/pal_brewer.html"><code>pal_brewer()</code> function</a> (handy <a href="https://r-graph-gallery.com/38-rcolorbrewers-palettes.html">cheatsheet</a> for palette names).</p>
+<p>This can be customized for colors and annotations mixing and matching <code>gggenomes</code> and <code>ggplot2</code> functions.</p>
+<p>From<code>gggenomes</code>, add genomes tags.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#change colors</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes, <span class="at">seqs =</span> emale_seqs, <span class="at">feats =</span> emale_tirs, <span class="at">links =</span> emale_ava</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add genome gene tag, format so no overlap</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -528,24 +482,21 @@ pre[class] {
 </div>
 </div>
 </div>
-<p>Also from <code>ggplot2</code>, adding a title using the <code>labs()</code> option.</p>
+<p>From <code>ggplot</code>, change the colors using the<code>scale_color_discrete()</code> function’s <a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html#arg-palette">palette argument</a>.</p>
+<p>There are a variety of discrete color palette options from the <a href="https://scales.r-lib.org/reference/pal_brewer.html"><code>scales</code> package</a> which is installed as part of <code>ggplot</code> (which we installed as part of <code>tidyverse</code>); in this case, the <a href="https://scales.r-lib.org/reference/pal_brewer.html"><code>pal_brewer()</code> function</a> (handy <a href="https://r-graph-gallery.com/38-rcolorbrewers-palettes.html">cheatsheet</a> for palette names).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) <span class="sc">+</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add title</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"gggenomes plot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes, <span class="at">seqs =</span> emale_seqs, <span class="at">feats =</span> emale_tirs, <span class="at">links =</span> emale_ava</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#change colors</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -554,25 +505,21 @@ pre[class] {
 </div>
 </div>
 </div>
-<p><em>Note</em>: If adding a <code>ggplot2</code> function does not work - either by returning an error or unexpected results - it may be that the extension package has a built-in function to do something similar. Always refer back to the package documentation (usually an online site with tutorials) to see what functions are available within-package.</p>
-<p>And from <code>gggenomes</code>, add genomes tags.</p>
+<p>Also from <code>ggplot2</code>, adding a title using the <code>labs()</code> option.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> emale_seqs,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">feats =</span> emale_tirs,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> emale_ava</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add genome gene tag, format so no overlap</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) <span class="sc">+</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"gggenomes plot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes, <span class="at">seqs =</span> emale_seqs, <span class="at">feats =</span> emale_tirs, <span class="at">links =</span> emale_ava</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add title</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"gggenomes plot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -581,9 +528,33 @@ pre[class] {
 </div>
 </div>
 </div>
+<p><em>Note</em>: If adding a <code>ggplot2</code> function does not work - either by returning an error or unexpected results - it may be that the extension package has a built-in function to do something similar. Always refer back to the package documentation (usually an online site with tutorials) to see what functions are available within-package.</p>
+<p>And from <code>gggenomes</code>, add genomes tags.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gggenomes</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes =</span> emale_genes, <span class="at">seqs =</span> emale_seqs, <span class="at">feats =</span> emale_tirs, <span class="at">links =</span> emale_ava</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_seq</span>() <span class="sc">+</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin_label</span>() <span class="sc">+</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_feat</span>(<span class="at">linewidth=</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene</span>(<span class="fu">aes</span>(<span class="at">fill =</span> strand), <span class="at">position =</span> <span class="st">"strand"</span>) <span class="sc">+</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_link</span>(<span class="at">offset =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add genome gene tag, format so no overlap</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_gene_tag</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y=</span><span class="fl">0.1</span>, <span class="at">check_overlap =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">palette =</span> scales<span class="sc">::</span><span class="fu">pal_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"gggenomes plot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sequence_plots_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>Since this is a ggplot object, we can save using the standard <code>ggsave()</code> options. By default, <code>ggsave()</code> will use the last plotted object as input; we could also assign the code above to an an object and specifically call that object in the code below.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"gggenomes_plot.png"</span>, <span class="at">width=</span><span class="dv">8</span>, <span class="at">height=</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"gggenomes_plot.png"</span>, <span class="at">width=</span><span class="dv">8</span>, <span class="at">height=</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A <a href="https://thackl.github.io/gggenomes/articles/emales.html">complete example</a> of this package, from raw data to full plot, is included the package documentation.</p>
 </section>
