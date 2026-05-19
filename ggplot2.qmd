@@ -51,6 +51,7 @@ str(smartpill)
 A basic scatterplot of the `smartpill` data looking at small bowel transit time by weight between groups (trauma patients, healthy volunteers):
 
 ```{r label='basic_plot'}
+#| fig-alt: "Scatterplot on x-y grid"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point()
 ```
@@ -76,6 +77,7 @@ The warning will be suppressed in output moving forward, but note that any data 
 Variable names may need to be updated to make for more readable axis labels. The [`labs`](https://ggplot2.tidyverse.org/reference/labs.html) function is used to change axis labels.
 
 ```{r label='axis_labels', warning=FALSE}
+#| fig-alt: "Scatterplot on x-y grid with axis labels"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)")
@@ -84,6 +86,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 _Note_: You can also set up a 'dictionary' of variables and labels to automatically rename.
 
 ```{r label='dictionary', warning=FALSE}
+#| fig-alt: "Scatterplot on x-y grid with axis labels 2"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(dictionary = c(SB.Time = "Small bowel transit time (hours)",
@@ -109,6 +112,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 First, change colors from default:
 
 ```{r label='legend_colors', warning=FALSE}
+#| fig-alt: "Scatterplot on x-y grid with red and navy points"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -121,6 +125,7 @@ _Note_: You can view all R built-in color names (650+) by running `colors()`. NC
 Next, change 0 / 1 to more complete identifiers. Specify 'breaks' as the existing values and 'labels' as desired values. In combination with 'values' this makes the code much clearer in terms of what values are being changed to what.
 
 ```{r label='legend_labels', warning=FALSE}
+#| fig-alt: "Scatterplot on x-y grid with detailed legend"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -131,6 +136,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 
 Finally, update legend title using 'name'.
 ```{r label='legend_title', warning=FALSE}
+#| fig-alt: "Scatterplot on x-y grid with detailed legend 2"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -147,6 +153,7 @@ Since the two groups are unbalanced, it may be more useful to view plots separat
 Split plot into multiples by group:
 
 ```{r label='facet', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with same x-y grids"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -161,6 +168,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 Update panel titles with [`labeller`](https://ggplot2.tidyverse.org/reference/labeller.html), within `facet_wrap`, from 0 / 1 to more complete variable description:
 
 ```{r label='facet_title', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with same x-y grids 2"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -177,6 +185,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 Having a color legend is no longer necessary. We can suppress the entire legend using an option in the versatile [`theme()` function](https://ggplot2.tidyverse.org/reference/theme.html).
 
 ```{r label='no_legend', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with no legend"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -200,6 +209,7 @@ Some popular, publication-ready options include:
 `theme_bw` (basic black and white):
 
 ```{r label='theme_bw', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with black and white theme"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -216,6 +226,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 `theme_linedraw` (similar to black and white, but more stark):
 
 ```{r label='theme_linedraw', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with linedraw theme"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
@@ -232,6 +243,7 @@ ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
 `classic` (no grid lines):
 
 ```{r label='theme_classic', warning=FALSE}
+#| fig-alt: "Two panel scatterplot with classic theme"
 ggplot(data = smartpill, aes(x = Weight, y = SB.Time, color = Group)) +
   geom_point() +
   labs(x = "Weight (kilograms)", y = "Small bowel transit time (hours)") +
