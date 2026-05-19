@@ -40,6 +40,7 @@ summary(smartpill)
 The equivalent summary statistics function from `gtsummary` is `tbl_summary()`.
 
 ```{r label='tbl_summary'}
+#| fig-alt: "Default html table"
 tbl_summary(smartpill) 
 ```
 
@@ -51,6 +52,7 @@ The default summary statistic presented depends on variable type. Categorical va
 These defaults are customizable. For instance, if we wanted only a subset of variables:
 
 ```{r label='customize_descriptive'}
+#| fig-alt: "Html table with less rows"
 smartpill %>%  
   tbl_summary(
     include = c(Group, Age, SB.Time, WG.Time)
@@ -60,6 +62,7 @@ smartpill %>%
 Or if we wanted to display continuous variables as minimum, median, and maximum:
 
 ```{r label='customize_continuous'}
+#| fig-alt: "Html table with different calculated variables"
 smartpill %>%  
   tbl_summary(
     include = c(Group, Age, SB.Time, WG.Time), 
@@ -75,6 +78,7 @@ smartpill %>%
 This table can also be customized with better labels for rows (variables) and updated NA indicator:
 
 ```{r label='customize_labels'}
+#| fig-alt: "Html table with updated row and NA labels"
 smartpill %>%  
   tbl_summary(
     include = c(Group, Age, SB.Time, WG.Time), 
@@ -114,6 +118,7 @@ summary(smartpill$Group)
 ```
 
 ```{r}
+#| fig-alt: "Html table with updated row and NA labels, repeated"
 smartpill %>%  
   tbl_summary(
     include = c(Group, Age, SB.Time, WG.Time), 
@@ -132,6 +137,7 @@ smartpill %>%
 This structure can be extended to produce crosstab tables, for instance with descriptive statistics for selected variables for each group
 
 ```{r label='crosstab'}
+#| fig-alt: "Html table with columns for groups"
 smartpill %>%  
   tbl_summary(
     by = Group,
@@ -148,11 +154,12 @@ smartpill %>%
 
 _Note_: Warnings will be returned if the metrics are not workable, for instance if all instances in a group are not missing. If we created this table with variable 'SB.Contractions', we would see NaN values and -Inf as outputs:
 
-```{r label='error'}
+```{r}
+#| fig-alt: "Table with column names listed"
 smartpill %>%  
   tbl_summary(
     by = Group,
-    include = c(Age, SB.Time, WG.Time), 
+    include = c(Age, SB.Contractions, WG.Time), 
     statistic = list(
       #change just way continuous vars are presented
       all_continuous() ~ "{median} ({min}, {max})"
@@ -166,6 +173,7 @@ smartpill %>%
 If needed, [column names can be updated](https://www.danieldsjoberg.com/gtsummary/reference/modify.html).
 
 ```{r label='col_names'}
+#| fig-alt: "Html table with columns for groups, with updated column names"
 smartpill %>%  
   mutate(Group = as.factor(Group)) %>%
   tbl_summary(
@@ -185,6 +193,7 @@ smartpill %>%
 ```
 
 ```{r label='modify_cols'}
+#| fig-alt: "Html table with columns for groups, with updated column names"
 smartpill %>%  
   tbl_summary(
     by = Group,
@@ -235,6 +244,7 @@ Let's look at a couple examples in practice.
 Comparing small bowel transit time and whole gut time bewteen the two groups:
 
 ```{r label='stat_compare'}
+#| fig-alt: "Html table with new column for p-value"
 Table1 %>% 
   #add p-value
   add_p()
@@ -258,6 +268,7 @@ In this case, the variable being compared was continuous and the grouping variab
 If for any reason you want to override the default test, you can specify a different test within the `add_p()` function.
 
 ```{r label='stat_compare_2'}
+#| fig-alt: "Html table with different p-values"
 Table1 %>% 
   #add p-value, override default to specify which test to use for Age (here, a t-test)
   add_p(test = Age ~ "t.test")
@@ -266,13 +277,14 @@ Table1 %>%
 
 ## Further customization 
 
-For some customizations, we'll need to convert our `gtsummary` object to a `gt` object with the [`as_gt()` function](https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html). 
+For some customization, we'll need to convert our `gtsummary` object to a `gt` object with the [`as_gt()` function](https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html). 
 
-![https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg)
+![https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg){fig.alt="Representation of gt table components"}
 
 For instance, to update the footnote to clarify which test was used on which variable.
 
 ```{r label='stat_compare_3'}
+#| fig-alt: "Html table with footnote"
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   #convert to gt object keeping everything except the existing footnotes
@@ -285,6 +297,7 @@ Table1 %>%
 Or to add a title and/or subtitle to the table:
 
 ```{r label='table_title'}
+#| fig-alt: "Html table with title"
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   as_gt(include = -tab_footnote) %>% 
@@ -298,6 +311,7 @@ Table1 %>%
 As with plots, there are many options for table styling: [36 combinations of style and color to choose from](https://gt.rstudio.com/reference/opt_stylize.html?q=opt_stylize#examples) plus [conditional cell formatting](https://gt.rstudio.com/reference/tab_style.html)
 
 ```{r label='styling'}
+#| fig-alt: "Html table with alternating gray rows"
 Table1 %>% 
   add_p(test = Age ~ "t.test") %>% 
   as_gt(include = -tab_footnote) %>% 
